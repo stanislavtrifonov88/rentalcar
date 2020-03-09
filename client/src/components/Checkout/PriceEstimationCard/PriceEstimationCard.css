@@ -1,0 +1,10 @@
+
+.priceEstimationCard h1 {
+    padding-bottom: 8%;
+}
+
+.priceItem {
+    display: flex;
+    justify-content: space-between;
+
+}
