@@ -10,7 +10,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   const agePenalty = priceCalculations.estimatedAgeDiscount(priceEstimationForm.checkoutForm.borrowerAge).toFixed(2);
   const priceAfterDaysAndAge = (agePenalty * priceAfterDaysDiscount).toFixed(2);
   const totalPrice = (priceAfterDaysAndAge * numberOfDays).toFixed(2);
-  console.log(priceEstimationForm.car);
+
   return (
     <div className="priceEstimationCard">
       <h1>Estimated Price</h1>

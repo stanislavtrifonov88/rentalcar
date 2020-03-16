@@ -8,7 +8,31 @@ import * as moment from 'moment';
 import { Link } from 'react-router-dom';
 
 
-const BookingForm = ({ changed, onInputSubmit }) => (
+const BookingForm = ({ changed, onInputSubmit, validations }) => {
+  console.log(validations)
+
+
+  let validationErrorFirstName = <p />;
+  if (!validations.borrowerFirstName.valid && validations.borrowerFirstName.touched) {
+    validationErrorFirstName = <p>First name is invalid.</p>;
+  }
+
+  let validationErrorLastName = <p />;
+  if (!validations.borrowerLastName.valid  && validations.borrowerLastName.touched) {
+    validationErrorLastName = <p>Last name is invalid.</p>;
+  }
+
+  let validationErrorAge = <p />;
+  if (!validations.borrowerAge.valid && validations.borrowerAge.touched) {
+    validationErrorAge = <p>Please provide a valid age.</p>;
+  }
+
+  let validationErrorDate = <p />;
+  if (!validations.contractEndDate.valid && validations.contractEndDate.touched) {
+    validationErrorDate = <p>Please provide a valid date.</p>;
+  }
+
+return (
   <Form className="checkoutFormContainer">
     <h1>Booking</h1>
     <div className="bookingFormInputFields">
@@ -24,7 +48,7 @@ const BookingForm = ({ changed, onInputSubmit }) => (
             data-name="borrowerFirstName"
             onChange={changed}
           />
-          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+          {validationErrorFirstName}
         </Form.Group>
         <Form.Group as={Col} md="5" controlId="validationCustom02">
           <Form.Label>Last name</Form.Label>
@@ -37,6 +61,7 @@ const BookingForm = ({ changed, onInputSubmit }) => (
             data-name="borrowerLastName"
             onChange={changed}
           />
+          {validationErrorLastName}
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
       </Form.Row>
@@ -52,6 +77,7 @@ const BookingForm = ({ changed, onInputSubmit }) => (
             data-name="borrowerAge"
             onChange={changed}
           />
+          {validationErrorAge}
           <Form.Control.Feedback type="invalid">
             Please provide a valid age.
           </Form.Control.Feedback>
@@ -67,9 +93,7 @@ const BookingForm = ({ changed, onInputSubmit }) => (
             min={moment(new Date()).format('YYYY-MM-DDThh:mm')}
             onChange={changed}
           />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid date.
-          </Form.Control.Feedback>
+          {validationErrorDate}
         </Form.Group>
       </Form.Row>
     </div>
@@ -81,5 +105,6 @@ const BookingForm = ({ changed, onInputSubmit }) => (
     </div>
   </Form>
 );
+}
 
 export default BookingForm;

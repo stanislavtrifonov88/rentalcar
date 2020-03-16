@@ -29,20 +29,79 @@ export default class CheckoutPage extends React.Component {
         borrowerAge: 18,
         startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
         contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    },
+  checkoutFormValidations: {
+    borrowerFirstName: {
+      rules: {
+      required: true,
+      minLength: 2,
+      maxLength: 25,
+    },
+      valid: false,
+      touched: false,
+    },
+    borrowerLastName: {
+      rules: {
+      required: true,
+      minLength: 2,
+      maxLength: 25,
+    },
+      valid: false,
+    },
+    borrowerAge: {
+      rules: {
+      required: true,
+      maxLength: 3,
+    },
+      valid: false,
+      touched: false,
+    },
+    contractEndDate: {
+      rules: {
+      required: true,
+    },
+      valid: false,
+      touched: false,
     }
+}
     };
+  }
+
+  checkValidity = (value, rules) => {
+    let isValid = true;
+
+    if(rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+
+    if(rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if(rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
   }
 
   carCheckoutHandler = (event) => {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
+    const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
     newObj.startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+    validationObj[name].valid = this.checkValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].touched = true;
 
     this.setState({
         checkoutForm: Object.assign(this.state.checkoutForm, newObj),
     })
+    this.setState({
+      checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
+  })
+    console.log(this.state.checkoutFormValidations)
   }
 
 
@@ -87,7 +146,7 @@ export default class CheckoutPage extends React.Component {
         <h1>Checkout rental car</h1>
         <div className="formItems">
           <CheckoutCarCard car={car} />
-          <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} />
+          <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
           <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
         </div>
       </div>
