@@ -5,6 +5,7 @@ import './CheckoutPage.css';
 import BookingForm from './BookingForm/BookingForm';
 import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
+import * as validationProperty from './Validations/validationProperty'
 
 
 export default class CheckoutPage extends React.Component {
@@ -34,8 +35,8 @@ export default class CheckoutPage extends React.Component {
     borrowerFirstName: {
       rules: {
       required: true,
-      minLength: 2,
-      maxLength: 25,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
     },
       valid: false,
       touched: false,
@@ -43,15 +44,15 @@ export default class CheckoutPage extends React.Component {
     borrowerLastName: {
       rules: {
       required: true,
-      minLength: 2,
-      maxLength: 25,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
     },
       valid: false,
     },
     borrowerAge: {
       rules: {
       required: true,
-      maxLength: 3,
+      maxLength: validationProperty.maxLengthAge,
     },
       valid: false,
       touched: false,
