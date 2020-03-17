@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
 import './AvailableCarsContainer.css';
-
 
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
@@ -19,15 +19,13 @@ class AvailableCarsContainer extends React.Component {
         this.setState({
           cars: result,
         });
-        console.log(result);
       });
   }
 
   render() {
     const { cars } = this.state;
     const { word } = this.props;
-    console.log(word.searchWord)
-    const searchWord = word.searchWord;
+    const { searchWord } = word;
     let filteredCars = null;
     if (searchWord !== '') {
       filteredCars = cars.filter((car) => searchWord === car.brand);
@@ -47,11 +45,21 @@ class AvailableCarsContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => ({
+  word: state.searchWord,
+});
 
-  return {
-    word: state.searchWord,
-  };
+
+AvailableCarsContainer.propTypes = {
+  word: PropTypes.exact({
+    searchWord: PropTypes.string,
+  }),
+};
+
+AvailableCarsContainer.defaultProps = {
+  word: PropTypes.exact({
+    searchWord: 'Ford',
+  }),
 };
 
 export default connect(mapStateToProps, null)(AvailableCarsContainer);

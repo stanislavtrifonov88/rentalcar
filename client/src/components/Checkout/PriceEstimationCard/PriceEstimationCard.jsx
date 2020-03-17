@@ -1,13 +1,19 @@
 import React from 'react';
 import './PriceEstimationCard.css';
+import PropTypes from 'prop-types';
 import * as priceCalculations from '../../../services/PriceCalculations';
 
 const PriceEstimationCard = ({ priceEstimationForm }) => {
-  const numberOfDays = priceCalculations.estimatedDaysRented(priceEstimationForm.checkoutForm.startDate, priceEstimationForm.checkoutForm.contractEndDate);
+  const numberOfDays = priceCalculations.estimatedDaysRented(
+    priceEstimationForm.checkoutForm.startDate,
+    priceEstimationForm.checkoutForm.contractEndDate,
+  );
   const daysDiscount = priceCalculations.estimatedDaysDiscount(numberOfDays);
   const basePrice = (priceEstimationForm.car.__className__.price).toFixed(2);
   const priceAfterDaysDiscount = (basePrice * daysDiscount).toFixed(2);
-  const agePenalty = priceCalculations.estimatedAgeDiscount(priceEstimationForm.checkoutForm.borrowerAge).toFixed(2);
+  const agePenalty = priceCalculations.estimatedAgeDiscount(
+    priceEstimationForm.checkoutForm.borrowerAge,
+  ).toFixed(2);
   const priceAfterDaysAndAge = (agePenalty * priceAfterDaysDiscount).toFixed(2);
   const totalPrice = (priceAfterDaysAndAge * numberOfDays).toFixed(2);
 
@@ -74,5 +80,21 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   );
 };
 
+
+PriceEstimationCard.propTypes = {
+  priceEstimationForm: PropTypes.exact({
+    car: PropTypes.object,
+    checkoutForm: PropTypes.object,
+    checkoutFormValidations: PropTypes.object,
+  }),
+};
+
+PriceEstimationCard.defaultProps = {
+  priceEstimationForm: PropTypes.exact({
+    car: {},
+    checkoutForm: {},
+    checkoutFormValidations: {},
+  }),
+};
 
 export default PriceEstimationCard;
