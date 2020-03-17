@@ -5,6 +5,8 @@ import './CheckoutPage.css';
 import BookingForm from './BookingForm/BookingForm';
 import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
+import * as validationProperty from './Validations/validationProperty'
+import { checkInputValidity } from './Validations/validationChecks'
 
 
 export default class CheckoutPage extends React.Component {
@@ -34,8 +36,8 @@ export default class CheckoutPage extends React.Component {
     borrowerFirstName: {
       rules: {
       required: true,
-      minLength: 2,
-      maxLength: 25,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
     },
       valid: false,
       touched: false,
@@ -43,15 +45,15 @@ export default class CheckoutPage extends React.Component {
     borrowerLastName: {
       rules: {
       required: true,
-      minLength: 2,
-      maxLength: 25,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
     },
       valid: false,
     },
     borrowerAge: {
       rules: {
       required: true,
-      maxLength: 3,
+      maxLength: validationProperty.maxLengthAge,
     },
       valid: false,
       touched: false,
@@ -67,24 +69,6 @@ export default class CheckoutPage extends React.Component {
     };
   }
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-
-    if(rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if(rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if(rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    return isValid;
-  }
-
   carCheckoutHandler = (event) => {
     const name = event.target.dataset.name;
     const value = event.target.value;
@@ -92,7 +76,7 @@ export default class CheckoutPage extends React.Component {
     const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
     newObj.startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
-    validationObj[name].valid = this.checkValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
 
     this.setState({
@@ -101,7 +85,6 @@ export default class CheckoutPage extends React.Component {
     this.setState({
       checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
   })
-    console.log(this.state.checkoutFormValidations)
   }
 
 
