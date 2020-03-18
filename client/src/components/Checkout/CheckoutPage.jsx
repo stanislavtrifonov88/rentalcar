@@ -5,6 +5,8 @@ import './CheckoutPage.css';
 import BookingForm from './BookingForm/BookingForm';
 import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
+import * as validationProperty from './Validations/validationProperty'
+import { checkInputValidity } from './Validations/validationChecks'
 
 
 export default class CheckoutPage extends React.Component {
@@ -29,7 +31,41 @@ export default class CheckoutPage extends React.Component {
         borrowerAge: 18,
         startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
         contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    },
+  checkoutFormValidations: {
+    borrowerFirstName: {
+      rules: {
+      required: true,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
+    },
+      valid: false,
+      touched: false,
+    },
+    borrowerLastName: {
+      rules: {
+      required: true,
+      minLength: validationProperty.minLengthName,
+      maxLength: validationProperty.maxLengthName,
+    },
+      valid: false,
+    },
+    borrowerAge: {
+      rules: {
+      required: true,
+      maxLength: validationProperty.maxLengthAge,
+    },
+      valid: false,
+      touched: false,
+    },
+    contractEndDate: {
+      rules: {
+      required: true,
+    },
+      valid: false,
+      touched: false,
     }
+}
     };
   }
 
@@ -37,12 +73,18 @@ export default class CheckoutPage extends React.Component {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
+    const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
     newObj.startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+    validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].touched = true;
 
     this.setState({
         checkoutForm: Object.assign(this.state.checkoutForm, newObj),
     })
+    this.setState({
+      checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
+  })
   }
 
 
@@ -87,7 +129,7 @@ export default class CheckoutPage extends React.Component {
         <h1>Checkout rental car</h1>
         <div className="formItems">
           <CheckoutCarCard car={car} />
-          <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} />
+          <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
           <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
         </div>
       </div>
