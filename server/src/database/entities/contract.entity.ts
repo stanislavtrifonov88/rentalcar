@@ -27,7 +27,7 @@ export class Contract {
     @Column({ type: 'text', nullable: false })
     contractEndDate: string;
 
-    @Column({ type: 'text', default: 'n/a' })
+    @Column({ type: 'text', nullable: true })
     deliveredDate: string;
 
     @Column({ type: 'float', default: 0 })

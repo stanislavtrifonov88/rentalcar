@@ -18,7 +18,7 @@ export class ContractsService {
     public async getAllContracts(): Promise<Contract[]> {
         const allContractsData: Contract[] = await this.contractsRepository.find({
             where: {
-                deliveredDate: 'n/a',
+                deliveredDate: null,
                 isDeleted: false,
             },
             relations: ['car', 'car.className'],
