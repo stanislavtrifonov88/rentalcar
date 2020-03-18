@@ -3,7 +3,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class changeDatesDataType1584462001767 implements MigrationInterface {
     name = 'changeDatesDataType1584462001767'
 
-    public async up(queryRunner: QueryRunner): Promise<any> {
+    async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query(`ALTER TABLE "contracts" ADD "tempStartDate" TIMESTAMP`, undefined);
         await queryRunner.query(`ALTER TABLE "contracts" ADD "tempContractEndDate" TIMESTAMP`, undefined);
         await queryRunner.query(`ALTER TABLE "contracts" ADD "tempDeliveredDate" TIMESTAMP`, undefined);
@@ -23,6 +23,8 @@ export class changeDatesDataType1584462001767 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "contracts" DROP COLUMN "tempContractEndDate"`, undefined);
         await queryRunner.query(`ALTER TABLE "contracts" DROP COLUMN "tempStartDate"`, undefined);
     }
+
+    
 
     public async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query(`ALTER TABLE "contracts" DROP COLUMN "tempDeliveredDate"`, undefined);
