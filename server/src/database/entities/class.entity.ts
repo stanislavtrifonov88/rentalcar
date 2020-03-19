@@ -21,7 +21,7 @@ export class Class {
     @Column({ type: 'boolean', default: false })
     isDeleted: boolean;
 
-    @OneToMany(type => Car, car => car.className)
-    cars: Promise<Car[]>;
+    @OneToMany(type => Car, car => car.className )
+    cars: Car[];
 
 }

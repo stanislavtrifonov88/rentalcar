@@ -1,6 +1,6 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class changeDatesDataType1584462001767 implements MigrationInterface {
+export class ChangeDatesDataType1584462001767 implements MigrationInterface {
     name = 'changeDatesDataType1584462001767'
 
     async up(queryRunner: QueryRunner): Promise<any> {

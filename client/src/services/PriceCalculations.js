@@ -78,7 +78,7 @@ export const overduePenalty = (
   overUnderDaysRented,
 ) => {
   if (overUnderDaysRented < 1) {
-    return 0;
+    return 1;
   }
   if (overUnderDaysRented < 6) {
     return 1.5;
@@ -87,4 +87,7 @@ export const overduePenalty = (
   return 2;
 };
 
-export const currentPricePerDay = (overduePenaltyPercent, estimatedDailyPrice) => overduePenaltyPercent * estimatedDailyPrice;
+export const currentPricePerDay = (
+  overduePenaltyPercent,
+  estimatedDailyPrice,
+) => overduePenaltyPercent * estimatedDailyPrice;

@@ -3,13 +3,6 @@ import * as priceDiscounts from './discounts/priceDiscounts';
 
 
 it('estimatedDaysDiscount should assign 100% of car base price if the car is rented for 1 day', () => {
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-02-27T11:39',
-    contractEndDate: '2020-03-13T11:04',
-  };
 
   // Arramge
   const estimatedDaysRented = 1;
@@ -268,18 +261,10 @@ it('daysOverUnderContract should call return the number of days when the car is 
 });
 
 
-it('overduePenalty should return 0 if overdue days < 1', () => {
+it('overduePenalty should return 1 if overdue days < 1', () => {
   // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
 
   const overUnderDaysRented = -3;
-
 
   // Act
 
@@ -287,19 +272,12 @@ it('overduePenalty should return 0 if overdue days < 1', () => {
 
   // Assert
 
-  expect(result).toEqual(0);
+  expect(result).toEqual(1);
 });
 
 
 it('overduePenalty should return 1.5 if overdue days < 6', () => {
   // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
 
   const overUnderDaysRented = 5;
 
@@ -316,16 +294,8 @@ it('overduePenalty should return 1.5 if overdue days < 6', () => {
 
 it('overduePenalty should return 2 if overdue days >= 6', () => {
   // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
 
   const overUnderDaysRented = 7;
-
 
   // Act
 
@@ -339,13 +309,6 @@ it('overduePenalty should return 2 if overdue days >= 6', () => {
 
 it('currentPricePerDay should return the product of its inputs', () => {
   // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
 
   const overduePenaltyPercent = 2
   const estimatedDailyPrice = 2

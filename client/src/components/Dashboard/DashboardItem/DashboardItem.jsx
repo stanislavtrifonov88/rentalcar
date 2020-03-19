@@ -6,16 +6,14 @@ class DashboardItem extends React.Component {
 
 
   handleClick = (event) => {
-    console.log(event.target.name, this.props.contract.id)
     this.props.onChildClick(event.target.name, this.props.contract.id)
   }
-  
 
   render() {
     const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(this.props.contract.startDate, this.props.contract.contractEndDate);
     const currentNumberOfDays = priceCalculations.currentDaysRented(this.props.contract.startDate);
     const daysDiscount = priceCalculations.estimatedDaysDiscount(estimatedNumberOfDays);
-    const basePriceMock = 100;
+    const basePriceMock = this.props.contract.price;
     const priceAfterDaysDiscount = basePriceMock * daysDiscount;
     const agePenalty = priceCalculations.estimatedAgeDiscount(this.props.contract.borrowerAge);
     const priceAfterDaysAndAge = agePenalty * priceAfterDaysDiscount;
@@ -29,9 +27,9 @@ class DashboardItem extends React.Component {
       <tr>
         <td>#</td>
         <td>
-          {this.props.contract.__car__.brand}
+          {this.props.contract.brand}
           {' '}
-          {this.props.contract.__car__.model}
+          {this.props.contract.model}
         </td>
         <td>{this.props.contract.borrowerFirstName}</td>
         <th>
@@ -42,12 +40,12 @@ class DashboardItem extends React.Component {
         <td>{this.props.contract.contractEndDate}</td>
         <td>{estimatedNumberOfDays}</td>
         <td>
-          {priceAfterDaysAndAge}
+          {priceAfterDaysAndAge.toFixed(2)}
         </td>
         <td>{currentNumberOfDays}</td>
         <td>{daysOverUnderContract}</td>
-        <td>{currentPricePerDay}</td>
-        <td>{currentTotalPrice}</td>
+        <td>{currentPricePerDay.toFixed(2)}</td>
+        <td>{currentTotalPrice.toFixed(2)}</td>
         <td><Button variant="outline-success" onClick={this.handleClick} name={currentTotalPrice}>Return car</Button></td>
       </tr>
     );

@@ -29,8 +29,8 @@ export class Car {
     @Column({ type: 'boolean', default: false })
     isDeleted: boolean;
 
-    @ManyToOne(type => Class, className => className.cars)
-    className: Promise<Class>;
+    @ManyToOne(type => Class, className => className.cars, {eager: true})
+    className: Class;
 
     @OneToMany(type => Contract, contract => contract.car)
     contracts: Promise<Contract[]>;

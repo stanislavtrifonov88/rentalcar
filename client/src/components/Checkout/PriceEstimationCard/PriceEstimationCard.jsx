@@ -9,7 +9,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
     priceEstimationForm.checkoutForm.contractEndDate,
   );
   const daysDiscount = priceCalculations.estimatedDaysDiscount(numberOfDays);
-  const basePrice = (priceEstimationForm.car.__className__.price).toFixed(2);
+  const basePrice = (priceEstimationForm.car.price).toFixed(2);
   const priceAfterDaysDiscount = (basePrice * daysDiscount).toFixed(2);
   const agePenalty = priceCalculations.estimatedAgeDiscount(
     priceEstimationForm.checkoutForm.borrowerAge,
