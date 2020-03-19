@@ -11,6 +11,7 @@ import {
 import { ContractsService } from './contracts.service';
 import { Contract } from '../database/entities/contract.entity';
 import { NewContractDTO } from './models/newContract.dto';
+import { IndividualContractDTO } from './models/individualContract.dto';
 
 
 @Controller('contracts')
@@ -20,7 +21,8 @@ export class ContractsController {
     @Get()
     @HttpCode(HttpStatus.OK)
     public async getAllAvailableCars () {
-      const allContracts: Contract[] = await this.contractsService.getAllContracts();
+      const allContracts: IndividualContractDTO[] = await this.contractsService.getAllContracts();
+      console.log(allContracts)
 
       return allContracts;
     }
@@ -30,9 +32,11 @@ export class ContractsController {
     public async newContract(
       @Body() body: NewContractDTO,
       @Param('carId') carId: string,
-    ): Promise<Contract> {
+    ): Promise<IndividualContractDTO> {
 
-      return await this.contractsService.createContract(body, carId);
+      const individualContract: IndividualContractDTO = await this.contractsService.createContract(body, carId);
+
+      return individualContract;
     }
 
     @Post(':contractId')

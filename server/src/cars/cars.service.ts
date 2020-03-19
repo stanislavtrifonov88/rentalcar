@@ -46,7 +46,6 @@ export class CarsService {
             relations: ['className']
         })
 
-
         const individualCarFormated: IndividualCarDTO = await transformToCarDTO(individualCar)
 
         return individualCarFormated;

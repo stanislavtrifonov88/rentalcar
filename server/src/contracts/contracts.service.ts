@@ -5,6 +5,8 @@ import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
 import { Contract } from '../database/entities/contract.entity';
 import { NewContractDTO } from './models/newContract.dto';
+import { IndividualContractDTO } from './models/individualContract.dto';
+import { transformToContractDTO } from './transformers/transformToContractDTO';
 
 @Injectable()
 export class ContractsService {
@@ -15,7 +17,7 @@ export class ContractsService {
         @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>
     ) { }
 
-    public async getAllContracts(): Promise<Contract[]> {
+    public async getAllContracts(): Promise<IndividualContractDTO[]> {
         const allContractsData: Contract[] = await this.contractsRepository.find({
             where: {
                 deliveredDate: null,
@@ -23,11 +25,38 @@ export class ContractsService {
             },
             relations: ['car', 'car.className'],
         });
+        let allContractsDataFormated:  IndividualContractDTO[] = []
+        allContractsData.map(async (contract: Contract) => {
+            const contractInfo = (({ 
+                id,
+                borrowerFirstName,
+                borrowerLastName,
+                borrowerAge,
+                startDate,
+                contractEndDate }) => ({         
+                id,
+                borrowerFirstName,
+                borrowerLastName,
+                borrowerAge,
+                startDate,
+                contractEndDate }))(contract);
+            const carInfo = (({ brand, model }) => ({ brand, model }))(await contract.car);
+            const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo};
+            // const individualContractFormated: IndividualContractDTO = await transformToContractDTO(contract)
+            // console.log(individualContractFormated)
 
-        return allContractsData;
+            allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
+            // console.log(allContractsDataFormated)
+
+        })
+        await Promise.resolve(allContractsDataFormated)
+        // console.log(allContractsDataFormated)
+        console.log(allContractsData)
+
+        return allContractsDataFormated;
     }
 
-    public async createContract(body: NewContractDTO, carId): Promise<Contract> {
+    public async createContract(body: NewContractDTO, carId): Promise<IndividualContractDTO> {
         const foundCar = await this.carsRepository.findOne({
             where: {
                 id: carId
@@ -47,7 +76,9 @@ export class ContractsService {
         foundCar.isBorrowed = true
         await this.carsRepository.save(foundCar)
 
-        return createdContract;
+        const individualContractFormated: IndividualContractDTO = await transformToContractDTO(createdContract)
+
+        return individualContractFormated;
     }
 
     public async returnCar(contractId: string, body: {name: number}): Promise<Contract> {
