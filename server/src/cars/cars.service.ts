@@ -25,9 +25,7 @@ export class CarsService {
 
         let allCarsDataFormated: IndividualCarDTO[] = []
         allCarsData.map(async (individualCar) => {
-            const carPropsPicked = (({ id, brand, model, picture, }) => ({ id, brand, model, picture, }))(individualCar);
-            const classPropsPicked = (({ className, price }) => ({ className, price }))(await individualCar.className);
-            const individualCarFormated: IndividualCarDTO = { ...carPropsPicked, ...classPropsPicked};
+            const individualCarFormated: IndividualCarDTO = await transformToCarDTO(individualCar)
             allCarsDataFormated = [...allCarsDataFormated, individualCarFormated];
         })
 
