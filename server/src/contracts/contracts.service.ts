@@ -28,27 +28,8 @@ export class ContractsService {
         let allContractsDataFormated:  IndividualContractDTO[] = []
 
         allContractsData.map(async (contract: Contract) => {
-            const contractInfo = (({ 
-                id,
-                borrowerFirstName,
-                borrowerLastName,
-                borrowerAge,
-                startDate,
-                contractEndDate }) => ({         
-                id,
-                borrowerFirstName,
-                borrowerLastName,
-                borrowerAge,
-                startDate,
-                contractEndDate }))(contract);
-            const carInfo = (({ brand, model }) => ({ brand, model }))(await contract.car);
-            const tempPrice = (contract.car).className
-            const price = tempPrice.price
-
-            const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo, price};
-
+            const individualContractFormated: IndividualContractDTO = await transformToContractDTO(contract)
             allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
-
         })
         await Promise.resolve(allContractsDataFormated)
 
