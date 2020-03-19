@@ -15,7 +15,7 @@ class DashboardItem extends React.Component {
     const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(this.props.contract.startDate, this.props.contract.contractEndDate);
     const currentNumberOfDays = priceCalculations.currentDaysRented(this.props.contract.startDate);
     const daysDiscount = priceCalculations.estimatedDaysDiscount(estimatedNumberOfDays);
-    const basePriceMock = 100;
+    const basePriceMock = this.props.contract.price;
     const priceAfterDaysDiscount = basePriceMock * daysDiscount;
     const agePenalty = priceCalculations.estimatedAgeDiscount(this.props.contract.borrowerAge);
     const priceAfterDaysAndAge = agePenalty * priceAfterDaysDiscount;
@@ -24,6 +24,7 @@ class DashboardItem extends React.Component {
     const overduePenalty = priceCalculations.overduePenalty(daysOverUnderContract);
     const currentTotalPrice = estimatedTotalPrice + (overduePenalty * daysOverUnderContract * priceAfterDaysAndAge);
     const currentPricePerDay = priceCalculations.currentPricePerDay(overduePenalty, priceAfterDaysAndAge);
+    console.log(daysOverUnderContract)
 
     return (
       <tr>
