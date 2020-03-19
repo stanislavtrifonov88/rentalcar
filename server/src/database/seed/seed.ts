@@ -189,7 +189,7 @@ const seed = async () => {
         vwGolf2Contract2.borrowerLastName = 'Wayne';
         vwGolf2Contract2.borrowerAge = 36;
         vwGolf2Contract2.startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
-        vwGolf2Contract2.contractEndDate = (moment(new Date(), "YYYY-MM-DDTHH:mm").add(-14, 'days')).format('YYYY-MM-DDTHH:mm');
+        vwGolf2Contract2.contractEndDate = (moment(new Date(), "YYYY-MM-DDTHH:mm").add(14, 'days')).format('YYYY-MM-DDTHH:mm');
         vwGolf2Contract2.car = vwGolf;
         vwGolf.isBorrowed = true
     

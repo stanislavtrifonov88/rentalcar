@@ -268,7 +268,7 @@ it('daysOverUnderContract should call return the number of days when the car is 
 });
 
 
-it('overduePenalty should return 0 if overdue days < 1', () => {
+it('overduePenalty should return 1 if overdue days < 1', () => {
   // Arramge
   const contractMock = {
     borrowerFirstName: 'Batman',
@@ -287,7 +287,7 @@ it('overduePenalty should return 0 if overdue days < 1', () => {
 
   // Assert
 
-  expect(result).toEqual(0);
+  expect(result).toEqual(1);
 });
 
 
