@@ -7,7 +7,6 @@ import {
   } from '@nestjs/common';
   
 import { CarsService } from './cars.service';
-import { Car } from '../database/entities/car.entity';
 import { IndividualCarDTO } from './models/individualCar.dto';
 
 
