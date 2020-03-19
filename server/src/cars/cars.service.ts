@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
 import { Class } from '../database/entities/class.entity';
+import { createBrotliDecompress } from 'zlib';
+import { IndividualCarDTO } from './models/individualCar.dto';
 
 
 @Injectable()
@@ -24,7 +26,7 @@ export class CarsService {
         return allCarsData;
     }
 
-    public async getIndividualCar(id: string): Promise<Car> {
+    public async getIndividualCar(id: string): Promise<IndividualCarDTO> {
         const individualCar: Car = await this.carsRepository.findOne({
             where: {
                 id: id,
@@ -34,7 +36,11 @@ export class CarsService {
             relations: ['className']
         })
 
-        return individualCar;
+        const carPropsPicked = (({ id, brand, model, picture, }) => ({ id, brand, model, picture, }))(individualCar);
+        const classPropsPicked = (({ className, price }) => ({ className, price }))(await individualCar.className);
+        const individualCarFormated: IndividualCarDTO = { ...carPropsPicked, ...classPropsPicked}
+        console.log(individualCarFormated)
+        return individualCarFormated;
     }
 
 }

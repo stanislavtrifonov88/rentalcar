@@ -8,6 +8,7 @@ import {
   
 import { CarsService } from './cars.service';
 import { Car } from '../database/entities/car.entity';
+import { IndividualCarDTO } from './models/individualCar.dto';
 
 
 @Controller('cars')
@@ -27,7 +28,7 @@ export class CarsController {
     public async getIndividualCar (
       @Param('id') id: string,
     ) {
-      const individualCar: Car = await this.carsService.getIndividualCar(id);
+      const individualCar: IndividualCarDTO = await this.carsService.getIndividualCar(id);
 
       return individualCar;
     }
