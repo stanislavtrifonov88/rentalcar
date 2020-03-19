@@ -13,17 +13,13 @@ export default class CheckoutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      car: { id: "7c246d71-1538-406a-8bad-4043f3387fcd",
+      car: { 
+      id: "7c246d71-1538-406a-8bad-4043f3387fcd",
       brand: "Opel",
       model: "Astra",
       picture: "https://www.auto-lizingu.lt/wp-content/uploads/2019/09/opel-astra-1-6-l-hecbekas-2014-dyzelinas-13.jpg",
-      isBorrowed: false,
-      isDeleted: false,
-      __className__: {
-      id: "1c2b08e8-65fc-4991-b8dd-9f64c75e26ee",
       className: "B",
-      price: 570,
-      isDeleted: false, }
+      price: 70,
     },
       checkoutForm: {
         borrowerFirstName: null,
@@ -114,6 +110,7 @@ export default class CheckoutPage extends React.Component {
     fetch(`http://localhost:3000/cars/${id}`)
       .then((res) => res.json())
       .then((result) => {
+        console.log(result)
         this.setState({
           car: result,
         });
