@@ -110,7 +110,6 @@ export default class CheckoutPage extends React.Component {
     fetch(`http://localhost:3000/cars/${id}`)
       .then((res) => res.json())
       .then((result) => {
-        console.log(result)
         this.setState({
           car: result,
         });

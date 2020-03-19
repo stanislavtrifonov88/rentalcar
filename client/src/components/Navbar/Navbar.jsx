@@ -20,7 +20,6 @@ class NavigationBarCars extends React.Component {
     this.setState({
       searchWord: event.target.value,
     })
-    console.log(this.state.searchWord)
   }
 
   

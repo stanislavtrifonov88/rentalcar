@@ -19,13 +19,10 @@ class Dashboard extends React.Component {
         this.setState({
           contracts: result,
         });
-        console.log(result);
       });
   }
 
   onSubmit = (name, id) => {
-    console.log(name)
-    console.log(id)
     fetch(`http://localhost:3000/contracts/${id}`, {
       method: "POST",
       body: JSON.stringify({name}),
@@ -41,7 +38,6 @@ class Dashboard extends React.Component {
           this.setState({
             contracts: result,
           });
-          console.log(result);
         }))
       .catch(err => console.log(err));
   }
