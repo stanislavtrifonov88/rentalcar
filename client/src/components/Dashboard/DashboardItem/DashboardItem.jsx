@@ -29,9 +29,9 @@ class DashboardItem extends React.Component {
       <tr>
         <td>#</td>
         <td>
-          {this.props.contract.__car__.brand}
+          {this.props.contract.brand}
           {' '}
-          {this.props.contract.__car__.model}
+          {this.props.contract.model}
         </td>
         <td>{this.props.contract.borrowerFirstName}</td>
         <th>
