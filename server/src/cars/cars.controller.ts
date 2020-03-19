@@ -18,7 +18,7 @@ export class CarsController {
     @Get()
     @HttpCode(HttpStatus.OK)
     public async getAllAvailableCars () {
-      const allAvailableCars: Car[] = await this.carsService.getAllAvailableCars();
+      const allAvailableCars: IndividualCarDTO[] = await this.carsService.getAllAvailableCars();
 
       return allAvailableCars;
     }

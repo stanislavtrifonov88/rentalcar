@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
 import { Class } from '../database/entities/class.entity';
-import { createBrotliDecompress } from 'zlib';
 import { IndividualCarDTO } from './models/individualCar.dto';
+import { transformToCarDTO } from './transformers/carTransformers';
 
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CarsService {
         @InjectRepository(Class) private readonly classesRepository: Repository<Class>,
     ) { }
 
-    public async getAllAvailableCars(): Promise<Car[]> {
+    public async getAllAvailableCars(): Promise<IndividualCarDTO[]> {
         const allCarsData: Car[] = await this.carsRepository.find({
             where: {
                 isBorrowed: false,
@@ -23,7 +23,17 @@ export class CarsService {
             relations: ['className'],
         });
 
-        return allCarsData;
+        let allCarsDataFormated: IndividualCarDTO[] = []
+        const allCarsDataFormated2 = allCarsData.map(async (individualCar) => {
+            const carPropsPicked = (({ id, brand, model, picture, }) => ({ id, brand, model, picture, }))(individualCar);
+            const classPropsPicked = (({ className, price }) => ({ className, price }))(await individualCar.className);
+            const individualCarFormated: IndividualCarDTO = { ...carPropsPicked, ...classPropsPicked};
+            allCarsDataFormated = [...allCarsDataFormated, individualCarFormated];
+        })
+
+        await Promise.resolve(allCarsDataFormated)
+
+        return allCarsDataFormated;
     }
 
     public async getIndividualCar(id: string): Promise<IndividualCarDTO> {
@@ -36,10 +46,9 @@ export class CarsService {
             relations: ['className']
         })
 
-        const carPropsPicked = (({ id, brand, model, picture, }) => ({ id, brand, model, picture, }))(individualCar);
-        const classPropsPicked = (({ className, price }) => ({ className, price }))(await individualCar.className);
-        const individualCarFormated: IndividualCarDTO = { ...carPropsPicked, ...classPropsPicked}
-        console.log(individualCarFormated)
+
+        const individualCarFormated: IndividualCarDTO = await transformToCarDTO(individualCar)
+
         return individualCarFormated;
     }
 
