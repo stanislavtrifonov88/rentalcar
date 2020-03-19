@@ -6,10 +6,8 @@ class DashboardItem extends React.Component {
 
 
   handleClick = (event) => {
-    console.log(event.target.name, this.props.contract.id)
     this.props.onChildClick(event.target.name, this.props.contract.id)
   }
-  
 
   render() {
     const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(this.props.contract.startDate, this.props.contract.contractEndDate);
@@ -24,7 +22,6 @@ class DashboardItem extends React.Component {
     const overduePenalty = priceCalculations.overduePenalty(daysOverUnderContract);
     const currentTotalPrice = estimatedTotalPrice + (overduePenalty * daysOverUnderContract * priceAfterDaysAndAge);
     const currentPricePerDay = priceCalculations.currentPricePerDay(overduePenalty, priceAfterDaysAndAge);
-    console.log(daysOverUnderContract)
 
     return (
       <tr>
@@ -43,12 +40,12 @@ class DashboardItem extends React.Component {
         <td>{this.props.contract.contractEndDate}</td>
         <td>{estimatedNumberOfDays}</td>
         <td>
-          {priceAfterDaysAndAge}
+          {priceAfterDaysAndAge.toFixed(2)}
         </td>
         <td>{currentNumberOfDays}</td>
         <td>{daysOverUnderContract}</td>
-        <td>{currentPricePerDay}</td>
-        <td>{currentTotalPrice}</td>
+        <td>{currentPricePerDay.toFixed(2)}</td>
+        <td>{currentTotalPrice.toFixed(2)}</td>
         <td><Button variant="outline-success" onClick={this.handleClick} name={currentTotalPrice}>Return car</Button></td>
       </tr>
     );
