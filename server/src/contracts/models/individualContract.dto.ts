@@ -9,4 +9,5 @@ export class IndividualContractDTO {
     contractEndDate: string;
     brand: string;
     model: string;
+    price: number;
 }

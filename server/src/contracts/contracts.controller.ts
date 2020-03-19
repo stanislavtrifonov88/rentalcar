@@ -22,7 +22,6 @@ export class ContractsController {
     @HttpCode(HttpStatus.OK)
     public async getAllAvailableCars () {
       const allContracts: IndividualContractDTO[] = await this.contractsService.getAllContracts();
-      console.log(allContracts)
 
       return allContracts;
     }

@@ -17,7 +17,9 @@ export const transformToContractDTO = async (contract: Contract) => {
         startDate,
         contractEndDate }))(contract);
     const carInfo = (({ brand, model }) => ({ brand, model }))(await contract.car);
-    const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo };
+    const a = await (await contract.car).className
+    const price = a.price
+    const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo, price };
 
     return individualContractFormated
 }

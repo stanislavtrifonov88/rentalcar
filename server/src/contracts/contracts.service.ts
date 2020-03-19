@@ -23,9 +23,10 @@ export class ContractsService {
                 deliveredDate: null,
                 isDeleted: false,
             },
-            relations: ['car', 'car.className'],
         });
+
         let allContractsDataFormated:  IndividualContractDTO[] = []
+
         allContractsData.map(async (contract: Contract) => {
             const contractInfo = (({ 
                 id,
@@ -41,19 +42,19 @@ export class ContractsService {
                 startDate,
                 contractEndDate }))(contract);
             const carInfo = (({ brand, model }) => ({ brand, model }))(await contract.car);
-            const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo};
-            // const individualContractFormated: IndividualContractDTO = await transformToContractDTO(contract)
-            // console.log(individualContractFormated)
+            const tempPrice = (contract.car).className
+            const price = tempPrice.price
+
+            const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo, price};
 
             allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
             // console.log(allContractsDataFormated)
 
         })
         await Promise.resolve(allContractsDataFormated)
-        // console.log(allContractsDataFormated)
-        console.log(allContractsData)
 
-        return allContractsDataFormated;
+        console.log(await allContractsDataFormated)
+        return await allContractsDataFormated;
     }
 
     public async createContract(body: NewContractDTO, carId): Promise<IndividualContractDTO> {
@@ -71,7 +72,7 @@ export class ContractsService {
         }
 
         const newContract = await this.contractsRepository.create(body)
-        newContract.car = Promise.resolve(foundCar)
+        newContract.car = foundCar
         const createdContract = await this.contractsRepository.save(newContract)
         foundCar.isBorrowed = true
         await this.carsRepository.save(foundCar)
