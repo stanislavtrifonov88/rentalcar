@@ -48,12 +48,10 @@ export class ContractsService {
             const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo, price};
 
             allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
-            // console.log(allContractsDataFormated)
 
         })
         await Promise.resolve(allContractsDataFormated)
 
-        console.log(await allContractsDataFormated)
         return await allContractsDataFormated;
     }
 
@@ -82,7 +80,7 @@ export class ContractsService {
         return individualContractFormated;
     }
 
-    public async returnCar(contractId: string, body: {name: number}): Promise<Contract> {
+    public async returnCar(contractId: string, body: {name: number}): Promise<IndividualContractDTO> {
         const foundContract = await this.contractsRepository.findOne({
             where: {
                 id: contractId
@@ -104,7 +102,9 @@ export class ContractsService {
         foundContract.pricePaid = body.name;
         await this.contractsRepository.save(foundContract)
 
-        return foundContract;
+        const individualContractFormated: IndividualContractDTO = await transformToContractDTO(foundContract)
+
+        return individualContractFormated;
     }
 
 }

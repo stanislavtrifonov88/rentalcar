@@ -9,7 +9,6 @@ import {
   } from '@nestjs/common';
 
 import { ContractsService } from './contracts.service';
-import { Contract } from '../database/entities/contract.entity';
 import { NewContractDTO } from './models/newContract.dto';
 import { IndividualContractDTO } from './models/individualContract.dto';
 
@@ -43,7 +42,7 @@ export class ContractsController {
     public async returnCar(
       @Body() body: {name: number},
       @Param('contractId') contractId: string,
-    ): Promise<Contract> {
+    ): Promise<IndividualContractDTO> {
 
       return await this.contractsService.returnCar(contractId, body);
     }
