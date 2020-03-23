@@ -42,6 +42,7 @@ export class ContractsController {
     public async returnCar(
       @Body() body: {name: number},
       @Param('contractId') contractId: string,
+
     ): Promise<IndividualContractDTO> {
 
       return await this.contractsService.returnCar(contractId, body);
