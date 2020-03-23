@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import { Car } from '../database/entities/car.entity';
@@ -7,6 +7,13 @@ import { Contract } from '../database/entities/contract.entity';
 import { NewContractDTO } from './models/newContract.dto';
 import { IndividualContractDTO } from './models/individualContract.dto';
 import { transformToContractDTO } from './transformers/transformToContractDTO';
+import { createContractErrorHandling } from '../shared/errors/createContractErrorHandling';
+import { CarRentalSystemError } from '../shared/exceptions/carRental-system.error';
+import * as errorMessages from '../shared/errors/error.messages';
+import { CarsModule } from '../cars/cars.module'
+// import { CarsService } from '../cars/cars.module'
+import { CarsService } from '../cars/cars.service';
+
 
 @Injectable()
 export class ContractsService {
@@ -14,7 +21,8 @@ export class ContractsService {
     estimatedAgeDiscount: any;
     public constructor(
         @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
-        @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>
+        @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>,
+        private readonly carsService: CarsService
     ) { }
 
     public async getAllContracts(): Promise<IndividualContractDTO[]> {
@@ -36,19 +44,11 @@ export class ContractsService {
         return await allContractsDataFormated;
     }
 
-    public async createContract(body: NewContractDTO, carId): Promise<IndividualContractDTO> {
-        const foundCar = await this.carsRepository.findOne({
-            where: {
-                id: carId
-            }
-        })
+    public async createContract(body: NewContractDTO, carId: string): Promise<IndividualContractDTO> {
+        
+        const foundCar: Car = await this.carsService.getAvailableCarById(carId)
 
-        if (body.startDate > body.contractEndDate) {
-            throw new BadRequestException({
-                "status": 400,
-                "error": "Return date cannot be before today"
-            })
-        }
+        createContractErrorHandling(body)
 
         const newContract = await this.contractsRepository.create(body)
         newContract.car = foundCar
@@ -62,19 +62,39 @@ export class ContractsService {
     }
 
     public async returnCar(contractId: string, body: {name: number}): Promise<IndividualContractDTO> {
-        const foundContract = await this.contractsRepository.findOne({
-            where: {
-                id: contractId
-            },
-            relations: ['car', 'car.className'],
-        })
 
-        const foundCar = await this.carsRepository.findOne({
+        let foundContract = null;
+        try {
+        foundContract = await this.contractsRepository.findOne({
             where: {
-                id: (await foundContract.car).id
+                id: contractId,
+                deliveredDate: null,
             },
-            relations: ['className'],
         })
+        if (foundContract === undefined) {
+            throw new CarRentalSystemError(errorMessages.contractNotFound.msg, errorMessages.contractNotFound.code);
+        }
+        }
+        catch (error) {
+                throw new CarRentalSystemError(error, 500);
+        }
+
+        let foundCar = null;
+        try {
+        foundCar = await this.carsRepository.findOne({
+            where: {
+                id: (await foundContract.car).id,
+                isBorrowed: true,
+                isDeleted: false,
+            },
+        })
+        if (foundCar === undefined) {
+            throw new CarRentalSystemError(errorMessages.borrowedCarNotFound.msg, errorMessages.borrowedCarNotFound.code);
+        }
+        }
+        catch (error) {
+                throw new CarRentalSystemError(error, 500);
+        }
 
         foundCar.isBorrowed = false;
         await this.carsRepository.save(foundCar)
