@@ -10,8 +10,7 @@ import { transformToContractDTO } from './transformers/transformToContractDTO';
 import { createContractErrorHandling } from '../shared/errors/createContractErrorHandling';
 import { CarRentalSystemError } from '../shared/exceptions/carRental-system.error';
 import * as errorMessages from '../shared/errors/error.messages';
-import { CarsModule } from '../cars/cars.module'
-// import { CarsService } from '../cars/cars.module'
+import {getManager} from "typeorm";
 import { CarsService } from '../cars/cars.service';
 
 
@@ -50,11 +49,15 @@ export class ContractsService {
 
         createContractErrorHandling(body)
 
-        const newContract = await this.contractsRepository.create(body)
-        newContract.car = foundCar
-        const createdContract = await this.contractsRepository.save(newContract)
-        foundCar.isBorrowed = true
-        await this.carsRepository.save(foundCar)
+        const createdContract: Contract = await getManager().transaction(async transactionalEntityManager => {
+            const newContract = await this.contractsRepository.create(body)
+            newContract.car = foundCar
+            const createdContract = await transactionalEntityManager.save(newContract);
+            foundCar.isBorrowed = true
+            await transactionalEntityManager.save(foundCar);
+
+            return createdContract
+        });
 
         const individualContractFormated: IndividualContractDTO = await transformToContractDTO(createdContract)
 
@@ -96,12 +99,14 @@ export class ContractsService {
                 throw new CarRentalSystemError(error, 500);
         }
 
-        foundCar.isBorrowed = false;
-        await this.carsRepository.save(foundCar)
-
-        foundContract.deliveredDate = moment(new Date()).format('YYYY-MM-DDTHH:mm')
-        foundContract.pricePaid = body.name;
-        await this.contractsRepository.save(foundContract)
+        await getManager().transaction(async transactionalEntityManager => {
+            foundCar.isBorrowed = false;
+            await this.carsRepository.save(foundCar)
+    
+            foundContract.deliveredDate = moment(new Date()).format('YYYY-MM-DDTHH:mm')
+            foundContract.pricePaid = body.name;
+            await this.contractsRepository.save(foundContract)
+        });
 
         const individualContractFormated: IndividualContractDTO = await transformToContractDTO(foundContract)
 
