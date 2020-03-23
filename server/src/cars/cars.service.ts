@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
-import { Class } from '../database/entities/class.entity';
 import { IndividualCarDTO } from './models/individualCar.dto';
 import { transformToCarDTO } from './transformers/carTransformers';
+import { CarRentalSystemError } from '../shared/exceptions/carRental-system.error';
+import * as errorMessages from '../shared/errors/error.messages'
 
 
 @Injectable()
 export class CarsService {
     public constructor(
         @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
-        @InjectRepository(Class) private readonly classesRepository: Repository<Class>,
     ) { }
 
     public async getAllAvailableCars(): Promise<IndividualCarDTO[]> {
@@ -20,7 +20,6 @@ export class CarsService {
                 isBorrowed: false,
                 isDeleted: false,
             },
-            relations: ['className'],
         });
 
         let allCarsDataFormated: IndividualCarDTO[] = []
@@ -35,18 +34,34 @@ export class CarsService {
     }
 
     public async getIndividualCar(id: string): Promise<IndividualCarDTO> {
-        const individualCar: Car = await this.carsRepository.findOne({
+
+        const foundCar: Car = await this.getAvailableCarById(id)
+        const individualCarFormated: IndividualCarDTO = await transformToCarDTO(foundCar)
+
+        return individualCarFormated;
+    }
+
+    public async getAvailableCarById(id: string): Promise<Car> {
+
+        try {
+            const foundCar: Car = await this.carsRepository.findOne({
             where: {
                 id: id,
                 isBorrowed: false,
                 isDeleted: false,
             },
-            relations: ['className']
         })
+        if (foundCar === undefined) {
+            throw new CarRentalSystemError(errorMessages.borrowedCarNotFound.msg, errorMessages.borrowedCarNotFound.code);
+        }
 
-        const individualCarFormated: IndividualCarDTO = await transformToCarDTO(individualCar)
-
-        return individualCarFormated;
+        return foundCar;
+        }
+        catch (error) {
+                throw new CarRentalSystemError(error, 500);
+        }
     }
 
 }
+
+
