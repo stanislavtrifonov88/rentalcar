@@ -4,10 +4,10 @@
 A platform which allows an office worker at a car rental company to make new contracts and return borrowed cars
 
 ### Getting Started
+***
 The instructions below will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
 
 #### Server
----
 
 1. First clone this repository to your local machine. If you are not familiar with the process, please refer to github's instructions on the topic: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
@@ -68,7 +68,6 @@ $ npm run start
 
 
 ### Client
----
 
 Having successfully run the server, you can run the application
 
@@ -79,7 +78,6 @@ Having successfully run the server, you can run the application
 $ npm install
 $ npm start
 
-
 ### Testing (Server)
 
 In order to run the tests on the server, navigate to the server folder and run the command below.
@@ -88,6 +86,8 @@ $ npm test
 ### Testing (Nightwatch)
 Navigate to the client folder and run he following command:
 ./node_modules/.bin/nightwatch tests/nightwatchTest.js
+
+***
 
 ### Technologies
 
