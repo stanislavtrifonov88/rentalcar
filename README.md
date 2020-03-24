@@ -13,7 +13,7 @@ The instructions below will get you a copy of the project and allow you to run i
 
 2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with steps 3 and 4. Otherwise, please follow the [official documentation](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for your operating system and get familiar with [postgres in docker images](https://hub.docker.com/_/postgres).
 
-3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: 1) The name of the image by changing `custom_postgres`, the password and username which are currently set at `atscale`. Please note that you will need them in steps 6 and 7.
+3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: the name of the image by changing `custom_postgres`, the password and username which are currently set to `atscale`. Please note that you will need them in steps 6 and 7.
 
 ```
     docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
