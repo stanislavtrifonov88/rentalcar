@@ -17,7 +17,7 @@ The instructions below will get you a copy of the project and allow you to run i
 
 ```
     docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
-    ```
+```
 
 4. You will need to start the image. Please repeat the command every time the computer is restarted.
 ```
