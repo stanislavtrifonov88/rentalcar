@@ -15,10 +15,14 @@ The instructions below will get you a copy of the project and allow you to run i
 
 3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: 1) The name of the image by changing `custom_postgres`, the password and username which are currently set at `atscale`. Please note that you will need them in steps 6 and 7.
 
+```
     docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
+    ```
 
 4. You will need to start the image. Please repeat the command every time the computer is restarted.
-docker container start addImageIdHere
+```
+    docker container start addImageIdHere
+```
 
 5. After the repository is successfully cloned (step 1), navigate to the server folder.
 
