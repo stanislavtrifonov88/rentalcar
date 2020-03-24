@@ -57,15 +57,13 @@ docker container start addImageIdHere
     }
 ```
 
-8. Open the terminal or bash in the server folder and run the following commands:
-$ npm install
-- to populate the database:
-$ npm run typeorm:run 
-- runs the migration to the database
-$ npm run seed
-- it will enter basic data in the database
-$ npm run start
-
+8. Open the terminal or bash in the server folder and run the following commands in the same order:
+```JavaScript
+npm install
+npm run typeorm:run // runs the migration to the database
+npm run seed // it will enter basic data in the database
+npm run start // it will start the server
+```
 
 ### Client
 
@@ -75,13 +73,15 @@ Having successfully run the server, you can run the application
 1. Navigate to the client folder
 
 2. Open the terminal there and run the following commands:
-$ npm install
-$ npm start
+```JavaScript
+npm install
+npm start
+```
 
 ### Testing (Server)
 
 In order to run the tests on the server, navigate to the server folder and run the command below.
-$ npm test
+npm test
 
 ### Testing (Nightwatch)
 Navigate to the client folder and run he following command:
