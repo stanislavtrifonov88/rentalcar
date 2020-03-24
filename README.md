@@ -9,9 +9,9 @@ The instructions below will get you a copy of the project and allow you to run i
 
 #### Server
 
-1. First clone this repository to your local machine. If you are not familiar with the process, please refer to github's instructions on the topic (https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository).
+1. First clone this repository to your local machine. If you are not familiar with the process, please refer tо[github's instructions](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) on the topic.
 
-2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with steps 3 and 4. Otherwise, please follow the official documentation for your operating system (https://docs.docker.com/install/linux/docker-ce/ubuntu/) and get familiar with postgres in docker images (https://hub.docker.com/_/postgres).
+2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with steps 3 and 4. Otherwise, please follow the [official documentation](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for your operating system and get familiar [postgres in docker images](https://hub.docker.com/_/postgres).
 
 3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: 1) The name of the image by changing `custom_postgres`, the password and username which are currently set at `atscale`. Please note that you will need them in steps 6 and 7.
 
