@@ -7,6 +7,7 @@ A platform which allows an office worker at a car rental company to make new con
 The instructions below will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
 
 #### Server
+---
 
 1. First clone this repository to your local machine. If you are not familiar with the process, please refer to github's instructions on the topic: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
@@ -23,7 +24,8 @@ docker container start addImageIdHere
 
 6. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the example below. They should match the ones you chose in step 3.
 
-``` DB_TYPE = postgres
+```javascript
+    DB_TYPE = postgres
     DB_HOST = localhost
     DB_PORT = 5432
     DB_USERNAME = YOUR_USERNAME
@@ -33,7 +35,8 @@ docker container start addImageIdHere
 
 7. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 3.
 
-```{
+```javascript
+    {
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
@@ -50,8 +53,8 @@ docker container start addImageIdHere
     "cli": {
         "entitiesDir": "src/database/entities",
         "migrationsDir": "src/database/migration"
+        }
     }
-}
 ```
 
 8. Open the terminal or bash in the server folder and run the following commands:
@@ -65,6 +68,7 @@ $ npm run start
 
 
 ### Client
+---
 
 Having successfully run the server, you can run the application
 
