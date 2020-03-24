@@ -1,28 +1,28 @@
-Car Rental Platform
+# Car Rental Platform
 
-Project Description
-  A platform which allows an office worker at a car rental compnay to make new contracts and return borrwered cars
+### Project Description
+A platform which allows an office worker at a car rental compnay to make new contracts and return borrwered cars
 
 
-Getting Started
+### Getting Started
 These instructions will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
 
-Server
-After you clone successfully this repository:
+#### Server
 
+1. First clone this repository. If you are not familiar with the process, please refer to github's instructions on the topic: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 
-navigate to the api folder
+2. For this project, we need to create a database with a docker and Postgres. As a defaut name for the database you can use 'public'. More detailed information ca be found here: https://hub.docker.com/_/postgres
 
+3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: 1) The name of the image by changing `custom_postgres`, the password and username which are currently set at `atscale`. Please note that you will need them in steps 6 and 7.
 
-create a database with docker and Postgres. As a defaut name for the db you can use 'car'. https://hub.docker.com/_/postgres
-
-Create a new docker image:
 docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
 
-You may need to start the image:
+4. You will need to start the image. Please repeat the command everytime the computer is restarted.
 docker container start addImageIdHere
 
-create .env file at root level- it contains sensitive data about your server. DB_USERNAME and DB_PASSWORD are the ones set by you
+5. After the repository is successfully cloned (step 1), navigate to the server folder.
+
+6. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the examle below. They should match the ones you chose in step 5.
 
 
 DB_TYPE = postgres
@@ -30,9 +30,9 @@ DB_TYPE = postgres
  DB_PORT = 5432
  DB_USERNAME = YOUR_USERNAME
  DB_PASSWORD = YOUR_PASSWORD
- DB_DATABASE_NAME = car
+ DB_DATABASE_NAME = public
 
-create ormconfig.json file at root level
+7. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 5.
 
 {
     "type": "postgres",
@@ -40,7 +40,7 @@ create ormconfig.json file at root level
     "port": 5432,
     "username": "YOUR_USERNAME",
     "password": "YOUR_PASSWORD",
-    "database": "car",
+    "database": "public",
     "synchronize": "false",
     "entities": [
         "src/database/entities/**/*.ts"
@@ -55,7 +55,7 @@ create ormconfig.json file at root level
 }
 
 
-open the terminal or bash at root level and run the following commands:
+8. Open the terminal or bash in the server folder and run the following commands:
 $ npm install
 - to populate the database:
 $ npm run typeorm:run 
@@ -65,34 +65,39 @@ $ npm run seed
 $ npm run start
 
 
-Client
+### Client
 
 Having successfully run the server, you can run the application
 
 
-navigate to the client folder
+1. Navigate to the client folder
 
-
-open the terminal and run the following commands:
+2. Open the terminal there and run the following commands:
 $ npm install
 $ npm start
 
 
-Testing (Server)
+### Testing (Server)
+
+In order to run the tests on the backend, navigate to the server folder and run the command below.
 $ npm test
 
+### Testing (Nightwatch)
+Navigate to the client folder and run he following command:
+./node_modules/.bin/nightwatch tests/nightwatchTest.js
 
-Technologies
+### Technologies
 
-React
-NestJS
-TypeORM
+* React
+* NestJS
+* TypeORM
+* Nightwatch
 
 
-Authors and Contributors
+### Authors and Contributors
 
 Stanislav Trifonov
 
 
-License
+### License
 This project is licensed under the MIT License
