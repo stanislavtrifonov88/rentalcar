@@ -1,46 +1,52 @@
-Car Rental Platform
+# Car Rental Platform
 
-Project Description
-  A platform which allows an office worker at a car rental compnay to make new contracts and return borrwered cars
+### Project Description
+A platform which allows an office worker at a car rental company to make new contracts and return borrowed cars
 
+### Getting Started
+***
+The instructions below will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
 
-Getting Started
-These instructions will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
+#### Server
 
-Server
-After you clone successfully this repository:
+1. First clone this repository to your local machine. If you are not familiar with the process, please refer tо [github's instructions](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) on the topic.
 
+2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with steps 3 and 4. Otherwise, please follow the [official documentation](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for your operating system and get familiar with [postgres in docker images](https://hub.docker.com/_/postgres).
 
-navigate to the api folder
+3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: the name of the image by changing `custom_postgres`, the password and username which are currently set to `atscale`. Please note that you will need them in steps 6 and 7.
 
+```
+    docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
+```
 
-create a database with docker and Postgres. As a defaut name for the db you can use 'car'. https://hub.docker.com/_/postgres
+4. You will need to start the image. Please repeat the command every time the computer is restarted.
+```
+    docker container start addImageIdHere
+```
 
-Create a new docker image:
-docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
+5. After the repository is successfully cloned (step 1), navigate to the server folder.
 
-You may need to start the image:
-docker container start addImageIdHere
+6. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the example below. They should match the ones you chose in step 3.
 
-create .env file at root level- it contains sensitive data about your server. DB_USERNAME and DB_PASSWORD are the ones set by you
+```javascript
+    DB_TYPE = postgres
+    DB_HOST = localhost
+    DB_PORT = 5432
+    DB_USERNAME = YOUR_USERNAME
+    DB_PASSWORD = YOUR_PASSWORD
+    DB_DATABASE_NAME = public
+```
 
+7. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 3.
 
-DB_TYPE = postgres
- DB_HOST = localhost
- DB_PORT = 5432
- DB_USERNAME = YOUR_USERNAME
- DB_PASSWORD = YOUR_PASSWORD
- DB_DATABASE_NAME = car
-
-create ormconfig.json file at root level
-
-{
+```javascript
+    {
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
     "username": "YOUR_USERNAME",
     "password": "YOUR_PASSWORD",
-    "database": "car",
+    "database": "public",
     "synchronize": "false",
     "entities": [
         "src/database/entities/**/*.ts"
@@ -51,48 +57,54 @@ create ormconfig.json file at root level
     "cli": {
         "entitiesDir": "src/database/entities",
         "migrationsDir": "src/database/migration"
+        }
     }
-}
+```
+
+8. Open the terminal or bash in the server folder and run the following commands in the same order:
+```JavaScript
+npm install
+npm run typeorm:run // runs the migration to the database
+npm run seed // it will enter basic data in the database
+npm run start // it will start the server
+```
+
+### Client
+
+Having successfully run the server, you can run the application:
 
 
-open the terminal or bash at root level and run the following commands:
-$ npm install
-- to populate the database:
-$ npm run typeorm:run 
-- runs the migration to the database
-$ npm run seed
-- it will enter basic data in the database
-$ npm run start
+1. Navigate to the client folder
+
+2. Open the terminal there and run the following commands:
+```JavaScript
+npm install
+npm start
+```
+
+### Testing (Server)
+
+In order to run the tests on the server, navigate to the server folder and run the command below.
+npm test
+
+### Testing (Nightwatch)
+Navigate to the client folder and run he following command:
+./node_modules/.bin/nightwatch tests/nightwatchTest.js
+
+***
+
+### Technologies
+
+* React
+* NestJS
+* TypeORM
+* Nightwatch
 
 
-Client
-
-Having successfully run the server, you can run the application
-
-
-navigate to the client folder
-
-
-open the terminal and run the following commands:
-$ npm install
-$ npm start
-
-
-Testing (Server)
-$ npm test
-
-
-Technologies
-
-React
-NestJS
-TypeORM
-
-
-Authors and Contributors
+### Authors and Contributors
 
 Stanislav Trifonov
 
 
-License
+### License
 This project is licensed under the MIT License
