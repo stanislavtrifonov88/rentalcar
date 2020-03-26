@@ -7,6 +7,7 @@ import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
+import rest from '../../services/rest';
 
 
 export default class CheckoutPage extends React.Component {
@@ -93,16 +94,20 @@ export default class CheckoutPage extends React.Component {
       });
     }
 
-    fetch(`http://localhost:3000/contracts/car/${this.state.car.id}`, {
-      method: "POST",
-      body: JSON.stringify(this.state.checkoutForm),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(data => data.json())
-      .then(response => this.props.history.push({pathname: '/dashboard'}))
-      .catch(err => console.log(err));
+    rest.post(`http://localhost:3000/contracts/car/${this.state.car.id}`,this.state.checkoutForm)
+    .then(response => this.props.history.push({pathname: '/dashboard'}))
+    .catch(err => console.log(err));
+
+  //   fetch(`http://localhost:3000/contracts/car/${this.state.car.id}`, {
+  //     method: "POST",
+  //     body: JSON.stringify(this.state.checkoutForm),
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     }
+  //   })
+  //     .then(data => data.json())
+  //     .then(response => this.props.history.push({pathname: '/dashboard'}))
+  //     .catch(err => console.log(err));
   }
 
   componentDidMount() {

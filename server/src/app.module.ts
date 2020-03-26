@@ -4,10 +4,10 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { CarsModule } from './cars/cars.module';
 import { ContractsModule } from './contracts/contracts.module';
-import { CalculationModule } from './shared/services/calculation/calculation.module';
+
 
 @Module({
-  imports: [DatabaseModule, CarsModule, ContractsModule, CalculationModule],
+  imports: [DatabaseModule, CarsModule, ContractsModule],
   controllers: [AppController],
   providers: [AppService],
 })

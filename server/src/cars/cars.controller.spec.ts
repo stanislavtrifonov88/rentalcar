@@ -12,6 +12,10 @@ describe('Cars Controller', () => {
     getIndividualCar() {
       /* empty */
     },
+
+    getAvailableCarById() {
+      /* empty */
+    },
   };
 
   beforeEach(async () => {

@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
 import { IndividualCarDTO } from './models/individualCar.dto';
-import { transformToCarDTO } from './transformers/carTransformers';
 import { CarRentalSystemError } from '../shared/exceptions/carRental-system.error';
 import * as errorMessages from '../shared/errors/error.messages'
+import { transformToCarDTO } from './transformers/transformToCarDTO';
 
 
 @Injectable()
@@ -14,7 +14,9 @@ export class CarsService {
         @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
     ) { }
 
-    public async getAllAvailableCars(): Promise<IndividualCarDTO[]> {
+    public async getAllAvailableCars(
+        transformatorToDTO: (n: Car) => Promise<IndividualCarDTO> = transformToCarDTO
+        ): Promise<IndividualCarDTO[]> {
         const allCarsData: Car[] = await this.carsRepository.find({
             where: {
                 isBorrowed: false,
@@ -24,7 +26,7 @@ export class CarsService {
 
         let allCarsDataFormated: IndividualCarDTO[] = []
         allCarsData.map(async (individualCar) => {
-            const individualCarFormated: IndividualCarDTO = await transformToCarDTO(individualCar)
+            const individualCarFormated: IndividualCarDTO = await transformatorToDTO(individualCar)
             allCarsDataFormated = [...allCarsDataFormated, individualCarFormated];
         })
 
@@ -33,16 +35,19 @@ export class CarsService {
         return allCarsDataFormated;
     }
 
-    public async getIndividualCar(id: string): Promise<IndividualCarDTO> {
+    public async getIndividualCar(
+        id: string, 
+        transformatorFunc: (n: Car) => Promise<IndividualCarDTO> = transformToCarDTO,
+        ) : Promise<IndividualCarDTO> {
 
         const foundCar: Car = await this.getAvailableCarById(id)
-        const individualCarFormated: IndividualCarDTO = await transformToCarDTO(foundCar)
+
+        const individualCarFormated: IndividualCarDTO = await transformatorFunc(foundCar)
 
         return individualCarFormated;
     }
 
     public async getAvailableCarById(id: string): Promise<Car> {
-
         try {
             const foundCar: Car = await this.carsRepository.findOne({
             where: {
@@ -51,13 +56,15 @@ export class CarsService {
                 isDeleted: false,
             },
         })
+
         if (foundCar === undefined) {
-            throw new CarRentalSystemError(errorMessages.borrowedCarNotFound.msg, errorMessages.borrowedCarNotFound.code);
+            throw new CarRentalSystemError(errorMessages.carNotFound.msg, errorMessages.carNotFound.code);
         }
 
         return foundCar;
         }
         catch (error) {
+            console.log(error)
                 throw new CarRentalSystemError(error, 500);
         }
     }
