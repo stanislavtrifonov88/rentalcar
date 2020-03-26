@@ -24,7 +24,9 @@ export class ContractsService {
         private readonly carsService: CarsService
     ) { }
 
-    public async getAllContracts(): Promise<IndividualContractDTO[]> {
+    public async getAllContracts(
+        transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO
+        ): Promise<IndividualContractDTO[]> {
         const allContractsData: Contract[] = await this.contractsRepository.find({
             where: {
                 deliveredDate: null,
@@ -35,7 +37,7 @@ export class ContractsService {
         let allContractsDataFormated:  IndividualContractDTO[] = []
 
         allContractsData.map(async (contract: Contract) => {
-            const individualContractFormated: IndividualContractDTO = await transformToContractDTO(contract)
+            const individualContractFormated: IndividualContractDTO = await transformatorToDTO(contract)
             allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
         })
         await Promise.resolve(allContractsDataFormated)
@@ -105,6 +107,7 @@ export class ContractsService {
     
             foundContract.deliveredDate = moment(new Date()).format('YYYY-MM-DDTHH:mm')
             foundContract.pricePaid = body.name;
+
             await this.contractsRepository.save(foundContract)
         });
 
