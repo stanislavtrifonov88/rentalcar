@@ -3,9 +3,11 @@ import { ContractsService } from './contracts.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Contract } from '../database/entities/contract.entity';
 import { Car } from '../database/entities/car.entity';
+import { CarsService } from '../cars/cars.service';
 
 describe('ContractsService', () => {
   let service: ContractsService;
+
   const contractsRepository = {
     find() {
       /* empty */
@@ -15,8 +17,27 @@ describe('ContractsService', () => {
     },
   };
 
+
+
   const carsRepository = {
-    findOne() {
+    find() {
+        /* empty */
+      },
+      findOne() {
+        /* empty */
+      },
+  };
+
+  const carsService = {
+    getAllAvailableCars() {
+      /* empty */
+    },
+
+    getIndividualCar() {
+      /* empty */
+    },
+
+    getAvailableCarById() {
       /* empty */
     },
   };
@@ -33,17 +54,23 @@ describe('ContractsService', () => {
           provide: getRepositoryToken(Car),
           useValue: carsRepository,
         },
+        {
+          provide: CarsService,
+          useValue: carsService,
+        },
       ],
     }).compile();
 
     service = module.get<ContractsService>(ContractsService);
+
+
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('getAllContracts should call *find* method with the correct filtering object', async () => {
+  it('returnCar should call *find* method with the correct filtering object', async () => {
     // Arrange
 
     const spy = jest
@@ -52,10 +79,9 @@ describe('ContractsService', () => {
 
     const expectedObject = {
       where: {
-        deliveredDate: 'n/a',
+        deliveredDate: null,
         isDeleted: false,
       },
-      relations: ['car', 'car.className'],
     };
 
     // Act
@@ -70,20 +96,61 @@ describe('ContractsService', () => {
     spy.mockClear();
   });
 
-  it('getAllContracts should return the result from *find*', async () => {
+  it('getAllContracts should call *find* method with the correct filtering object', async () => {
     // Arrange
-    const contractMock = 'test';
 
     const spy = jest
       .spyOn(contractsRepository, 'find')
-      .mockImplementation(async () => contractMock);
+      .mockImplementation(async () => []);
+
+    const expectedObject = {
+      where: {
+        deliveredDate: null,
+        isDeleted: false,
+      },
+    };
 
     // Act
-    const result = await service.getAllContracts();
+
+    await service.getAllContracts();
 
     /// Assert
-    expect(result).toBe(contractMock);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(expectedObject);
 
     spy.mockClear();
   });
+
+
+  it('getAllContracts should call *transformToContractDTO* function with the correct filtering object', async () => {
+    // Arrange
+    const mockedCallValue = 'test'
+
+    const spy = jest
+      .spyOn(contractsRepository, 'find')
+      .mockImplementation(async () => [mockedCallValue,]);
+
+    const expectedObject = {
+      where: {
+        deliveredDate: null,
+        isDeleted: false,
+      },
+    };
+
+    const mockTransformer = jest.fn();
+    mockTransformer.mockReturnValue(mockedCallValue)
+
+    // Act
+
+    await service.getAllContracts(mockTransformer);
+
+    /// Assert
+
+    expect(mockTransformer).toHaveBeenCalledTimes(1);
+    expect(mockTransformer).toHaveBeenCalledWith('test');
+
+    spy.mockClear();
+  });
+
 });
