@@ -7,7 +7,8 @@ import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
-import rest from '../../services/rest';
+import rest from '../../services/Rest';
+import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 
 
 export default class CheckoutPage extends React.Component {
@@ -88,32 +89,20 @@ export default class CheckoutPage extends React.Component {
   onInputSubmit = (event) => {
     event.preventDefault();
 
-    if(moment(this.state.checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') > moment(this.state.checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm') ) {
+    if (moment(this.state.checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') > moment(this.state.checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm') ) {
       toast.error("Return date cannot be in the past", {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     }
 
-    rest.post(`http://localhost:3000/contracts/car/${this.state.car.id}`,this.state.checkoutForm)
+    rest.post(`${baseURL}/${contracts}/car/${this.state.car.id}`,this.state.checkoutForm)
     .then(response => this.props.history.push({pathname: '/dashboard'}))
     .catch(err => console.log(err));
-
-  //   fetch(`http://localhost:3000/contracts/car/${this.state.car.id}`, {
-  //     method: "POST",
-  //     body: JSON.stringify(this.state.checkoutForm),
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     }
-  //   })
-  //     .then(data => data.json())
-  //     .then(response => this.props.history.push({pathname: '/dashboard'}))
-  //     .catch(err => console.log(err));
   }
 
   componentDidMount() {
     const { id }= this.props.match.params;
-    fetch(`http://localhost:3000/cars/${id}`)
-      .then((res) => res.json())
+    rest.get(`${baseURL}/${cars}/${id}`)
       .then((result) => {
         this.setState({
           car: result,
