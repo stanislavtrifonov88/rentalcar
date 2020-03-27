@@ -12,6 +12,7 @@ import { CarRentalSystemError } from '../shared/exceptions/carRental-system.erro
 import * as errorMessages from '../shared/errors/error.messages';
 import {getManager} from "typeorm";
 import { CarsService } from '../cars/cars.service';
+import Guard from '../shared/util/Guard';
 
 
 @Injectable()
@@ -68,38 +69,23 @@ export class ContractsService {
 
     public async returnCar(contractId: string, body: {name: number}): Promise<IndividualContractDTO> {
 
-        let foundContract = null;
-        try {
-        foundContract = await this.contractsRepository.findOne({
+        let foundContract = await this.contractsRepository.findOne({
             where: {
                 id: contractId,
                 deliveredDate: null,
             },
-        })
-        if (foundContract === undefined) {
-            throw new CarRentalSystemError(errorMessages.contractNotFound.msg, errorMessages.contractNotFound.code);
-        }
-        }
-        catch (error) {
-                throw new CarRentalSystemError(error, 500);
-        }
+        });
 
-        let foundCar = null;
-        try {
-        foundCar = await this.carsRepository.findOne({
+        Guard.isFound(foundContract,errorMessages.contractNotFound.msg);
+
+        let foundCar = await this.carsRepository.findOne({
             where: {
                 id: (await foundContract.car).id,
                 isBorrowed: true,
                 isDeleted: false,
             },
-        })
-        if (foundCar === undefined) {
-            throw new CarRentalSystemError(errorMessages.borrowedCarNotFound.msg, errorMessages.borrowedCarNotFound.code);
-        }
-        }
-        catch (error) {
-                throw new CarRentalSystemError(error, 500);
-        }
+        });
+        Guard.isFound(foundContract,errorMessages.borrowedCarNotFound.msg);
 
         await getManager().transaction(async transactionalEntityManager => {
             foundCar.isBorrowed = false;
