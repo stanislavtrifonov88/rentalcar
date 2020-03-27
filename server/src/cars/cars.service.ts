@@ -64,7 +64,6 @@ export class CarsService {
         return foundCar;
         }
         catch (error) {
-            console.log(error)
                 throw new CarRentalSystemError(error, 500);
         }
     }
