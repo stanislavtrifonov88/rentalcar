@@ -15,15 +15,11 @@ class NavigationBarCars extends React.Component {
     }
   }
 
-
   onInputChange = (event) => {
     this.setState({
       searchWord: event.target.value,
     })
   }
-
-  
-
 
   render() {
     return (
@@ -44,7 +40,6 @@ class NavigationBarCars extends React.Component {
     );
   }
 } 
-
 
 const mapDispatchToProps = (dispatch) => ({
   onSearch: (searchedWord) => dispatch({ type: SEARCH_WORD, searchedWord: searchedWord }),
