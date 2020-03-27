@@ -139,28 +139,28 @@ describe('CarsService', () => {
   });
 
 
-  // it('getAvailableCarById should throw an error if *findOne* method returns undefined', async () => {
+  it('getAvailableCarById should throw an error if *findOne* method returns undefined', async () => {
 
-  //   // Arrange
-  //   const id = '12345'
+    // Arrange
+    const id = '12345'
 
-  //   const spy = jest
-  //     .spyOn(carsRepository, 'findOne')
-  //     .mockImplementation(async () => undefined);
+    const spy = jest
+      .spyOn(carsRepository, 'findOne')
+      .mockImplementation(async () => undefined);
 
-  //   const expectedObject = {
-  //     where: {
-  //       id: id,
-  //       isBorrowed: false,
-  //       isDeleted: false,
-  //     },
-  //   };
+    const expectedObject = {
+      where: {
+        id: id,
+        isBorrowed: false,
+        isDeleted: false,
+      },
+    };
 
-  //   // Act && Assert
+    // Act && Assert
 
-  //   expect(await service.getAvailableCarById(id)).toThrow();
+    await expect(service.getAvailableCarById(id)).rejects.toThrowError(errorMessages.carNotFound.msg);
 
-  //   spy.mockClear();
-  // });
+    spy.mockClear();
+  });
 
 });

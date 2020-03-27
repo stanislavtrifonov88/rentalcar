@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Contract } from '../database/entities/contract.entity';
 import { Car } from '../database/entities/car.entity';
 import { CarsService } from '../cars/cars.service';
+import * as errorMessages from '../shared/errors/error.messages';
 
 describe('ContractsService', () => {
   let service: ContractsService;
@@ -15,6 +16,12 @@ describe('ContractsService', () => {
     findOne() {
       /* empty */
     },
+    save() {
+      /* empty */
+    },
+    create() {
+      /* empty */
+    },
   };
 
 
@@ -24,6 +31,12 @@ describe('ContractsService', () => {
         /* empty */
       },
       findOne() {
+        /* empty */
+      },
+      save() {
+        /* empty */
+      },
+      create() {
         /* empty */
       },
   };
@@ -70,31 +83,49 @@ describe('ContractsService', () => {
     expect(service).toBeDefined();
   });
 
-  it('returnCar should call *find* method with the correct filtering object', async () => {
-    // Arrange
+  // it('returnCar should call *find* method with the correct filtering object', async () => {
+  //   // Arrange
 
-    const spy = jest
-      .spyOn(contractsRepository, 'find')
-      .mockImplementation(async () => []);
+  //   const mockId = 'test';
+  //   const mockedBody: any = 'test';
+  //   const mockedResult: any = {test: 'test'}
 
-    const expectedObject = {
-      where: {
-        deliveredDate: null,
-        isDeleted: false,
-      },
-    };
+  //   const spy = jest
+  //     .spyOn(contractsRepository, 'findOne')
+  //     .mockImplementation(async () => mockedResult);
 
-    // Act
+  //   const expectedObject = {
+  //     where: {
+  //       id: mockId,
+  //       deliveredDate: null,
+  //     },
+  //   };
 
-    await service.getAllContracts();
+  //   const spy2 = jest
+  //   .spyOn(carsRepository, 'findOne')
+  //   .mockImplementation(async () => mockedResult);
 
-    /// Assert
+  // const expectedObject2 = {
+  //   where: {
+  //     id: await mockId,
+  //     isBorrowed: true,
+  //     isDeleted: false,
+  //   },
+  // };
 
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expectedObject);
+  //   // Act
 
-    spy.mockClear();
-  });
+  //   await service.returnCar(mockId, mockedBody);
+
+  //   /// Assert
+
+  //   expect(spy).toHaveBeenCalledTimes(1);
+  //   expect(spy).toHaveBeenCalledWith(expectedObject);
+  //   // await expect(service.returnCar(mockId, mockedBody)).rejects.toThrowError(errorMessages.contractNotFound.msg);
+
+  //   // spy.mockClear();
+  //   // spy2.mockClear();
+  // });
 
   it('getAllContracts should call *find* method with the correct filtering object', async () => {
     // Arrange
