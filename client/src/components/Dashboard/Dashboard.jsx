@@ -2,7 +2,8 @@ import React from 'react';
 import Table from 'react-bootstrap/Table';
 import './Dashboard.css';
 import DashboardItem from './DashboardItem/DashboardItem';
-
+import rest from '../../services/Rest';
+import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -13,8 +14,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/contracts')
-      .then((res) => res.json())
+    rest.get(`${baseURL}/${contracts}`)
       .then((result) => {
         this.setState({
           contracts: result,
@@ -23,23 +23,14 @@ class Dashboard extends React.Component {
   }
 
   onSubmit = (name, id) => {
-    fetch(`http://localhost:3000/contracts/${id}`, {
-      method: "POST",
-      body: JSON.stringify({name}),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(data => data.json())
+      rest.post(`${baseURL}/${contracts}/${id}`,{name})
       .then(response => 
-        fetch('http://localhost:3000/contracts')
-        .then((res) => res.json())
+        rest.get(`${baseURL}/${contracts}`)
         .then((result) => {
           this.setState({
             contracts: result,
           });
         }))
-      .catch(err => console.log(err));
   }
 
 
