@@ -1,6 +1,6 @@
 const get = (path) => fetch(path)
   .then((res) => {
-    if (res.OK) {
+    if (res.ok) {
       return res.json();
     }
     throw Error(`Failed with status ${res.status}`);
