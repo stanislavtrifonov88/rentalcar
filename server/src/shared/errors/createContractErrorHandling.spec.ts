@@ -22,7 +22,7 @@ describe('createContractErrorHandling', () => {
 
     // Act && Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNameMinLength.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNameMinLength);
   });
 
   it('should get throw an error with the correct message when first name length is above maximum', async () => {
@@ -31,7 +31,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNamemaxLength.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNamemaxLength);
   });
 
   it('should get throw an error with the correct message when last name length is below minumum', async () => {
@@ -40,7 +40,7 @@ describe('createContractErrorHandling', () => {
 
     // Act && Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNameMinLength.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNameMinLength);
   });
 
   it('should get throw an error with the correct message when last name length is above maximum', async () => {
@@ -49,7 +49,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNamemaxLength.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNamemaxLength);
   });
 
   it('should get throw an error with the correct message when start date is not valid', async () => {
@@ -58,7 +58,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validStartDate.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validStartDate);
   });
 
 
@@ -68,7 +68,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validEndDate.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validEndDate);
   });
 
   it('should get throw an error with the correct message when start date is in the past', async () => {
@@ -77,7 +77,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.startDateInThePast.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.startDateInThePast);
   });
 
   it('should get throw an error with the correct message when return date is in the past', async () => {
@@ -87,7 +87,7 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.returnDateInThePast.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.returnDateInThePast);
   });
 
   it('should get throw an error with the correct message when return date is in the past', async () => {
@@ -96,6 +96,6 @@ describe('createContractErrorHandling', () => {
 
     // Act & Assert
 
-    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.ageBelow18.msg);
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.ageBelow18);
   });
 });
