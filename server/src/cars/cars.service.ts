@@ -3,10 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
 import { IndividualCarDTO } from './models/individualCar.dto';
-import { CarRentalSystemError } from '../shared/exceptions/carRental-system.error';
 import * as errorMessages from '../shared/errors/error.messages'
 import { transformToCarDTO } from './transformers/transformToCarDTO';
-
+import Guard from '../shared/util/Guard';
 
 @Injectable()
 export class CarsService {
@@ -48,7 +47,7 @@ export class CarsService {
     }
 
     public async getAvailableCarById(id: string): Promise<Car> {
-        try {
+
             const foundCar: Car = await this.carsRepository.findOne({
             where: {
                 id: id,
@@ -57,17 +56,25 @@ export class CarsService {
             },
         })
 
-        if (foundCar === undefined) {
-            throw new CarRentalSystemError(errorMessages.carNotFound.msg, errorMessages.carNotFound.code);
-        }
+        Guard.isFound(foundCar, errorMessages.carNotFound);
 
-        return foundCar;
-        }
-        catch (error) {
-                throw new CarRentalSystemError(error, 500);
-        }
+        return foundCar
     }
 
+    public async getBorrowedCarById(id: string): Promise<Car> {
+
+        const foundCar: Car = await this.carsRepository.findOne({
+        where: {
+            id: id,
+            isBorrowed: true,
+            isDeleted: false,
+        },
+    })
+
+    Guard.isFound(foundCar, errorMessages.borrowedCarNotFound);
+
+    return foundCar
+}
 }
 
 
