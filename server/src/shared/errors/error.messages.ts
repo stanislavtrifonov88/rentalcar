@@ -1,15 +1,15 @@
 
-export const validStartDate = { msg: 'Please enter a valid start date', code: 400};
-export const validEndDate = { msg: 'Please enter a valid end date', code: 400};
-export const startDateInThePast = { msg: 'Start date cannot be in the past', code: 400};
-export const returnDateInThePast = { msg: 'Return date cannot be in the past', code: 400};
-export const ageBelow18 = { msg: 'Drivers age cannot be below 18', code: 400};
-export const firstNameMinLength = { msg: 'First name length cannot be below two letters', code: 400};
-export const lastNameMinLength = { msg: 'Last name length cannot be below two letters', code: 400};
-export const firstNamemaxLength = { msg: 'First name length cannot be above 25 letters', code: 400};
-export const lastNamemaxLength = { msg: 'First name length cannot be above 25 letters', code: 400};
-export const standardRepositoryError = { msg: 'The resource you are trying to get cannot be found', code: 404};
-export const carNotFound = { msg: 'There is no available car with this ID', code: 404};
-export const contractNotFound = { msg: 'There is no open contract with this ID', code: 404};
-export const borrowedCarNotFound = { msg: 'There is no borrowed car with this ID', code: 404};
+export const validStartDate = 'Please enter a valid start date';
+export const validEndDate = 'Please enter a valid end date';
+export const startDateInThePast = 'Start date cannot be in the past';
+export const returnDateInThePast = 'Return date cannot be in the past';
+export const ageBelow18 = 'Drivers age cannot be below 18';
+export const firstNameMinLength = 'First name length cannot be below two letters';
+export const lastNameMinLength = 'Last name length cannot be below two letters';
+export const firstNamemaxLength = 'First name length cannot be above 25 letters';
+export const lastNamemaxLength = 'First name length cannot be above 25 letters';
+export const standardRepositoryError = 'The resource you are trying to get cannot be found';
+export const carNotFound = 'There is no available car with this ID';
+export const contractNotFound = 'There is no open contract with this ID';
+export const borrowedCarNotFound = 'There is no borrowed car with this ID';
 

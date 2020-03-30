@@ -1,160 +1,101 @@
-import { createContractErrorHandling } from "./createContractErrorHandling";
-import { NewContractDTO } from "../../contracts/models/newContract.dto";
 import * as moment from 'moment';
+import { createContractErrorHandling } from './createContractErrorHandling';
+import { NewContractDTO } from '../../contracts/models/newContract.dto';
 import * as errorMessages from './error.messages';
 
-describe('createContractErrorHandling', () => { 
-    it('should get throw an error with the correct message when first name length is below minumum', async () => {
+describe('createContractErrorHandling', () => {
+  let mockInput: NewContractDTO = null;
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 't',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),   
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act && Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNameMinLength.msg)
-    
-      });
+  beforeEach(async () => {
+    mockInput = {
+      borrowerFirstName: 'test',
+      borrowerLastName: 'test',
+      borrowerAge: 18,
+      startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+      contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    };
+  });
 
-      it('should get throw an error with the correct message when first name length is above maximum', async () => {
+  it('should get throw an error with the correct message when first name length is below minumum', async () => {
+    // Arrange
+    mockInput.borrowerFirstName = 't',
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'tttttttttttttttttttttttttttttttttttttttttttttttt',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),   
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNamemaxLength.msg)
-    
-      });
+    // Act && Assert
 
-      it('should get throw an error with the correct message when last name length is below minumum', async () => {
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNameMinLength);
+  });
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'ttt',
-            borrowerLastName: 't',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),   
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act && Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNameMinLength.msg)
-    
-      });
+  it('should get throw an error with the correct message when first name length is above maximum', async () => {
+    // Arrange
+    mockInput.borrowerFirstName = 'tttttttttttttttttttttttttttttttttttttttttttttttt';
 
-      it('should get throw an error with the correct message when last name length is above maximum', async () => {
+    // Act & Assert
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'testtttttttttttttttttttttttttttt',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),   
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNamemaxLength.msg)
-    
-      });
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.firstNamemaxLength);
+  });
 
-      it('should get throw an error with the correct message when start date is not valid', async () => {
+  it('should get throw an error with the correct message when last name length is below minumum', async () => {
+    // Arrange
+    mockInput.borrowerLastName = 't';
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: 'test',   
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validStartDate.msg)
-    
-      });
+    // Act && Assert
+
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNameMinLength);
+  });
+
+  it('should get throw an error with the correct message when last name length is above maximum', async () => {
+    // Arrange
+    mockInput.borrowerLastName = 'tttttttttttttttttttttttttttttttttttttttttttttttt';
+
+    // Act & Assert
+
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.lastNamemaxLength);
+  });
+
+  it('should get throw an error with the correct message when start date is not valid', async () => {
+    // Arrange
+    mockInput.startDate = 'test';
+
+    // Act & Assert
+
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validStartDate);
+  });
 
 
-      it('should get throw an error with the correct message when start date is not valid', async () => {
+  it('should get throw an error with the correct message when start date is not valid', async () => {
+    // Arrange
+    mockInput.contractEndDate = 'test';
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-            contractEndDate: 'test',
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validEndDate.msg)
-    
-      });
+    // Act & Assert
 
-      it('should get throw an error with the correct message when start date is in the past', async () => {
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.validEndDate);
+  });
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(-48, 'hours')).format('YYYY-MM-DDTHH:mm'),
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.startDateInThePast.msg)
-    
-      });
+  it('should get throw an error with the correct message when start date is in the past', async () => {
+    // Arrange
+    mockInput.startDate = (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(-48, 'hours')).format('YYYY-MM-DDTHH:mm');
 
-      it('should get throw an error with the correct message when return date is in the past', async () => {
+    // Act & Assert
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'test',
-            borrowerAge: 18,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-            contractEndDate: (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(-48, 'hours')).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.returnDateInThePast.msg)
-    
-      });
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.startDateInThePast);
+  });
 
-      it('should get throw an error with the correct message when return date is in the past', async () => {
+  it('should get throw an error with the correct message when return date is in the past', async () => {
+    // Arrange
 
-        // Arrange
-        const mockInput: NewContractDTO = {
-            borrowerFirstName: 'test',
-            borrowerLastName: 'test',
-            borrowerAge: 17,
-            startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-            contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        }
-    
-        // Act & Assert
-    
-        expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.ageBelow18.msg)
-    
-      });
+    mockInput.contractEndDate = (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(-48, 'hours')).format('YYYY-MM-DDTHH:mm');
+
+    // Act & Assert
+
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.returnDateInThePast);
+  });
+
+  it('should get throw an error with the correct message when return date is in the past', async () => {
+    // Arrange
+    mockInput.borrowerAge = 17;
+
+    // Act & Assert
+
+    expect(() => createContractErrorHandling(mockInput)).toThrowError(errorMessages.ageBelow18);
+  });
 });

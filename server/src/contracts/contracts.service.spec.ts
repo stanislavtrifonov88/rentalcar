@@ -8,6 +8,8 @@ import * as errorMessages from '../shared/errors/error.messages';
 
 describe('ContractsService', () => {
   let service: ContractsService;
+  let spy;
+  let expectedObject;
 
   const contractsRepository = {
     find() {
@@ -24,19 +26,14 @@ describe('ContractsService', () => {
     },
   };
 
-
-
   const carsRepository = {
     find() {
         /* empty */
       },
-      findOne() {
+    findOne() {
         /* empty */
       },
-      save() {
-        /* empty */
-      },
-      create() {
+    save() {
         /* empty */
       },
   };
@@ -51,6 +48,9 @@ describe('ContractsService', () => {
     },
 
     getAvailableCarById() {
+      /* empty */
+    },
+    getBorrowedCarById() {
       /* empty */
     },
   };
@@ -77,69 +77,24 @@ describe('ContractsService', () => {
     service = module.get<ContractsService>(ContractsService);
 
 
+  spy = jest
+    .spyOn(contractsRepository, 'find')
+    .mockImplementation(async () => ['test']);
+
+  expectedObject = {
+    where: {
+      deliveredDate: null,
+      isDeleted: false,
+    },
+  };
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  // it('returnCar should call *find* method with the correct filtering object', async () => {
-  //   // Arrange
-
-  //   const mockId = 'test';
-  //   const mockedBody: any = 'test';
-  //   const mockedResult: any = {test: 'test'}
-
-  //   const spy = jest
-  //     .spyOn(contractsRepository, 'findOne')
-  //     .mockImplementation(async () => mockedResult);
-
-  //   const expectedObject = {
-  //     where: {
-  //       id: mockId,
-  //       deliveredDate: null,
-  //     },
-  //   };
-
-  //   const spy2 = jest
-  //   .spyOn(carsRepository, 'findOne')
-  //   .mockImplementation(async () => mockedResult);
-
-  // const expectedObject2 = {
-  //   where: {
-  //     id: await mockId,
-  //     isBorrowed: true,
-  //     isDeleted: false,
-  //   },
-  // };
-
-  //   // Act
-
-  //   await service.returnCar(mockId, mockedBody);
-
-  //   /// Assert
-
-  //   expect(spy).toHaveBeenCalledTimes(1);
-  //   expect(spy).toHaveBeenCalledWith(expectedObject);
-  //   // await expect(service.returnCar(mockId, mockedBody)).rejects.toThrowError(errorMessages.contractNotFound.msg);
-
-  //   // spy.mockClear();
-  //   // spy2.mockClear();
-  // });
-
   it('getAllContracts should call *find* method with the correct filtering object', async () => {
     // Arrange
-
-    const spy = jest
-      .spyOn(contractsRepository, 'find')
-      .mockImplementation(async () => []);
-
-    const expectedObject = {
-      where: {
-        deliveredDate: null,
-        isDeleted: false,
-      },
-    };
 
     // Act
 
@@ -157,17 +112,6 @@ describe('ContractsService', () => {
   it('getAllContracts should call *transformToContractDTO* function with the correct filtering object', async () => {
     // Arrange
     const mockedCallValue = 'test'
-
-    const spy = jest
-      .spyOn(contractsRepository, 'find')
-      .mockImplementation(async () => [mockedCallValue,]);
-
-    const expectedObject = {
-      where: {
-        deliveredDate: null,
-        isDeleted: false,
-      },
-    };
 
     const mockTransformer = jest.fn();
     mockTransformer.mockReturnValue(mockedCallValue)

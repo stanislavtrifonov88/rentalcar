@@ -7,6 +7,7 @@ import * as errorMessages from '../shared/errors/error.messages'
 
 describe('CarsService', () => {
   let service: CarsService;
+
   const carsRepository = {
     find() {
       /* empty */
@@ -43,7 +44,7 @@ describe('CarsService', () => {
   it('getAvailableCarById should call *findOne* method with the correct filtering object', async () => {
 
     // Arrange
-    const id = '12345'
+    const id = 'test'
 
     const spy = jest
       .spyOn(carsRepository, 'findOne')
@@ -156,9 +157,35 @@ describe('CarsService', () => {
       },
     };
 
+
     // Act && Assert
 
-    await expect(service.getAvailableCarById(id)).rejects.toThrowError(errorMessages.carNotFound.msg);
+    await expect(service.getAvailableCarById(id)).rejects.toThrowError(errorMessages.carNotFound);
+
+    spy.mockClear();
+  });
+
+
+  it('getBorrowedCarById should throw an error if *findOne* method returns undefined', async () => {
+
+    // Arrange
+    const id = '12345'
+
+    const spy = jest
+      .spyOn(carsRepository, 'findOne')
+      .mockImplementation(async () => undefined);
+
+    const expectedObject = {
+      where: {
+        id: id,
+        isBorrowed: false,
+        isDeleted: false,
+      },
+    };
+
+    // Act && Assert
+
+    await expect(service.getBorrowedCarById(id)).rejects.toThrowError(errorMessages.borrowedCarNotFound);
 
     spy.mockClear();
   });
