@@ -7,7 +7,7 @@ import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import { toast } from "react-toastify";
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
-import rest from '../../services/Rest';
+import fetchRequest from '../../services/Rest';
 import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 
 
@@ -95,14 +95,14 @@ export default class CheckoutPage extends React.Component {
       });
     }
 
-    rest.post(`${baseURL}/${contracts}/car/${this.state.car.id}`,this.state.checkoutForm)
+    fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',this.state.checkoutForm)
     .then(response => this.props.history.push({pathname: '/dashboard'}))
     .catch(err => console.log(err));
   }
 
   componentDidMount() {
     const { id }= this.props.match.params;
-    rest.get(`${baseURL}/${cars}/${id}`)
+      fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {
         this.setState({
           car: result,
