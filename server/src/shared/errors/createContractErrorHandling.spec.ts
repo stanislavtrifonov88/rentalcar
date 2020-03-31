@@ -18,7 +18,7 @@ describe('createContractErrorHandling', () => {
 
   it('should get throw an error with the correct message when first name length is below minumum', async () => {
     // Arrange
-    mockInput.borrowerFirstName = 't',
+    mockInput.borrowerFirstName = 't';
 
     // Act && Assert
 
