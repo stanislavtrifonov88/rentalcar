@@ -21,6 +21,4 @@ const fetchRequest = async (path, method = 'GET', body = null) => {
     });
 };
 
-export default {
-  fetchRequest,
-};
+export default fetchRequest;

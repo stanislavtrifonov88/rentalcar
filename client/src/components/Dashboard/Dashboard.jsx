@@ -2,7 +2,7 @@ import React from 'react';
 import Table from 'react-bootstrap/Table';
 import './Dashboard.css';
 import DashboardItem from './DashboardItem/DashboardItem';
-import rest from '../../services/Rest';
+import fetchRequest from '../../services/Rest';
 import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 
 class Dashboard extends React.Component {
@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    rest.fetchRequest(`${baseURL}/${contracts}`)
+    fetchRequest(`${baseURL}/${contracts}`)
       .then((result) => {
         this.setState({
           contracts: result,
@@ -23,9 +23,9 @@ class Dashboard extends React.Component {
   }
 
   onSubmit = (name, id) => {
-      rest.fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {name})
+      fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {name})
       .then(response => 
-        rest.fetchRequest(`${baseURL}/${contracts}`)
+        fetchRequest(`${baseURL}/${contracts}`)
         .then((result) => {
           this.setState({
             contracts: result,

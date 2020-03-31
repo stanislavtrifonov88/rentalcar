@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
 import './AvailableCarsContainer.css';
-import rest from '../../services/Rest';
+import fetchRequest from '../../services/Rest';
 import { baseURL } from '../../services/restAPIs/restAPIs';
 
 class AvailableCarsContainer extends React.Component {
@@ -15,7 +15,7 @@ class AvailableCarsContainer extends React.Component {
   }
 
   componentDidMount() {
-    rest.fetchRequest(`${baseURL}/cars`)
+    fetchRequest(`${baseURL}/cars`)
       .then((result) => {
         this.setState({
           cars: result,
