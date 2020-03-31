@@ -6,6 +6,7 @@ import {
     Post,
     Body,
     Param,
+    Put,
   } from '@nestjs/common';
 
 import { ContractsService } from './contracts.service';
@@ -37,7 +38,7 @@ export class ContractsController {
       return individualContract;
     }
 
-    @Post(':contractId')
+    @Put(':contractId')
     @HttpCode(HttpStatus.CREATED)
     public async returnCar(
       @Body() body: {name: number},
