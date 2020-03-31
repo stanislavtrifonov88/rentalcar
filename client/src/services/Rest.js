@@ -1,23 +1,26 @@
-const get = (path) => fetch(path)
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    throw Error(`Failed with status ${res.status}`);
-  });
+const fetchRequest = async (path, method = 'GET', body = null) => {
 
-const post = (path, body) => fetch(path, {
-  method: 'POST',
-  body: JSON.stringify(body),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    throw Error(`Failed with status ${res.status}`);
-  });
+  let requestInfo = {};
 
-export default { get, post };
+  if (method !== 'GET') {
+    requestInfo = {
+      method,
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return fetch(path, requestInfo)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw Error(`Failed with status ${res.status}`);
+    });
+};
+
+export default {
+  fetchRequest,
+};
