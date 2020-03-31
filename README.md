@@ -46,7 +46,7 @@ The instructions below will get you a copy of the project and allow you to run i
     "port": 5432,
     "username": "YOUR_USERNAME",
     "password": "YOUR_PASSWORD",
-    "database": "public",
+    "database": "postgres",
     "synchronize": "false",
     "entities": [
         "src/database/entities/**/*.ts"
@@ -83,13 +83,16 @@ npm start
 ```
 
 ### Testing (Server)
+In order to run the tests on the server, navigate to the server folder and run the command below:
+`npm test`
 
-In order to run the tests on the server, navigate to the server folder and run the command below.
-npm test
+### Testing (Client)
+Navigate to the client folder and run he following command:
+`npm test`
 
 ### Testing (Nightwatch)
 Navigate to the client folder and run he following command:
-./node_modules/.bin/nightwatch tests/nightwatchTest.js
+`./node_modules/.bin/nightwatch tests/nightwatchTest.js`
 
 ***
 
