@@ -42,7 +42,7 @@ describe('transformToContractDTO', () => {
     
         const result = await transformToContractDTO(mockInput)
     
-        /// Assert
+        // Assert
     
         expect(result).toEqual(mockResult);
     

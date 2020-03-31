@@ -5,11 +5,11 @@ import { ContractsService } from './contracts.service';
 describe('Contracts Controller', () => {
   let controller: ContractsController;
   const contractsService = {
-    getAllContracts() {
-      /*empty*/
+    getAllContracts(): any {
+      /* empty */
     },
-    returnCar() {
-      /*empty*/
+    returnCar(): any {
+      /* empty */
     },
   };
 

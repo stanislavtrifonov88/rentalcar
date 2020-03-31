@@ -2,23 +2,23 @@ import { IndividualContractDTO } from "../models/individualContract.dto";
 import { Contract } from "../../database/entities/contract.entity";
 
 
-export const transformToContractDTO = async (contract: Contract) => {
+export const transformToContractDTO = async (contract: Contract): Promise<IndividualContractDTO> => {
             const contractInfo = (({ 
                 id,
                 borrowerFirstName,
                 borrowerLastName,
                 borrowerAge,
                 startDate,
-                contractEndDate }) => ({         
+                contractEndDate }): any => ({         
                 id,
                 borrowerFirstName,
                 borrowerLastName,
                 borrowerAge,
                 startDate,
                 contractEndDate }))(contract);
-            const carInfo = (({ brand, model }) => ({ brand, model }))(await contract.car);
+            const carInfo = (({ brand, model }): any => ({ brand, model }))(contract.car);
             const tempPrice = (contract.car).className
-            const price = tempPrice.price
+            const {price} = tempPrice
 
             const individualContractFormated: IndividualContractDTO = { ...contractInfo, ...carInfo, price};
 

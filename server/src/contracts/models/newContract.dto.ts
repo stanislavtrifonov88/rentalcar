@@ -2,8 +2,12 @@
 
 export class NewContractDTO {
     borrowerFirstName: string;
+
     borrowerLastName: string;
+
     borrowerAge: number;
-    startDate: string;   
+
+    startDate: string;
+   
     contractEndDate: string;
 }

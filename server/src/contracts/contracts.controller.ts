@@ -19,7 +19,7 @@ export class ContractsController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    public async getAllAvailableCars () {
+    public async getAllAvailableCars (): Promise<IndividualContractDTO[]>  {
       const allContracts: IndividualContractDTO[] = await this.contractsService.getAllContracts();
 
       return allContracts;
@@ -45,7 +45,9 @@ export class ContractsController {
 
     ): Promise<IndividualContractDTO> {
 
-      return await this.contractsService.returnCar(contractId, body);
+      const returnedCar: IndividualContractDTO = await this.contractsService.returnCar(contractId, body);
+
+      return returnedCar;
     }
   
 }

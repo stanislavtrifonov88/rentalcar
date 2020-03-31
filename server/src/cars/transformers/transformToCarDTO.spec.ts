@@ -30,7 +30,7 @@ describe('transformToCarDTO', () => {
     
         const result = await transformToCarDTO(mockInput)
     
-        /// Assert
+        // Assert
     
         expect(result).toEqual(mockResult);
     

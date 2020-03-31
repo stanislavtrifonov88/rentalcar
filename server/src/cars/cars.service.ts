@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Car } from '../database/entities/car.entity';
 import { Repository } from 'typeorm';
+import { Car } from '../database/entities/car.entity';
 import { IndividualCarDTO } from './models/individualCar.dto';
 import * as errorMessages from '../shared/errors/error.messages'
 import { transformToCarDTO } from './transformers/transformToCarDTO';
-import Guard from '../shared/util/Guard';
+import * as Guard from '../shared/util/Guard';
 
 @Injectable()
 export class CarsService {
@@ -50,7 +50,7 @@ export class CarsService {
 
             const foundCar: Car = await this.carsRepository.findOne({
             where: {
-                id: id,
+                id,
                 isBorrowed: false,
                 isDeleted: false,
             },
@@ -58,14 +58,14 @@ export class CarsService {
 
         Guard.isFound(foundCar, errorMessages.carNotFound);
 
-        return foundCar
+        return foundCar;
     }
 
     public async getBorrowedCarById(id: string): Promise<Car> {
 
         const foundCar: Car = await this.carsRepository.findOne({
         where: {
-            id: id,
+            id,
             isBorrowed: true,
             isDeleted: false,
         },
@@ -73,7 +73,7 @@ export class CarsService {
 
     Guard.isFound(foundCar, errorMessages.borrowedCarNotFound);
 
-    return foundCar
+    return foundCar;
 }
 }
 

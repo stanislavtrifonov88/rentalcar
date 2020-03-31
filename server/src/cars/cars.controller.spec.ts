@@ -5,15 +5,15 @@ import { CarsService } from './cars.service';
 describe('Cars Controller', () => {
   let controller: CarsController;
   const carsService = {
-    getAllAvailableCars() {
+    getAllAvailableCars(): any {
       /* empty */
     },
 
-    getIndividualCar() {
+    getIndividualCar(): any {
       /* empty */
     },
 
-    getAvailableCarById() {
+    getAvailableCarById(): any {
       /* empty */
     },
   };
