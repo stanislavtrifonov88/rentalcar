@@ -1,19 +1,14 @@
 import { CarRentalSystemError } from "../exceptions/carRental-system.error"
 
-const isFound = (obj: any, message = "Object is not defined") => {
+export const isFound = (obj: any, message = "Object is not defined"): void => {
   if (!obj) {
     throw new CarRentalSystemError(message, 404);
   }
 }
 
 
-const should = (rule: boolean, message = "Validation failed") => {
+export const should = (rule: boolean, message = "Validation failed"): void => {
   if (!rule) {
     throw new CarRentalSystemError(message, 400);
   }
-}
-
-export default {
-  isFound,
-  should,
 }
