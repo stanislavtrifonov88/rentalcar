@@ -15,7 +15,7 @@ class AvailableCarsContainer extends React.Component {
   }
 
   componentDidMount() {
-    rest.get(`${baseURL}/cars`)
+    rest.fetchRequest(`${baseURL}/cars`)
       .then((result) => {
         this.setState({
           cars: result,

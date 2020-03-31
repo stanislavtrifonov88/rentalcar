@@ -95,14 +95,14 @@ export default class CheckoutPage extends React.Component {
       });
     }
 
-    rest.post(`${baseURL}/${contracts}/car/${this.state.car.id}`,this.state.checkoutForm)
+    rest.fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',this.state.checkoutForm)
     .then(response => this.props.history.push({pathname: '/dashboard'}))
     .catch(err => console.log(err));
   }
 
   componentDidMount() {
     const { id }= this.props.match.params;
-    rest.get(`${baseURL}/${cars}/${id}`)
+    rest.fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {
         this.setState({
           car: result,

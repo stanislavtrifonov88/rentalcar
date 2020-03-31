@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    rest.get(`${baseURL}/${contracts}`)
+    rest.fetchRequest(`${baseURL}/${contracts}`)
       .then((result) => {
         this.setState({
           contracts: result,
@@ -23,14 +23,14 @@ class Dashboard extends React.Component {
   }
 
   onSubmit = (name, id) => {
-      rest.post(`${baseURL}/${contracts}/${id}`,{name})
+      rest.fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {name})
       .then(response => 
-        rest.get(`${baseURL}/${contracts}`)
+        rest.fetchRequest(`${baseURL}/${contracts}`)
         .then((result) => {
           this.setState({
             contracts: result,
           });
-        }))
+        }));
   }
 
 
