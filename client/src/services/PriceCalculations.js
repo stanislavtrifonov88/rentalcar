@@ -25,7 +25,10 @@ export const currentDaysRented = (startTime, today = new Date()) => {
 };
 
 export const daysOverUnderContract = (
-  startTime, endTime, currentDaysRentedFunction = currentDaysRented, estimatedDaysRentedFunction = estimatedDaysRented,
+  startTime,
+  endTime,
+  currentDaysRentedFunction = currentDaysRented,
+  estimatedDaysRentedFunction = estimatedDaysRented,
 ) => {
   const currentDaysNumber = currentDaysRentedFunction(startTime);
   const estimatedDaysNumber = estimatedDaysRentedFunction(startTime, endTime);
