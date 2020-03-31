@@ -22,8 +22,6 @@ module.exports = {
     jest: true,
   },
   rules: {
-    // '@typescript-eslint/interface-name-prefix': 'off',
-    // '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     "import/prefer-default-export": "off",
     "import/no-default-export": "error",
@@ -37,7 +35,6 @@ module.exports = {
         "tsx": "never"
       }
    ],
-  //  "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
    'import/no-extraneous-dependencies': [
     'error',
     { devDependencies: ['**/*spec.ts'] },
