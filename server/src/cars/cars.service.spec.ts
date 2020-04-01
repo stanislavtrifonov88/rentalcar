@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CarsService } from './cars.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { CarsService } from './cars.service';
 import { Car } from '../database/entities/car.entity';
 import { Class } from '../database/entities/class.entity';
 import * as errorMessages from '../shared/errors/error.messages'
@@ -9,10 +9,10 @@ describe('CarsService', () => {
   let service: CarsService;
 
   const carsRepository = {
-    find() {
+    find(): any {
       /* empty */
     },
-    findOne() {
+    findOne(): any {
       /* empty */
     },
   };
@@ -52,7 +52,7 @@ describe('CarsService', () => {
 
     const expectedObject = {
       where: {
-        id: id,
+        id,
         isBorrowed: false,
         isDeleted: false,
       },
@@ -62,7 +62,7 @@ describe('CarsService', () => {
 
     await service.getAvailableCarById(id);
 
-    /// Assert
+    // / Assert
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(expectedObject);
@@ -95,7 +95,7 @@ describe('CarsService', () => {
 
     await service.getAllAvailableCars(mockTransformer);
 
-    /// Assert
+    // / Assert
 
     expect(mockTransformer).toHaveBeenCalledTimes(1);
     expect(mockTransformer).toHaveBeenCalledWith("test");
@@ -115,7 +115,7 @@ describe('CarsService', () => {
 
     await service.getIndividualCar(id, mockTransformer);
 
-    /// Assert
+    // / Assert
 
     expect(mockTransformer).toHaveBeenCalledTimes(1);
 
@@ -134,7 +134,7 @@ describe('CarsService', () => {
 
     const result = await service.getIndividualCar(id, mockTransformer);
 
-    /// Assert
+    // / Assert
     expect(result).toBe(mockedResult)
 
   });
@@ -151,7 +151,7 @@ describe('CarsService', () => {
 
     const expectedObject = {
       where: {
-        id: id,
+        id,
         isBorrowed: false,
         isDeleted: false,
       },
@@ -177,7 +177,7 @@ describe('CarsService', () => {
 
     const expectedObject = {
       where: {
-        id: id,
+        id,
         isBorrowed: false,
         isDeleted: false,
       },

@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ContractsService } from './contracts.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { ContractsService } from './contracts.service';
 import { Contract } from '../database/entities/contract.entity';
 import { Car } from '../database/entities/car.entity';
 import { CarsService } from '../cars/cars.service';
-import * as errorMessages from '../shared/errors/error.messages';
 
 describe('ContractsService', () => {
   let service: ContractsService;
@@ -12,45 +11,45 @@ describe('ContractsService', () => {
   let expectedObject;
 
   const contractsRepository = {
-    find() {
+    find(): any {
       /* empty */
     },
-    findOne() {
+    findOne(): any {
       /* empty */
     },
-    save() {
+    save(): any {
       /* empty */
     },
-    create() {
+    create(): any {
       /* empty */
     },
   };
 
   const carsRepository = {
-    find() {
+    find(): any {
         /* empty */
       },
-    findOne() {
+    findOne(): any {
         /* empty */
       },
-    save() {
+    save(): any {
         /* empty */
       },
   };
 
   const carsService = {
-    getAllAvailableCars() {
+    getAllAvailableCars(): any {
       /* empty */
     },
 
-    getIndividualCar() {
+    getIndividualCar(): any {
       /* empty */
     },
 
-    getAvailableCarById() {
+    getAvailableCarById(): any {
       /* empty */
     },
-    getBorrowedCarById() {
+    getBorrowedCarById(): any {
       /* empty */
     },
   };
@@ -100,7 +99,7 @@ describe('ContractsService', () => {
 
     await service.getAllContracts();
 
-    /// Assert
+    // Assert
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(expectedObject);
@@ -120,7 +119,7 @@ describe('ContractsService', () => {
 
     await service.getAllContracts(mockTransformer);
 
-    /// Assert
+    // Assert
 
     expect(mockTransformer).toHaveBeenCalledTimes(1);
     expect(mockTransformer).toHaveBeenCalledWith('test');

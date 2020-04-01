@@ -12,7 +12,7 @@ export const checkInputValidity = (value, rules) => {
   let isValid = true;
 
   if (rules.required) {
-    isValid = value.trim() !== '' && isValid;
+    isValid = value.trim() !== '';
   }
 
   if (rules.minLength) {

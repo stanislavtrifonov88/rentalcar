@@ -10,15 +10,11 @@ import { transformToContractDTO } from './transformers/transformToContractDTO';
 import { createContractErrorHandling } from '../shared/errors/createContractErrorHandling';
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
-import Guard from '../shared/util/Guard';
+import * as Guard from '../shared/util/Guard';
 
 
 @Injectable()
 export class ContractsService {
-    estimatedDaysDiscount: any;
-
-    estimatedAgeDiscount: any;
-
     public constructor(
         @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
         @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>,
@@ -57,11 +53,11 @@ export class ContractsService {
       const createdContract: Contract = await getManager().transaction(async (transactionalEntityManager) => {
         const newContract = this.contractsRepository.create(body);
         newContract.car = foundCar;
-        const createdContract = await transactionalEntityManager.save(newContract);
+        const savedContract = await transactionalEntityManager.save(newContract);
         foundCar.isBorrowed = true;
         await transactionalEntityManager.save(foundCar);
 
-        return createdContract;
+        return savedContract
       });
 
       const individualContractFormated: IndividualContractDTO = await transformToContractDTO(createdContract);
@@ -84,12 +80,12 @@ export class ContractsService {
 
       await getManager().transaction(async (transactionalEntityManager) => {
         foundCar.isBorrowed = false;
-        await this.carsRepository.save(foundCar);
+        await transactionalEntityManager.save(foundCar);
 
         foundContract.deliveredDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
         foundContract.pricePaid = body.name;
 
-        await this.contractsRepository.save(foundContract);
+        await transactionalEntityManager.save(foundContract);
       });
 
       const individualContractFormated: IndividualContractDTO = await transformToContractDTO(foundContract);
