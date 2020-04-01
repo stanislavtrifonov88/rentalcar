@@ -6,7 +6,7 @@ const dateTest = (moment(new Date(), 'MM/DD/YYYY').add(5, 'days')).format('MM/DD
 module.exports = {
   'Test the car rentals project': function (browser) {
     browser
-      .url('http://localhost:3001/dashboard')
+      .url('http://localhost:3000/dashboard')
       .waitForElementVisible('body')
       .assert.visible('.navbar')
       .assert.visible('.form-control')

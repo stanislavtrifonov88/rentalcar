@@ -36,7 +36,7 @@ CheckoutCarCard.propTypes = {
 
 CheckoutCarCard.defaultProps = {
   car: PropTypes.exact({
-    id: '7c246d71-1538-406a-8bad-4043f3387fcd',
+    id: '',
     brand: 'Opel',
     model: 'Astra',
     picture: 'https://www.auto-lizingu.lt/wp-content/uploads/2019/09/opel-astra-1-6-l-hecbekas-2014-dyzelinas-13.jpg',
