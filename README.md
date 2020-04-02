@@ -28,7 +28,7 @@ The instructions below will get you a copy of the project and allow you to run i
 
 6. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the example below. They should match the ones you chose in step 3.
 
-```javascript
+```
     DB_TYPE = postgres
     DB_HOST = localhost
     DB_PORT = 5432
@@ -39,7 +39,7 @@ The instructions below will get you a copy of the project and allow you to run i
 
 7. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 3.
 
-```javascript
+```
     {
     "type": "postgres",
     "host": "localhost",
