@@ -7,26 +7,36 @@ A platform which allows an office worker at a car rental company to make new con
 ***
 The instructions below will get you a copy of the project and allow you to run it on your local machine for development and testing purposes.
 
-#### Server
-
 1. First clone this repository to your local machine. If you are not familiar with the process, please refer tо [github's instructions](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) on the topic.
 
-2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with steps 3 and 4. Otherwise, please follow the [official documentation](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for your operating system and get familiar with [postgres in docker images](https://hub.docker.com/_/postgres).
+2. For this project, we need to create a database with a docker and Postgres. If you already have a docker engine installed, you can directly continue with the process guidlines below. Otherwise, please follow the [official documentation](https://docs.docker.com/install/linux/docker-ce/ubuntu/) for your operating system and get familiar with [postgres in docker images](https://hub.docker.com/_/postgres).
 
-3. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: the name of the image by changing `custom_postgres`, the password and username which are currently set to `atscale`. Please note that you will need them in steps 6 and 7.
+3. We recommend you to follow the Automated Process Guidline below. If you would like to set everything yourself, you can refer to the Manual Process Guidline.
+
+### Automated Process Guidline
+
+1. Open a terminal in the root directory (folder rentalcar).
+
+2. Run the following command: `./start.sh`
+
+### Manual Process Guidline
+
+#### Server
+
+1. Open the terminal and create a new docker image with the command below for Linux. In the command you can customize three things: the name of the image by changing `custom_postgres`, the password and username which are currently set to `atscale`. Please note that you will need them in steps 6 and 7.
 
 ```
     docker run --name custom_postgres -p 5432:5432 -e POSTGRES_PASSWORD=atscale -e POSTGRES_USER=atscale -d postgres:11.5
 ```
 
-4. You will need to start the image. Please repeat the command every time the computer is restarted.
+2. You will need to start the image. Please repeat the command every time the computer is restarted.
 ```
     docker container start addImageIdHere
 ```
 
-5. After the repository is successfully cloned (step 1), navigate to the server folder.
+3. After the repository is successfully cloned (step 1), navigate to the server folder.
 
-6. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the example below. They should match the ones you chose in step 3.
+4. In the server folder, create .env file. It contains sensitive data about your server. In the .env file, you can set your username, password and database name by changing `YOUR_USERNAME`, `YOUR_PASSWORD` and `public` in the example below. They should match the ones you chose in step 3.
 
 ```
     DB_TYPE = postgres
@@ -37,7 +47,7 @@ The instructions below will get you a copy of the project and allow you to run i
     DB_DATABASE_NAME = public
 ```
 
-7. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 3.
+5. Still in the server folder, create ormconfig.json file. As with the .env file before, you can set your username, password and database name. They should match the ones you chose in step 3.
 
 ```
     {
@@ -61,7 +71,7 @@ The instructions below will get you a copy of the project and allow you to run i
     }
 ```
 
-8. Open the terminal or bash in the server folder and run the following commands in the same order:
+6. Open the terminal or bash in the server folder and run the following commands in the same order:
 ```JavaScript
 npm install
 npm run typeorm:run // runs the migration to the database
