@@ -1,5 +1,6 @@
 #!/bin/bash         
 
+# If permissions are required to start the file for a first time: chmod a+x ./start.sh  
 clear
 echo "Creating the database:"
 echo "Please enter the database name or press enter to use the default option - StanislavDB:"
@@ -57,8 +58,8 @@ sed -i "s/YOUR_USERNAME/$username/g" ormconfig.json
 sed -i "s/YOUR_PASSWORD/$password/g" ormconfig.json
 sed -i "s/YOUR_DATABASE/$database/g" ormconfig.json
 
-# docker run --name $database -p 5432:5432 -e POSTGRES_PASSWORD=$password -e POSTGRES_USER=$username -d postgres:11.5
-# Why are permission required to start the file for a first time??? 1) pwd 2)chmod a+x /home/strifonov/React_Play/BASH/test.sh  
+docker run --name $database -p 5432:5432 -e POSTGRES_PASSWORD=$password -e POSTGRES_USER=$username -d postgres:11.5
+
 
 docker container start $database
 
