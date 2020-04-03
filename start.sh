@@ -1,6 +1,7 @@
 #!/bin/bash         
 
 clear
+echo "Creating the database:"
 echo "Please enter the database name or press enter to use the default option - StanislavDB:"
 read databaseName
 defvalue=StanislavDB
@@ -14,6 +15,7 @@ echo "$database, $username, $password"
 
 cd server
 
+echo "Creating .env file ..."
 cat > .env <<- "EOF"
     DB_TYPE = postgres
     DB_HOST = localhost
@@ -28,7 +30,7 @@ sed -i "s/username/$username/g" .env
 sed -i "s/password/$password/g" .env
 sed -i "s/database/$database/g" .env
 
-
+echo "Creating ormconfig.json file ..."
 cat > ormconfig.json <<- "EOF"
     {
     "type": "postgres",
@@ -60,22 +62,32 @@ sed -i "s/YOUR_DATABASE/$database/g" ormconfig.json
 # Why are permission required to start the file for a first time??? 1) pwd 2)chmod a+x /home/strifonov/React_Play/BASH/test.sh  
 
 
-docker container start a42c9a5b0b229ba786dbb526d8adbff3fd124eac99a40ca2df03d2e858b606a7
+docker container start $database
 
-npm i
-
+# npm i
+echo "Running the migrations ..."
 npm run typeorm:run
-
+echo "Running the seed file ..."
 npm run seed
 
 # every time you run the bash script the seed executes. How to avoid that?
 
 cd ../
-
+echo "Setting up the client ..."
 cd client
 
-npm i
+# npm i
 
-
-
+echo ""
+echo "Environment setup was successfull"
+echo ""
+echo "Tips:"
+echo "1) to run the server, go the the server folder, open a terminal and type: npm run start"
+echo ""
+echo "     npm run start"
+echo ""
+echo "2) to run the client, go the the client folder, open a terminal and type: npm start"
+echo ""
+echo "     npm start"
+echo ""
 
