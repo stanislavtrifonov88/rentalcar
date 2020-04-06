@@ -37,20 +37,6 @@ class NavigationBarCars extends React.Component {
        <Link className="SearchBtn" onClick={() => this.props.onSearch(this.state.searchWord)} to="/home">Search</Link>
         </div>
       </div>
-      // <Navbar className="Navbar">
-      //   <p className="brandName" href="/home">Awesome Cars</p>
-      //   <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      //   <Navbar.Collapse id="basic-navbar-nav">
-      //     <Nav className="mr-auto">
-      //       <Button className="carsPage" onClick={() => this.props.onSearch('')} href="/home">Cars</Button>
-      //       <Button href="/dashboard">Dashboard</Button>
-      //     </Nav>
-      //     <Form inline id="searchForm">
-      //       <FormControl className="searchInput" type="text" placeholder="Search" className="mr-sm-2" data-name="searchWord"  onChange={this.onInputChange} />
-      //       <Button className="searchBtn" onClick={() => this.props.onSearch(this.state.searchWord)} href="/home"><Link to="/home">Search</Link></Button>
-      //     </Form>
-      //   </Navbar.Collapse>
-      // </Navbar>
     );
   }
 } 
