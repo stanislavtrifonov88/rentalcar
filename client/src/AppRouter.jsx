@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import AvailableCarsContainer from './components/AvailableCars/AvailableCarsContainer';
 import Dashboard from './components/Dashboard/Dashboard';
 import CheckoutPage from './components/Checkout/CheckoutPage';
+import './AppRouter.css';
 
 
 const AppRouter = () => (
