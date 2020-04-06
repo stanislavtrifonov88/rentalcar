@@ -63,7 +63,8 @@ docker run --name $database -p 5432:5432 -e POSTGRES_PASSWORD=$password -e POSTG
 
 docker container start $database
 
-# npm i
+echo "Installing node dependencies ..."
+npm i
 echo "Running the migrations ..."
 npm run typeorm:run
 
@@ -71,7 +72,8 @@ cd ../
 echo "Setting up the client ..."
 cd client
 
-# npm i
+echo "Installing client dependencies"
+npm i
 
 echo ""
 echo "Environment setup was successfull"
