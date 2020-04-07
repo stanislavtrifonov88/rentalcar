@@ -6,7 +6,42 @@ import PropTypes from 'prop-types';
 
 const AvailableCarCard = ({ car }) => (
   <div className="col-lg-4 col-md-6">
-    <Card className="cardAvailableCar">
+    <div className="cardAvailableCar">
+      <img src={car.picture} alt="NO PIC" />
+      <div className="carDetails">
+        <h3>{car.model}</h3>
+        <h6>{car.brand}</h6>
+        <div className="carText">
+          <div className="carInfo">
+            <p>
+              Class:
+              {' '}
+              {car.className}
+            </p>
+            <p>
+              5 seats
+            </p>
+          </div>
+          <div className="Border" />
+          <div className="carInfo">
+            <p>
+              $
+              {' '}
+              {car.price}
+              {' '}
+              | Day
+            </p>
+            <p className="unlimitedKm">
+              unlimited km
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="StandardBtn">
+        <Link to={`/cars/${car.id}`}>Checkout</Link>
+      </div>
+    </div>
+    {/* <Card className="cardAvailableCar">
       <Card.Img
         variant="top"
         src={car.picture}
@@ -29,7 +64,7 @@ const AvailableCarCard = ({ car }) => (
         </Card.Text>
         <Button className="checkoutBtn" variant="outline-success"><Link to={`/cars/${car.id}`}>Checkout</Link></Button>
       </Card.Body>
-    </Card>
+    </Card> */}
   </div>
 );
 

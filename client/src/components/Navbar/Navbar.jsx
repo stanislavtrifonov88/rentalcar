@@ -28,8 +28,8 @@ class NavigationBarCars extends React.Component {
         <div className="leftSideContainer">
         <p className="brandName" href="/home">Awesome Cars</p>
         <div className="NavbarBtnContainer">
-        <Link className="StandardBtn" onClick={() => this.props.onSearch('')} to="/home">Home</Link>
-        <Link className="StandardBtn" to="/dashboard">Dashboard</Link>
+        <Link className="StandardLink" onClick={() => this.props.onSearch('')} to="/home">Home</Link>
+        <Link className="StandardLink" to="/dashboard">Dashboard</Link>
         </div>
         </div>
         <div className="rightSideContainer">
