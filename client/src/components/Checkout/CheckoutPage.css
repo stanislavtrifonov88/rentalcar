@@ -2,13 +2,13 @@
     height: 100%;
 }
 
-.formItems {
+.checkoutMainContainer .formItems {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
 .checkoutMainTitle {
-    padding-top: 5%;
+    padding-top: 15%;
     color: #2F4858;
 }
