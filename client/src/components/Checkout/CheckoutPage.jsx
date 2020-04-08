@@ -115,13 +115,15 @@ export default class CheckoutPage extends React.Component {
     const priceEstimationForm = this.state;
 
     return (
+      <div>
       <div className="checkoutMainContainer">
-        <h1>Checkout rental car</h1>
+        <h1 className="checkoutMainTitle">Would you like a car?</h1>
         <div className="formItems">
           <CheckoutCarCard car={car} />
           <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
           <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
         </div>
+      </div>
       </div>
     );
   }

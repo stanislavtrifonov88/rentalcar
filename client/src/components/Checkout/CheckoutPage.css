@@ -1,12 +1,14 @@
 .checkoutMainContainer {
-    padding-top: 5%;
+    height: 100%;
 }
 
 .formItems {
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 
-.formItems {
+.checkoutMainTitle {
     padding-top: 5%;
+    color: #2F4858;
 }
