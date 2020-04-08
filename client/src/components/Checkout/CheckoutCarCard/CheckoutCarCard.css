@@ -1,7 +1,67 @@
-.checkoutCarCard {
-    width: 16%;
+.cardCheckoutCar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.checkoutCarCard h1 {
-    padding-bottom: 8%;
+
+.cardCheckoutCar {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border: 3px solid #2F4858;
+    padding: 5px;
+    width: 380px;
+    min-width: 300px;
+    max-width: 600px;
+    height: 550px;
+    box-shadow: 7px 10px 10px black;
 }
+
+
+.cardCheckoutCar {
+    background-color: rgb(223, 227, 230);
+    border-radius: 14px;
+}
+
+
+Img {
+    width: 100%;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.carText {
+    display: flex;
+    justify-content: space-around;
+}
+
+.Border {
+    border: 1px solid #F6AE2D;
+    height: 60px;
+}
+
+.carInfo {
+    width: 150px;
+}
+
+.cardCheckoutCar .carDetails h3 {
+   color: #F6AE2D;
+   font-weight: 600;
+   padding-top: 20px;
+}
+
+.carDetails h6 {
+    font-weight: 600;
+    padding-bottom: 20px;
+ }
+
+.carDetails p {
+    font-weight: 600;
+}
+
+.cardCheckoutCar h1 {
+    color: #F6AE2D;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 8%;
+ }
