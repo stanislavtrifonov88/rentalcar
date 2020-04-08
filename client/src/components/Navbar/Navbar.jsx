@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-  Button, Navbar, Form, FormControl, Nav,
-} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { connect } from 'react-redux';
