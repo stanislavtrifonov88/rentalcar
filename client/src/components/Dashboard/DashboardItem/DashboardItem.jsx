@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import * as priceCalculations from '../../../services/PriceCalculations';
+import './DashboardItem.css'
+import * as moment from 'moment';
 
 class DashboardItem extends React.Component {
 
@@ -22,22 +24,24 @@ class DashboardItem extends React.Component {
     const overduePenalty = priceCalculations.overduePenalty(daysOverUnderContract);
     const currentTotalPrice = estimatedTotalPrice + (overduePenalty * daysOverUnderContract * priceAfterDaysAndAge);
     const currentPricePerDay = priceCalculations.currentPricePerDay(overduePenalty, priceAfterDaysAndAge);
+    const startDateFormatted = moment(this.props.contract.startDate).format('YYYY-MM-DD, HH:MM');
+    const returnDateFormatted = moment(this.props.contract.startDate).format('YYYY-MM-DD, HH:MM');
+
 
     return (
-      <tr>
-        <td>#</td>
+      <tr className="dashboardTable">
         <td>
           {this.props.contract.brand}
           {' '}
           {this.props.contract.model}
         </td>
         <td>{this.props.contract.borrowerFirstName}</td>
-        <th>
+        <td>
           {this.props.contract.borrowerLastName}
           {' '}
-        </th>
-        <td>{this.props.contract.startDate}</td>
-        <td>{this.props.contract.contractEndDate}</td>
+        </td>
+        <td>{startDateFormatted}</td>
+        <td>{returnDateFormatted}</td>
         <td>{estimatedNumberOfDays}</td>
         <td>
           {priceAfterDaysAndAge.toFixed(2)}
@@ -46,7 +50,7 @@ class DashboardItem extends React.Component {
         <td>{daysOverUnderContract}</td>
         <td>{currentPricePerDay.toFixed(2)}</td>
         <td>{currentTotalPrice.toFixed(2)}</td>
-        <td><Button variant="outline-success" onClick={this.handleClick} name={currentTotalPrice}>Return car</Button></td>
+        <td><button className="returnCarBtn" onClick={this.handleClick} name={currentTotalPrice}>Return</button ></td>
       </tr>
     );
   }
