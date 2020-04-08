@@ -38,7 +38,7 @@ class AvailableCarsContainer extends React.Component {
 
     return (
       <div className="container">
-        <h1> Our Offers!</h1>
+        <h1> Currently Available Cars</h1>
         <div className="row">
           {cards}
         </div>
