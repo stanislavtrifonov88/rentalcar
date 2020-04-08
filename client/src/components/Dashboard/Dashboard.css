@@ -1,4 +1,21 @@
 .dashboardContainer {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+}
+
+.dashboardContainer {
     width: 70%;
+    min-width: 600px;
     padding-top: 10%;
+}
+
+.dashboardContainer .dashboarTable {
+    box-shadow: 7px 10px 10px black;
+}
+
+.dashboardContainer th {
+    color: #F6AE2D;
+    font-weight: 600;
 }

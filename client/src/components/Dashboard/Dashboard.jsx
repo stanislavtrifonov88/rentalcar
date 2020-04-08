@@ -39,20 +39,19 @@ class Dashboard extends React.Component {
 
     return (
       <div className="dashboardContainer">
-        <Table striped bordered hover variant="dark">
+        <Table className="dashboarTable" striped bordered hover variant="dark">
           <thead>
             <tr>
-              <th>#</th>
               <th>Car</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>From</th>
-              <th>Estimated Return Date</th>
-              <th>Estimated Days Rented</th>
-              <th>Estimated Price per Day</th>
+              <th>Return Date</th>
+              <th>Days Rented</th>
+              <th>Price | Day</th>
               <th>Current Days Rented</th>
               <th>Days Overdue</th>
-              <th>Current Price per Day</th>
+              <th>Current Price | Day</th>
               <th>Current Total Price</th>
               <th>Return Car</th>
             </tr>
