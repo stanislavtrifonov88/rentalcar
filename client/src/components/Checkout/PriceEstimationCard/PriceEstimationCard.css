@@ -1,10 +1,38 @@
 
 .priceEstimationCard h1 {
+    color: #F6AE2D;
+    font-weight: 600;
+    padding-top: 20px;
     padding-bottom: 8%;
+}
+
+.priceEstimationCard {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border: 3px solid #2F4858;
+    padding: 5px;
+    box-shadow: 7px 10px 10px black;
+    background-color: rgb(223, 227, 230);
+    border-radius: 14px;
+    font-weight: 600;
+    width: 380px;
+    min-width: 300px;
+    max-width: 600px;
+    height: 550px;
 }
 
 .priceItem {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-
+    padding-left: 10%;
+    padding-right: 10%;
 }
+
+.priceCalculationDetails h5 {
+    border-bottom: 3px solid #F6AE2D;
+    width: 60%;
+    margin-right: 20%;
+    margin-left: 20%;
+}
+

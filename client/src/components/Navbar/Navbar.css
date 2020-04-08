@@ -39,7 +39,7 @@
 }
 
 .leftSideContainer {
-    min-width: 30%;
+    min-width: 25%;
 }
 
 .leftSideContainer {
@@ -55,7 +55,7 @@
 }
 
 .leftSideContainer div {
-    min-width: 38%;
+    min-width: 25%;
 }
 
 
@@ -76,6 +76,10 @@
     color: white;
     background-color: #F6AE2D;
     border-radius: 14px;
+}
+
+.Navbar .rightSideContainer input {
+    border-bottom: 3px solid #F6AE2D;
 }
 
 .Navbar .rightSideContainer .SearchBtn:hover {

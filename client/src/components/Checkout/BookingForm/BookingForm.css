@@ -1,24 +1,97 @@
 .checkoutFormContainer {
     display: flex; 
     flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .checkoutFormContainer {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border: 3px solid #2F4858;
+    padding: 5px;
+    min-width: 500px;
+    max-width: 600px;
     width: 25%;
+    background-color: rgb(223, 227, 230);
+    border-radius: 14px;
+    box-shadow: 7px 10px 10px black;
+    font-weight: 600;
+    height: 550px;
 }
 
-
-.bookingFormInputFields {
-    padding-left: 10%;
+.checkoutFormContainer h1 {
+    color: #F6AE2D;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 8%;
 }
+
+.checkoutFormContainer .bookCarBtn {
+    background-color: #F6AE2D;
+    border-radius: 14px;
+    border: 0px;
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.checkoutFormContainer .bookingFormInputFields {
+    display: flex; 
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+}
+
+.checkoutFormContainer .bookingFormInputFields .inputRows {
+    display: flex; 
+    justify-content: center;
+
+    width: 70%;
+}
+
+.checkoutFormContainer .bookingFormInputFields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.checkoutFormContainer .bookCarBtn a{
+    color: white;
+    width: 100%;
+}
+
+.inputFormContainer label {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.checkoutFormContainer .bookingFormInputFields .inputRows .ageField {
+    width: 180px;
+    margin: 5px;
+}
+
+.checkoutFormContainer .bookingFormInputFields .inputRows .dateField {
+    width: 250px;
+    margin: 5px;
+}
+
+.checkoutFormContainer .bookingFormInputFields .inputRows .firstNameField {
+    width: 215px;
+    margin: 5px;
+}
+
+.checkoutFormContainer .bookingFormInputFields .inputRows .lastNameField {
+    width: 215px;
+    margin: 5px;
+}
+
 
 .valid {
-    color: white;
-
+    color: rgb(223, 227, 230);
 }
 
 .invalid {
     color: red;
 }
-

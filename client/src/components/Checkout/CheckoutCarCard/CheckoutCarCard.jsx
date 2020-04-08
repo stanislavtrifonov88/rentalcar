@@ -1,26 +1,41 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
 import './CheckoutCarCard.css';
 import PropTypes from 'prop-types';
 
 const CheckoutCarCard = ({ car }) => (
-  <Card className="checkoutCarCard">
+  <div className="cardCheckoutCar">
     <h1>Car</h1>
-    <Card.Img className="checkoutCarCardImg" variant="top" src={car.picture} />
-    <Card.Body>
-      <Card.Title>{car.model}</Card.Title>
-      <Card.Text>{car.brand}</Card.Text>
-      <Card.Text>
-        Class:
-        {car.className}
-      </Card.Text>
-      <Card.Text>
-        Price per day:
-        {car.price}
-        $
-      </Card.Text>
-    </Card.Body>
-  </Card>
+    <img src={car.picture} alt="NO PIC" />
+    <div className="carDetails">
+      <h3>{car.model}</h3>
+      <h6>{car.brand}</h6>
+      <div className="carText">
+        <div className="carInfo">
+          <p>
+            Class:
+            {' '}
+            {car.className}
+          </p>
+          <p>
+            5 seats
+          </p>
+        </div>
+        <div className="Border" />
+        <div className="carInfo">
+          <p>
+            $
+            {' '}
+            {car.price}
+            {' '}
+            | Day
+          </p>
+          <p className="unlimitedKm">
+            unlimited km
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 );
 
 CheckoutCarCard.propTypes = {

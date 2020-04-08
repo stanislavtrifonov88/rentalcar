@@ -1,8 +1,4 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import {
-  Col, Button,
-} from 'react-bootstrap';
 import './BookingForm.css';
 import * as moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -16,55 +12,66 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
   const validationErrorDate = isValidField(validations.contractEndDate);
 
   return (
-    <Form className="checkoutFormContainer">
-      <h1>Booking</h1>
+    <div className="checkoutFormContainer">
+      <h1>Booking Form</h1>
       <div className="bookingFormInputFields">
-        <Form.Row>
-          <Form.Group as={Col} md="5" controlId="validationCustom01">
-            <Form.Label>First name</Form.Label>
-            <Form.Control
+        <div className="inputRows">
+          <div className="inputFormContainer">
+            <label htmlFor="FirstName">
+              First name
+            </label>
+            <input
+              id="FirstName"
               className="firstNameField"
               required
               type="text"
               placeholder="First name"
-              defaultValue="Mark"
               data-name="borrowerFirstName"
               onChange={changed}
             />
+
             <p className={validationErrorFirstName}>First name is invalid.</p>
-          </Form.Group>
-          <Form.Group as={Col} md="5" controlId="validationCustom02">
-            <Form.Label>Last name</Form.Label>
-            <Form.Control
+          </div>
+          <div className="inputFormContainer">
+            <label htmlFor="LastName">
+              Last className:
+            </label>
+            <input
+              id="LastName"
               className="lastNameField"
               required
               type="text"
               placeholder="Last name"
-              defaultValue="Otto"
               data-name="borrowerLastName"
               onChange={changed}
             />
+
             <p className={validationErrorLastName}>Last name is invalid.</p>
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group as={Col} md="5" controlId="validationCustom03">
-            <Form.Label>Age</Form.Label>
-            <Form.Control
+          </div>
+        </div>
+        <div className="inputRows">
+          <div className="inputFormContainer">
+            <label htmlFor="Age">
+              Age
+            </label>
+            <input
+              id="Age"
               className="ageField"
               type="number"
               placeholder="Age"
-              defaultValue="18"
               required
               data-name="borrowerAge"
               onChange={changed}
             />
+
             <p className={validationErrorAge}>Please enter a valid age.</p>
-          </Form.Group>
-          <Form.Group as={Col} md="5" controlId="validationCustom04">
-            <Form.Label>Return Date</Form.Label>
-            <Form.Control
+          </div>
+          <div className="inputFormContainer">
+            <label htmlFor="Date">
+              Return Date
+            </label>
+            <input
+              id="Date"
               className="dateField"
               type="datetime-local"
               required
@@ -73,17 +80,18 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
               min={moment(new Date()).format('YYYY-MM-DDThh:mm')}
               onChange={changed}
             />
+
             <p className={validationErrorDate}>Please enter a valid date.</p>
-          </Form.Group>
-        </Form.Row>
+          </div>
+        </div>
       </div>
       <div>
-        <Button className="bookCarBtn" variant="outline-success" onClick={onInputSubmit}>
+        <button type="submit" className="bookCarBtn" onClick={onInputSubmit}>
           Checkout
-        </Button>
-        <Button variant="outline-success"><Link to="/home">Cancel</Link></Button>
+        </button>
+        <button type="submit" className="bookCarBtn"><Link to="/home">Cancel</Link></button>
       </div>
-    </Form>
+    </div>
   );
 };
 

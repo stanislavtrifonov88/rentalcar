@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
 import './AvailableCarCard.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -41,30 +40,6 @@ const AvailableCarCard = ({ car }) => (
         <Link to={`/cars/${car.id}`}>Checkout</Link>
       </div>
     </div>
-    {/* <Card className="cardAvailableCar">
-      <Card.Img
-        variant="top"
-        src={car.picture}
-      />
-      <Card.Body>
-        <Card.Title>{car.model}</Card.Title>
-        <Card.Text>
-          {car.brand}
-        </Card.Text>
-        <Card.Text>
-          Class
-          {' '}
-          {car.className}
-        </Card.Text>
-        <Card.Text>
-          Price per day
-          {' '}
-          {car.price}
-          $
-        </Card.Text>
-        <Button className="checkoutBtn" variant="outline-success"><Link to={`/cars/${car.id}`}>Checkout</Link></Button>
-      </Card.Body>
-    </Card> */}
   </div>
 );
 
