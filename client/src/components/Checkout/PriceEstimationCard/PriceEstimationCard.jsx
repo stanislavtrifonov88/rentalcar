@@ -20,61 +20,66 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   return (
     <div className="priceEstimationCard">
       <h1>Estimated Price</h1>
-      <div className="priceItem">
-        <h4>Days</h4>
-        <h4>{numberOfDays}</h4>
-      </div>
-      <div className="priceItem">
-        <h4>Daily price</h4>
-        <h4>
-          {basePrice}
-          $
-        </h4>
-      </div>
-      <br />
-      <div className="priceItem">
-        <h4>
-          Days Discount:
-        </h4>
-        <p>
-          -
-          {((1 - daysDiscount) * 100).toFixed(0)}
-          %
-        </p>
-        <h4>
-          {priceAfterDaysDiscount}
-          $
-        </h4>
-      </div>
-      <div className="priceItem">
-        <h4>
-          Age Penalty:
-        </h4>
-        <p>
-          +
-          {((agePenalty - 1) * 100).toFixed(0)}
-          %
-        </p>
-        <h4>
-          {priceAfterDaysAndAge}
-          $
-        </h4>
-      </div>
-      <br />
-      <div className="priceItem">
-        <h4>Final daily price</h4>
-        <h4>
-          {priceAfterDaysAndAge}
-          $
-        </h4>
-      </div>
-      <br />
-      <div className="priceItem">
-        <h4>Total Price</h4>
-        <h4>
-          {totalPrice}
-          $
-        </h4>
+      <div className="priceCalculationDetails">
+        <h5>Contract Details</h5>
+        <div className="priceItem">
+          <p>Days</p>
+          <p>{numberOfDays}</p>
+        </div>
+        <div className="priceItem">
+          <p>Daily price</p>
+          <p>
+            {basePrice}
+            $
+          </p>
+        </div>
+        <br />
+        <h5>Discounts</h5>
+        <div className="priceItem">
+          <p>
+            Days Discount:
+          </p>
+          <p>
+            -
+            {((1 - daysDiscount) * 100).toFixed(0)}
+            %
+          </p>
+          <p>
+            {priceAfterDaysDiscount}
+            $
+          </p>
+        </div>
+        <div className="priceItem">
+          <p>
+            Age Penalty:
+          </p>
+          <p>
+            +
+            {((agePenalty - 1) * 100).toFixed(0)}
+            %
+          </p>
+          <p>
+            {priceAfterDaysAndAge}
+            $
+          </p>
+        </div>
+        <br />
+        <h5>Final Offer</h5>
+        <div className="priceItem">
+          <p>Daily Price</p>
+          <p>
+            {priceAfterDaysAndAge}
+            $
+          </p>
+        </div>
+        <br />
+        <div className="priceItem">
+          <p className="estimatedTotalPrice">Total Price</p>
+          <p className="estimatedTotalPrice">
+            {totalPrice}
+            $
+          </p>
+        </div>
       </div>
     </div>
   );
