@@ -21,7 +21,7 @@
 }
 
 .Navbar a:hover {
-    color: #FFE882;
+    color: #DB7C26
   }
   
 .Navbar a.active {
@@ -35,7 +35,7 @@
 }
 
 .Navbar p:hover {
-    color: #FFE882
+    color: #DB7C26
 }
 
 .leftSideContainer {
@@ -83,5 +83,5 @@
 }
 
 .Navbar .rightSideContainer .SearchBtn:hover {
-    background-color: #FFE882;
+    background-color: #DB7C26
 }
