@@ -39,14 +39,15 @@ class Dashboard extends React.Component {
 
     return (
       <div className="dashboardContainer">
-        <Table className="dashboarTable" striped bordered hover variant="dark">
+        <h1>Rented Cars</h1>
+        <table className="dashboarTable">
           <thead>
-            <tr>
-              <th>Car</th>
+            <tr className="headerRow">
+              <th className="rowLength1">Car</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>From</th>
-              <th>Return Date</th>
+              <th className="rowLength1">From</th>
+              <th className="rowLength1">Return Date</th>
               <th>Days Rented</th>
               <th>Price | Day</th>
               <th>Current Days Rented</th>
@@ -56,10 +57,10 @@ class Dashboard extends React.Component {
               <th>Return Car</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="dataRows">
             {contracts}
           </tbody>
-        </Table>
+        </table>
       </div>
     );
   }
