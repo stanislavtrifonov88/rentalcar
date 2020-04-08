@@ -1,4 +1,4 @@
 .routingContainer {
-    background-color: #FFD166;
-    background-image: linear-gradient(to bottom right, white, #DB9065);
-}
+    min-height: 100%;
+}  
+
