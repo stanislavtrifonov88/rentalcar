@@ -46,7 +46,7 @@ class AvailableCarsContainer extends React.Component {
     }
 
     return (
-      <div className="container">
+      <div className="container" data-element="allAvailableCarsContainer">
         <h1> Currently Available Cars</h1>
         <div className="row">
           {cards}

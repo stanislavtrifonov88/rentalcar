@@ -69,7 +69,7 @@ class Dashboard extends React.Component {
     }
 
     return (
-      <div className="dashboardContainer">
+      <div className="dashboardContainer" data-element="dashboard">
         <h1>Rented Cars</h1>
         {table}
       </div>

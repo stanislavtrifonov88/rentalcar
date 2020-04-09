@@ -18,7 +18,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   const totalPrice = (priceAfterDaysAndAge * numberOfDays).toFixed(2);
 
   return (
-    <div className="priceEstimationCard">
+    <div className="priceEstimationCard" data-element="priceEstimationCard">
       <h1>Estimated Price</h1>
       <div className="priceCalculationDetails">
         <h5>Contract Details</h5>

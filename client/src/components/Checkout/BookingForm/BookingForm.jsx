@@ -12,7 +12,7 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
   const validationErrorDate = isValidField(validations.contractEndDate);
 
   return (
-    <div className="checkoutFormContainer">
+    <div className="checkoutFormContainer" data-element="bookingForm">
       <h1>Booking Form</h1>
       <div className="bookingFormInputFields">
         <div className="inputRows">
@@ -86,7 +86,7 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
         </div>
       </div>
       <div>
-        <button type="submit" className="bookCarBtn" onClick={onInputSubmit}>
+        <button type="submit" className="bookCarBtn" onClick={onInputSubmit} data-element="bookingFormCheckoutBtn">
           Checkout
         </button>
         <button type="submit" className="bookCarBtn"><Link to="/home">Cancel</Link></button>

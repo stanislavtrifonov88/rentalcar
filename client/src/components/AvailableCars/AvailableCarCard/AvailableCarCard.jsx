@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const AvailableCarCard = ({ car }) => (
   <div className="col-lg-4 col-md-6">
-    <div className="cardAvailableCar">
+    <div className="cardAvailableCar" data-element="availableCarCard">
       <img src={car.picture} alt="NO PIC" />
       <div className="carDetails">
         <h3>{car.model}</h3>
@@ -37,7 +37,7 @@ const AvailableCarCard = ({ car }) => (
         </div>
       </div>
       <div className="StandardBtn">
-        <Link to={`/cars/${car.id}`}>Checkout</Link>
+        <Link to={`/cars/${car.id}`} data-element="availableCarCardCheckoutBtn">Checkout</Link>
       </div>
     </div>
   </div>
