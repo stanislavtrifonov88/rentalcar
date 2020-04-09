@@ -25,7 +25,7 @@ const CheckoutCarCard = ({ car }) => (
           <p>
             $
             {' '}
-            {car.price}
+            {car.price.toFixed(2)}
             {' '}
             | Day
           </p>
@@ -52,11 +52,11 @@ CheckoutCarCard.propTypes = {
 CheckoutCarCard.defaultProps = {
   car: PropTypes.exact({
     id: '',
-    brand: 'Opel',
-    model: 'Astra',
-    picture: 'https://www.auto-lizingu.lt/wp-content/uploads/2019/09/opel-astra-1-6-l-hecbekas-2014-dyzelinas-13.jpg',
-    className: 'B',
-    price: 70,
+    brand: '',
+    model: '',
+    picture: '',
+    className: '',
+    price: 0,
   }),
 };
 
