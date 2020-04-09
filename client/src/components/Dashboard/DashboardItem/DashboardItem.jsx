@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import * as priceCalculations from '../../../services/PriceCalculations';
 import './DashboardItem.css'
 import * as moment from 'moment';

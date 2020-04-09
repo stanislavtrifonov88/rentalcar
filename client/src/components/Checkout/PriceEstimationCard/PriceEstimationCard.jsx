@@ -88,6 +88,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
 
 PriceEstimationCard.propTypes = {
   priceEstimationForm: PropTypes.exact({
+    loading: PropTypes.bool,
     car: PropTypes.object,
     checkoutForm: PropTypes.object,
     checkoutFormValidations: PropTypes.object,
@@ -96,6 +97,7 @@ PriceEstimationCard.propTypes = {
 
 PriceEstimationCard.defaultProps = {
   priceEstimationForm: PropTypes.exact({
+    loading: '',
     car: {},
     checkoutForm: {},
     checkoutFormValidations: {},

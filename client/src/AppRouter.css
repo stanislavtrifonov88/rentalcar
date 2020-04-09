@@ -2,6 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}  
+
+.routingContainer {
     min-height: 100%;
+    height: 100%;
 }  
 
