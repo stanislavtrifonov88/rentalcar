@@ -1,5 +1,8 @@
 .checkoutMainContainer {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-top: 8%;
 }
 
 .checkoutMainContainer .formItems {
@@ -9,6 +12,5 @@
 }
 
 .checkoutMainTitle {
-    padding-top: 15%;
     color: #2F4858;
 }

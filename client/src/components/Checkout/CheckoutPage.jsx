@@ -9,12 +9,14 @@ import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
 import fetchRequest from '../../services/Rest';
 import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
+import Spinner from '../Spinner/Spinner';
 
 
 export default class CheckoutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       car: { 
       id: "",
       brand: "Opel",
@@ -88,6 +90,8 @@ export default class CheckoutPage extends React.Component {
 
   onInputSubmit = (event) => {
     event.preventDefault();
+    const { loading } = this.state;
+    this.setState({ loading: true });
 
     if (moment(this.state.checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') > moment(this.state.checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm') ) {
       toast.error("Return date cannot be in the past", {
@@ -96,16 +100,21 @@ export default class CheckoutPage extends React.Component {
     }
 
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',this.state.checkoutForm)
-    .then(response => this.props.history.push({pathname: '/dashboard'}))
-    .catch(err => console.log(err));
+    .then(response => 
+      this.props.history.push({pathname: '/dashboard'},
+      this.setState({ loading: false }),
+      ))
   }
 
   componentDidMount() {
+    this.setState({ loading: true });
+
     const { id }= this.props.match.params;
       fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {
         this.setState({
           car: result,
+          loading: false,
         });
       });
   }
@@ -113,15 +122,21 @@ export default class CheckoutPage extends React.Component {
   render() {
     const car = { ...this.state.car };
     const priceEstimationForm = this.state;
+    const { loading } = this.state;
+
+    let checkoutFormCards = <div className="formItems">
+    <CheckoutCarCard car={car} />
+    <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
+    <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
+  </div>
+    if (loading) {
+      checkoutFormCards = <Spinner />
+    }
 
     return (
       <div className="checkoutMainContainer">
         <h1 className="checkoutMainTitle">Would you like a car?</h1>
-        <div className="formItems">
-          <CheckoutCarCard car={car} />
-          <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
-          <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
-        </div>
+        {checkoutFormCards}
       </div>
     );
   }
