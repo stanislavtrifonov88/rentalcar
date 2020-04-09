@@ -90,7 +90,6 @@ export default class CheckoutPage extends React.Component {
 
   onInputSubmit = (event) => {
     event.preventDefault();
-    const { loading } = this.state;
     this.setState({ loading: true });
 
     if (moment(this.state.checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') > moment(this.state.checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm') ) {

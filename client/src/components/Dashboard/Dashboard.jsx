@@ -1,5 +1,4 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table';
 import './Dashboard.css';
 import DashboardItem from './DashboardItem/DashboardItem';
 import fetchRequest from '../../services/Rest';
