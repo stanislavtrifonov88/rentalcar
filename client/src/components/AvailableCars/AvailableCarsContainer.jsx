@@ -5,20 +5,24 @@ import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
 import './AvailableCarsContainer.css';
 import fetchRequest from '../../services/Rest';
 import { baseURL } from '../../services/restAPIs/restAPIs';
+import Spinner from '../Spinner/Spinner';
 
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cars: [],
+      loading: false,
     };
   }
 
   componentDidMount() {
+    this.setState({ loading: true });
     fetchRequest(`${baseURL}/cars`)
       .then((result) => {
         this.setState({
           cars: result,
+          loading: false,
         });
       });
   }
@@ -34,7 +38,12 @@ class AvailableCarsContainer extends React.Component {
       filteredCars = cars;
     }
 
-    const cards = filteredCars.map((car) => <AvailableCarCard key={car.id} car={car} />);
+
+    let cards = filteredCars.map((car) => <AvailableCarCard key={car.id} car={car} />);
+    const { loading } = this.state;
+    if (loading) {
+      cards = <Spinner />;
+    }
 
     return (
       <div className="container">
