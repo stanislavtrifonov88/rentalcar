@@ -8,8 +8,8 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
     priceEstimationForm.checkoutForm.startDate,
     priceEstimationForm.checkoutForm.contractEndDate,
   );
-  const daysDiscount = priceCalculations.estimatedDaysDiscount(numberOfDays);
-  const basePrice = (priceEstimationForm.car.price).toFixed(2);
+  const daysDiscount = +priceCalculations.estimatedDaysDiscount(numberOfDays);
+  const basePrice = (priceEstimationForm.car.price);
   const priceAfterDaysDiscount = (basePrice * daysDiscount).toFixed(2);
   const agePenalty = priceCalculations.estimatedAgeDiscount(
     priceEstimationForm.checkoutForm.borrowerAge,
@@ -97,7 +97,7 @@ PriceEstimationCard.propTypes = {
 
 PriceEstimationCard.defaultProps = {
   priceEstimationForm: PropTypes.exact({
-    loading: '',
+    loading: null,
     car: {},
     checkoutForm: {},
     checkoutFormValidations: {},

@@ -3,6 +3,10 @@ import moment from 'moment';
 import * as priceDiscounts from './discounts/priceDiscounts';
 
 export const estimatedDaysRented = (startTime, endTime) => {
+  if (startTime === '' && endTime === '') {
+    return undefined;
+  }
+
   const days = moment
     .duration(moment(endTime, 'YYYY/MM/DDTHH:mm')
       .diff(moment(startTime, 'YYYY/MM/DDTHH:mm'))).asDays();
@@ -53,6 +57,9 @@ export const estimatedDaysDiscount = (daysRented) => {
 };
 
 export const estimatedAgeDiscount = (borrowerAge) => {
+  if (borrowerAge === '') {
+    return undefined;
+  }
   if (borrowerAge > 25) {
     return priceDiscounts.ageDiscountAbove25;
   }
