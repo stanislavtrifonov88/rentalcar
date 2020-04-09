@@ -1,12 +1,11 @@
 .dashboardContainer {
 display: flex;
 flex-wrap: wrap;
-justify-content: center;
-align-items: center;
+flex-direction: column;
 }
 
 .dashboardContainer {
-    width: 70%;
+    height: 90vh;
     min-width: 600px;
     padding-top: 8%;
 }
@@ -42,4 +41,8 @@ align-items: center;
 .dashboardContainer h1 {
     color: #2F4858;
     padding-bottom: 5%;
+}
+
+.spinnerDashboard {
+    padding-top: 25%;
 }
