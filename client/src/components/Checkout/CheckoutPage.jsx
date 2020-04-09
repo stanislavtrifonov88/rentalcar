@@ -19,11 +19,11 @@ export default class CheckoutPage extends React.Component {
       loading: false,
       car: { 
       id: "",
-      brand: "Opel",
-      model: "Astra",
-      picture: "https://www.auto-lizingu.lt/wp-content/uploads/2019/09/opel-astra-1-6-l-hecbekas-2014-dyzelinas-13.jpg",
-      className: "B",
-      price: 70,
+      brand: "",
+      model: "",
+      picture: "",
+      className: "",
+      price: 1,
     },
       checkoutForm: {
         borrowerFirstName: null,
