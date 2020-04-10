@@ -105,6 +105,9 @@ export default class CheckoutPage extends React.Component {
       ))
   }
 
+  onCancel = (event) => this.props.history.push({pathname: '/'})
+
+
   componentDidMount() {
     this.setState({ loading: true });
 
@@ -125,7 +128,7 @@ export default class CheckoutPage extends React.Component {
 
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
-    <BookingForm car={car} changed={this.carCheckoutHandler} onInputSubmit={this.onInputSubmit} validations={this.state.checkoutFormValidations} />
+    <BookingForm car={car} changed={this.carCheckoutHandler} onCancel={this.onCancel} onInputSubmit={this.onInputSubmit}  validations={this.state.checkoutFormValidations} />
     <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
   </div>
     if (loading) {
