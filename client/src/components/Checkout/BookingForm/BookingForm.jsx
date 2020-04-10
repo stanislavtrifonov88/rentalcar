@@ -1,11 +1,12 @@
 import React from 'react';
 import './BookingForm.css';
 import * as moment from 'moment';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { isValidField } from '../Validations/validationChecks';
 
-const BookingForm = ({ changed, onInputSubmit, validations }) => {
+const BookingForm = ({
+  changed, onInputSubmit, validations, onCancel,
+}) => {
   const validationErrorFirstName = isValidField(validations.borrowerFirstName);
   const validationErrorLastName = isValidField(validations.borrowerLastName);
   const validationErrorAge = isValidField(validations.borrowerAge);
@@ -85,11 +86,11 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="checkoutBtnsContainer">
         <button type="submit" className="bookCarBtn" onClick={onInputSubmit} data-element="bookingFormCheckoutBtn">
           Checkout
         </button>
-        <button type="submit" className="bookCarBtn"><Link to="/">Cancel</Link></button>
+        <button type="submit" className="bookCarBtn" onClick={onCancel}>Cancel</button>
       </div>
     </div>
   );
@@ -98,6 +99,7 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
 BookingForm.propTypes = {
   changed: PropTypes.func,
   onInputSubmit: PropTypes.func,
+  onCancel: PropTypes.func,
   validations: PropTypes.exact({
     borrowerFirstName: PropTypes.object,
     borrowerLastName: PropTypes.object,
@@ -109,6 +111,7 @@ BookingForm.propTypes = {
 BookingForm.defaultProps = {
   changed: () => '',
   onInputSubmit: () => '',
+  onCancel: () => '',
   validations: PropTypes.exact({
     borrowerFirstName: {},
     borrowerLastName: {},
