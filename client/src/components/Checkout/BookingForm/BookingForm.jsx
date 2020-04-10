@@ -89,7 +89,7 @@ const BookingForm = ({ changed, onInputSubmit, validations }) => {
         <button type="submit" className="bookCarBtn" onClick={onInputSubmit} data-element="bookingFormCheckoutBtn">
           Checkout
         </button>
-        <button type="submit" className="bookCarBtn"><Link to="/home">Cancel</Link></button>
+        <button type="submit" className="bookCarBtn"><Link to="/">Cancel</Link></button>
       </div>
     </div>
   );

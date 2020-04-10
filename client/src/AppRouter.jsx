@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import AvailableCarsContainer from './components/AvailableCars/AvailableCarsContainer';
 import Dashboard from './components/Dashboard/Dashboard';
 import CheckoutPage from './components/Checkout/CheckoutPage';
@@ -8,9 +8,11 @@ import './AppRouter.css';
 
 const AppRouter = () => (
   <div className="routingContainer">
-    <Route path="/home" component={AvailableCarsContainer} />
-    <Route path="/dashboard" component={Dashboard} />
-    <Route path="/cars/:id" component={CheckoutPage} />
+    <Switch>
+      <Route path="/" component={AvailableCarsContainer} exact />
+      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/cars/:id" component={CheckoutPage} />
+    </Switch>
   </div>
 );
 

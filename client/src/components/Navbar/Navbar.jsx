@@ -23,15 +23,15 @@ class NavigationBarCars extends React.Component {
     return (
       <div className="Navbar" data-element="navbar">
         <div className="leftSideContainer">
-        <p className="brandName" href="/home">Awesome Cars</p>
+        <p className="brandName" href="/">Awesome Cars</p>
         <div className="NavbarBtnContainer">
-        <Link className="StandardLink" onClick={() => this.props.onSearch('')} to="/home" data-element="navbarHomeLink">Home</Link>
+        <Link className="StandardLink" onClick={() => this.props.onSearch('')} to="/" data-element="navbarHomeLink">Home</Link>
         <Link className="StandardLink" to="/dashboard" data-element="navbarDashboardLink">Dashboard</Link>
         </div>
         </div>
         <div className="rightSideContainer">
        <input className="SearchField" type="text"  placeholder="Search here" data-name="searchWord"  onChange={this.onInputChange}></input>
-       <Link className="SearchBtn" onClick={() => this.props.onSearch(this.state.searchWord)} to="/home" data-element="navbarSearchBtn">Search</Link>
+       <Link className="SearchBtn" onClick={() => this.props.onSearch(this.state.searchWord)} to="/" data-element="navbarSearchBtn">Search</Link>
         </div>
       </div>
     );
