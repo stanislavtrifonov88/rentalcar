@@ -1,9 +1,8 @@
 import React from 'react';
 import './AvailableCarCard.css';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const AvailableCarCard = ({ car }) => (
+const AvailableCarCard = ({ car, onCheckout }) => (
   <div className="col-lg-4 col-md-6">
     <div className="cardAvailableCar" data-element="availableCarCard">
       <img src={car.picture} alt="NO PIC" />
@@ -36,14 +35,13 @@ const AvailableCarCard = ({ car }) => (
           </div>
         </div>
       </div>
-      <div className="StandardBtn">
-        <Link to={`/cars/${car.id}`} data-element="availableCarCardCheckoutBtn">Checkout</Link>
-      </div>
+      <button type="submit" className="StandardBtn" onClick={() => onCheckout(car.id)} data-element="availableCarCardCheckoutBtn">Checkout</button>
     </div>
   </div>
 );
 
 AvailableCarCard.propTypes = {
+  onCheckout: PropTypes.func,
   car: PropTypes.exact({
     id: PropTypes.string,
     brand: PropTypes.string,
@@ -55,6 +53,7 @@ AvailableCarCard.propTypes = {
 };
 
 AvailableCarCard.defaultProps = {
+  onCheckout: () => '',
   car: PropTypes.exact({
     id: '',
     brand: '',

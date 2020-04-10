@@ -27,6 +27,11 @@ class AvailableCarsContainer extends React.Component {
       });
   }
 
+  onCheckout = (id) => {
+    console.log(id)
+    this.props.history.push({pathname: `/cars/${id}`})
+  }
+
   render() {
     const { cars } = this.state;
     const { word } = this.props;
@@ -39,7 +44,7 @@ class AvailableCarsContainer extends React.Component {
     }
 
 
-    let cards = filteredCars.map((car) => <AvailableCarCard key={car.id} car={car} />);
+    let cards = filteredCars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
     const { loading } = this.state;
     if (loading) {
       cards = <Spinner />;
