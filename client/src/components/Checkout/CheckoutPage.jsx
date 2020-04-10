@@ -4,12 +4,12 @@ import CheckoutCarCard from './CheckoutCarCard/CheckoutCarCard';
 import './CheckoutPage.css';
 import BookingForm from './BookingForm/BookingForm';
 import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
-import { toast } from "react-toastify";
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
 import fetchRequest from '../../services/Rest';
 import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
+import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 
 
 export default class CheckoutPage extends React.Component {
@@ -90,13 +90,20 @@ export default class CheckoutPage extends React.Component {
 
   onInputSubmit = (event) => {
     event.preventDefault();
-    this.setState({ loading: true });
 
-    if (moment(this.state.checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') > moment(this.state.checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm') ) {
-      toast.error("Return date cannot be in the past", {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
-    }
+    bookingFormErrors(this.state.checkoutForm, this.state.checkoutFormValidations)
+
+    if (
+      !this.state.checkoutFormValidations.borrowerFirstName.valid ||
+      !this.state.checkoutFormValidations.borrowerLastName.valid || 
+      !this.state.checkoutFormValidations.borrowerAge.valid || 
+      !this.state.checkoutFormValidations.contractEndDate.touched || 
+      !this.state.checkoutFormValidations.contractEndDate.valid ) {
+
+        return;
+      }
+
+    this.setState({ loading: true });
 
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',this.state.checkoutForm)
     .then(response => 
