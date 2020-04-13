@@ -10,6 +10,7 @@ import fetchRequest from '../../services/Rest';
 import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
+import { toastSuccess } from '../../services/toastify/toastify';
 
 
 export default class CheckoutPage extends React.Component {
@@ -90,13 +91,13 @@ export default class CheckoutPage extends React.Component {
 
   onInputSubmit = (event) => {
     event.preventDefault();
-
     bookingFormErrors(this.state.checkoutForm, this.state.checkoutFormValidations)
 
     if (
       !this.state.checkoutFormValidations.borrowerFirstName.valid ||
       !this.state.checkoutFormValidations.borrowerLastName.valid || 
       !this.state.checkoutFormValidations.borrowerAge.valid || 
+      !(this.state.checkoutForm.borrowerAge >= 18) ||
       !this.state.checkoutFormValidations.contractEndDate.touched || 
       !this.state.checkoutFormValidations.contractEndDate.valid ) {
 
@@ -109,6 +110,7 @@ export default class CheckoutPage extends React.Component {
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
       this.setState({ loading: false }),
+      toastSuccess('Car successfully borrowed')
       ))
   }
 

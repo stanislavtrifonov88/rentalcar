@@ -4,6 +4,7 @@ import DashboardItem from './DashboardItem/DashboardItem';
 import fetchRequest from '../../services/Rest';
 import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
+import { toastSuccess } from '../../services/toastify/toastify';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class Dashboard extends React.Component {
             contracts: result,
             loading: false,
           });
+          toastSuccess("Car successfully returned")
         }));
   }
 
