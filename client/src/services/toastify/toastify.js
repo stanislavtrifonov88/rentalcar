@@ -9,10 +9,8 @@ export const toastError = (statement, msg) => {
   }
 };
 
-export const toastSuccess = (statement, msg) => {
-  if (!statement) {
-    toast.success(msg, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  }
+export const toastSuccess = (msg) => {
+  toast.success(msg, {
+    position: toast.POSITION.BOTTOM_RIGHT,
+  });
 };
