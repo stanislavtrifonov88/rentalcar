@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as moment from 'moment';
 import { Repository, getManager } from 'typeorm';
 import { Car } from '../database/entities/car.entity';
 import { Contract } from '../database/entities/contract.entity';
@@ -83,7 +82,6 @@ export class ContractsService {
         await transactionalEntityManager.save(foundCar);
 
         foundContract.deliveredDate = new Date();
-
         foundContract.pricePaid = body.name;
 
         await transactionalEntityManager.save(foundContract);
