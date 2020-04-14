@@ -1,5 +1,5 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
-import * as constants from './constants'
+import * as constants from './constantsMigrations'
 
 export class seedData1585911660500 implements MigrationInterface {
 
