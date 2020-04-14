@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { dateFormat } from '../../shared/constants/constants';
 
 // Mock class ids for the relation with cars
 export const classA_uuid = 'e52040e8-b129-40c8-a255-9161c96107c1';
@@ -13,9 +14,9 @@ export const golf2_uuid = '39a88efb-16c5-4972-95d1-313d585a818d';
 
 // Mock dates
 
-export const startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
-export const contractEndDate = (moment(new Date(), "YYYY-MM-DDTHH:mm").add(5, 'days')).format('YYYY-MM-DDTHH:mm');
-export const contractEndDate14Days = (moment(new Date(), "YYYY-MM-DDTHH:mm").add(14, 'days')).format('YYYY-MM-DDTHH:mm');
+export const startDate = moment(new Date()).format(dateFormat);
+export const contractEndDate = (moment(new Date(), dateFormat).add(5, 'days')).format(dateFormat);
+export const contractEndDate14Days = (moment(new Date(), dateFormat).add(14, 'days')).format(dateFormat);
 
 // Car images
 export const fordFocus = 'http://localhost:3001/img/fordFocus.jpeg';
