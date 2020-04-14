@@ -82,7 +82,8 @@ export class ContractsService {
         foundCar.isBorrowed = false;
         await transactionalEntityManager.save(foundCar);
 
-        foundContract.deliveredDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+        foundContract.deliveredDate = new Date();
+
         foundContract.pricePaid = body.name;
 
         await transactionalEntityManager.save(foundContract);
