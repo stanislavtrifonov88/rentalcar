@@ -1,5 +1,4 @@
 import React from 'react';
-import * as moment from 'moment';
 import CheckoutCarCard from './CheckoutCarCard/CheckoutCarCard';
 import './CheckoutPage.css';
 import BookingForm from './BookingForm/BookingForm';
@@ -11,6 +10,7 @@ import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
+import { timeStamp } from '../../shared/constants';
 
 
 export default class CheckoutPage extends React.Component {
@@ -30,8 +30,8 @@ export default class CheckoutPage extends React.Component {
         borrowerFirstName: null,
         borrowerLastName: null,
         borrowerAge: 18,
-        startDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
-        contractEndDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+        startDate: timeStamp(),
+        contractEndDate: timeStamp(),
     },
   checkoutFormValidations: {
     borrowerFirstName: {
@@ -76,7 +76,7 @@ export default class CheckoutPage extends React.Component {
     const newObj = {};
     const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
-    newObj.startDate = moment(new Date()).format('YYYY-MM-DDTHH:mm');
+    newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
 
@@ -119,7 +119,6 @@ export default class CheckoutPage extends React.Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-
     const { id }= this.props.match.params;
       fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {

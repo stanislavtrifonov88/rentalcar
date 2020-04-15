@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import { dateFormatter } from '../../shared/constants';
 import { toastError } from './toastify';
 
 export const bookingFormErrors = (checkoutForm, checkoutFormValidations) => {
@@ -11,7 +11,7 @@ export const bookingFormErrors = (checkoutForm, checkoutFormValidations) => {
     return;
   }
   toastError(checkoutFormValidations.contractEndDate.valid, 'Please enter a valid date');
-  toastError(moment(checkoutForm.startDate).format('YYYY-MM-DDTHH:mm') < moment(checkoutForm.contractEndDate).format('YYYY-MM-DDTHH:mm'), 'Return date cannot be in the past');
+  toastError(dateFormatter(checkoutForm.startDate) < dateFormatter(checkoutForm.contractEndDate), 'Return date cannot be in the past');
 };
 
 export const carReturned = () => 'hi';

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as priceCalculations from '../../../services/PriceCalculations';
 import './DashboardItem.css'
-import * as moment from 'moment';
+import { dateFormatter } from '../../../shared/constants';
 
 class DashboardItem extends React.Component {
 
@@ -23,8 +23,8 @@ class DashboardItem extends React.Component {
     const overduePenalty = priceCalculations.overduePenalty(daysOverUnderContract);
     const currentTotalPrice = estimatedTotalPrice + (overduePenalty * daysOverUnderContract * priceAfterDaysAndAge);
     const currentPricePerDay = priceCalculations.currentPricePerDay(overduePenalty, priceAfterDaysAndAge);
-    const startDateFormatted = moment(this.props.contract.startDate).format('YYYY-MM-DD, HH:MM');
-    const returnDateFormatted = moment(this.props.contract.startDate).format('YYYY-MM-DD, HH:MM');
+    const startDateFormatted = dateFormatter(this.props.contract.startDate);
+    const returnDateFormatted = dateFormatter(this.props.contract.contractEndDate);
 
 
     return (

@@ -21,14 +21,14 @@ export class Contract {
     @Column({ type: 'float', nullable: false })
     borrowerAge: number;
 
-    @Column({ type: 'text', nullable: false })
-    startDate: string;
+    @Column({ type: 'timestamp', nullable: false })
+    startDate: Date;
 
-    @Column({ type: 'text', nullable: false })
-    contractEndDate: string;
+    @Column({ type: 'timestamp', nullable: false })
+    contractEndDate: Date;
 
-    @Column({ type: 'text', nullable: true })
-    deliveredDate: string;
+    @Column({ type: 'timestamp', nullable: true })
+    deliveredDate: Date;
 
     @Column({ type: 'float', default: 0 })
     pricePaid: number;

@@ -1,8 +1,8 @@
 import React from 'react';
 import './BookingForm.css';
-import * as moment from 'moment';
 import PropTypes from 'prop-types';
 import { isValidField } from '../Validations/validationChecks';
+import { timeStamp } from '../../../shared/constants';
 
 const BookingForm = ({
   changed, onInputSubmit, validations, onCancel,
@@ -77,8 +77,8 @@ const BookingForm = ({
               type="datetime-local"
               required
               data-name="contractEndDate"
-              defaultValue={moment(new Date()).format('YYYY-MM-DDTHH:mm')}
-              min={moment(new Date()).format('YYYY-MM-DDThh:mm')}
+              defaultValue={timeStamp()}
+              min={timeStamp()}
               onChange={changed}
             />
 
