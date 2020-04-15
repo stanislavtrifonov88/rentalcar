@@ -2,10 +2,10 @@ import * as moment from 'moment';
 import { NewContractDTO } from '../../contracts/models/newContract.dto';
 import * as errorMessages from './error.messages';
 import { should } from '../util/Guard';
-import { dateFormat } from '../constants/constants';
+import { timeStamp } from '../constants/constants';
 
 export const createContractErrorHandling = (body: NewContractDTO): void => {
-  const now = (moment(new Date(), dateFormat).add(-15, 'minutes')).format(dateFormat);
+  const now = timeStamp(0, -15)
 
   should(moment(body.startDate).isValid(), errorMessages.validStartDate)
 

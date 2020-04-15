@@ -1,8 +1,7 @@
-import * as moment from 'moment';
 import { createContractErrorHandling } from './createContractErrorHandling';
 import { NewContractDTO } from '../../contracts/models/newContract.dto';
 import * as errorMessages from './error.messages';
-import { dateFormat } from '../constants/constants';
+import { timeStamp } from '../constants/constants';
 
 describe('createContractErrorHandling', () => {
   let mockInput: NewContractDTO = null;
@@ -12,8 +11,8 @@ describe('createContractErrorHandling', () => {
       borrowerFirstName: 'test',
       borrowerLastName: 'test',
       borrowerAge: 18,
-      startDate: moment(new Date()).format(dateFormat),
-      contractEndDate: moment(new Date()).add(1, 'days').format(dateFormat),
+      startDate: timeStamp(),
+      contractEndDate: timeStamp(1),
     };
   });
 
@@ -74,7 +73,7 @@ describe('createContractErrorHandling', () => {
 
   it('should get throw an error with the correct message when start date is in the past', async () => {
     // Arrange
-    mockInput.startDate = (moment(new Date(), dateFormat).add(-48, 'hours')).format(dateFormat);
+    mockInput.startDate = timeStamp(-2);
 
     // Act & Assert
 
@@ -84,7 +83,7 @@ describe('createContractErrorHandling', () => {
   it('should get throw an error with the correct message when return date is in the past', async () => {
     // Arrange
 
-    mockInput.contractEndDate = (moment(new Date(), dateFormat).add(-48, 'hours')).format(dateFormat);
+    mockInput.contractEndDate = timeStamp(-2);
 
     // Act & Assert
 
