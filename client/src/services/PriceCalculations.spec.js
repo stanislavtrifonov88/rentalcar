@@ -1,324 +1,385 @@
+/* eslint-disable no-undef */
 import * as priceCalculations from './PriceCalculations';
 import * as priceDiscounts from './discounts/priceDiscounts';
 
+describe('PriceCalcution service', () => {
+  let contractData;
 
-it('estimatedDaysDiscount should assign 100% of car base price if the car is rented for 1 day', () => {
+  beforeEach(async () => {
+    contractData = {
+      id: '71e542f1-0936-4319-8d66-f5768b770eb9',
+      borrowerFirstName: 'asd',
+      borrowerLastName: 'asd',
+      borrowerAge: 23,
+      startDate: '2020-01-01T15:20:00.000Z',
+      contractEndDate: '2020-01-02T15:20:00.000Z',
+      brand: 'Volkswagen',
+      model: 'Golf',
+      price: 100,
+    };
+  });
 
+
+  it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 09:00 is considered 1 day)', () => {
   // Arramge
-  const estimatedDaysRented = 1;
+    const daysRented = jest.fn(() => 1);
 
-  // Act
+    // Act
 
-  const result = priceCalculations.estimatedDaysDiscount(estimatedDaysRented);
+    const result = priceCalculations.estimatedDaysRented(
+      contractData, daysRented,
+    );
 
-  // Assert
+    // Assert
 
-  expect(result).toEqual(priceDiscounts.daysDiscount1day);
-});
+    expect(result).toEqual(1);
+  });
 
-it('estimatedDaysDiscount should assign 85% of car base price if the car is rented for 2-6 day', () => {
+  it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
   // Arramge
-  const estimatedDaysRented = 4;
+    const daysRented = jest.fn(() => 1.1);
 
-  // Act
 
-  const result = priceCalculations.estimatedDaysDiscount(estimatedDaysRented);
+    // Act
 
-  // Assert
+    const result = priceCalculations.estimatedDaysRented(
+      contractData, daysRented,
+    );
 
-  expect(result).toEqual(priceDiscounts.daysDiscount2to6days);
-});
+    // Assert
 
-it('estimatedDaysDiscount should assign 75% of car base price if the car is rented for 7+ day', () => {
+    expect(result).toEqual(2);
+  });
+
+  it('estimatedDaysRented case 3: (same day return is considered 1 day)', () => {
   // Arramge
-  const estimatedDaysRented = 8;
+    const daysRented = jest.fn(() => 0.1);
 
-  // Act
+    // Act
 
-  const result = priceCalculations.estimatedDaysDiscount(estimatedDaysRented);
+    const result = priceCalculations.estimatedDaysRented(
+      contractData, daysRented,
+    );
 
-  // Assert
+    // Assert
 
-  expect(result).toEqual(priceDiscounts.daysDiscount7PlusDays);
-});
+    expect(result).toEqual(1);
+  });
 
-it('estimatedDaysDiscount should not accept rented days below 1 day', () => {
+  it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time: 2020.01.02 09:00 is considered 1 day)', () => {
   // Arramge
-  const estimatedDaysRented = -1;
+    const daysRented = jest.fn(() => 1);
+    const dateFormatter = jest.fn(() => '2020.01.01T10:00:00.000Z');
 
+    // Act
 
-  // Act
+    const result = priceCalculations.currentDaysRented(contractData, daysRented, dateFormatter);
 
-  const result = priceCalculations.estimatedDaysDiscount(estimatedDaysRented);
+    // Assert
 
-  // Assert
+    expect(result).toEqual(1);
+  });
 
-  expect(result).toEqual(priceDiscounts.daysDiscountNegativeDays);
-});
-
-it('estimatedAgeDiscount should not add any penalty if the borrower is 26+ years old', () => {
+  it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time:  2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
   // Arramge
-  const borrowerAge = 26;
+    const daysRented = jest.fn(() => 1.1);
+    const dateFormatter = jest.fn(() => '2020.01.01T10:00:00.000Z');
 
-  // Act
+    // Act
 
-  const result = priceCalculations.estimatedAgeDiscount(borrowerAge);
+    const result = priceCalculations.currentDaysRented(contractData, daysRented, dateFormatter);
 
-  // Assert
 
-  expect(result).toEqual(priceDiscounts.ageDiscountAbove25);
-});
+    // Assert
 
-it('estimatedAgeDiscount should add 20% on the car base price if the borrower is between 18 - 25 years old', () => {
-  // Arramge
-  const borrowerAge = 18;
+    expect(result).toEqual(2);
+  });
 
-  // Act
-
-  const result = priceCalculations.estimatedAgeDiscount(borrowerAge);
-
-  // Assert
-
-  expect(result).toEqual(priceDiscounts.ageDiscountBelow25);
-});
-
-it('estimatedAgeDiscount should not return a number if the borrower age is below 18', () => {
-  // Arramge
-  const borrowerAge = 7;
-
-  // Act
-
-  const result = priceCalculations.estimatedAgeDiscount(borrowerAge);
-
-  // Assert
-
-  expect(result).toEqual(priceDiscounts.ageDiscountBelow18);
-});
-
-
-it('estimatedPricePerDay should call estimatedAgeDiscount() and estimatedDaysDiscount()', () => {
-  // Arramge
-  const borrowerAge = 18;
-  const carBasePrice = 80;
-  const daysRented = 1;
-
-  const estimatedDaysDiscountFunctionMock = jest.fn((x) => 1);
-  const estimatedAgeDiscountFunctionMock = jest.fn((x) => 1);
-
-
-  // Act
-
-  const result = priceCalculations.estimatedPricePerDay(daysRented, borrowerAge, carBasePrice, estimatedDaysDiscountFunctionMock, estimatedAgeDiscountFunctionMock);
-
-  // Assert
-
-  expect(result).toEqual(80);
-});
-
-it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 09:00 is considered 1 day)', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
-
-  // Act
-
-  const result = priceCalculations.estimatedDaysRented(contractMock.startDate, contractMock.contractEndDate);
-
-  // Assert
-
-  expect(result).toEqual(1);
-});
-
-it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T10:45',
-  };
-
-  // Act
-
-  const result = priceCalculations.estimatedDaysRented(contractMock.startDate, contractMock.contractEndDate);
-
-  // Assert
-
-  expect(result).toEqual(2);
-});
-
-it('estimatedDaysRented case 3: (same day return is considered 1 day)', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-01T12:00',
-  };
-
-  // Act
-
-  const result = priceCalculations.estimatedDaysRented(contractMock.startDate, contractMock.contractEndDate);
-
-  // Assert
-
-  expect(result).toEqual(1);
-});
-
-it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time: 2020.01.02 09:00 is considered 1 day)', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
-
-  const today = '2020-01-02T09:00'
-
-  // Act
-
-  const result = priceCalculations.estimatedDaysRented(contractMock.startDate, today);
-
-  // Assert
-
-  expect(result).toEqual(1);
-});
-
-it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time:  2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T10:45',
-  };
-
-  const today = '2020-01-02T10:45'
-
-  // Act
-
-  const result = priceCalculations.estimatedDaysRented(contractMock.startDate, today);
-
-  // Assert
-
-  expect(result).toEqual(2);
-});
-
-it('daysOverUnderContract should call return the number of days when the car is not returned on time', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
-
-  const mockCurrentDaysRented = jest.fn((x) => 6);
-  const mockEstimatedDaysRented = jest.fn((x) => 5);
-
-
-  // Act
-
-  const result = priceCalculations.daysOverUnderContract(contractMock.startDate, contractMock.contractEndDate, mockCurrentDaysRented, mockEstimatedDaysRented);
-
-  // Assert
-
-  expect(result).toEqual(1);
-});
-
-it('daysOverUnderContract should call return the number of days when the car is in advance', () => {
-  // Arramge
-  const contractMock = {
-    borrowerFirstName: 'Batman',
-    borrowerLastName: 'Ivanov',
-    borrowerAge: '22',
-    startDate: '2020-01-01T10:00',
-    contractEndDate: '2020-01-02T09:00',
-  };
-
-  const mockCurrentDaysRented = jest.fn((x) => 5);
-  const mockEstimatedDaysRented = jest.fn((x) => 6);
-
-
-  // Act
-
-  const result = priceCalculations.daysOverUnderContract(contractMock.startDate, contractMock.contractEndDate, mockCurrentDaysRented, mockEstimatedDaysRented);
-
-  // Assert
-
-  expect(result).toEqual(-1);
-});
-
-
-it('overduePenalty should return 1 if overdue days < 1', () => {
+  it('daysOverUnderContract should call return the number of days when the car is not returned on time', () => {
   // Arramge
 
-  const overUnderDaysRented = -3;
-
-  // Act
-
-  const result = priceCalculations.overduePenalty(overUnderDaysRented);
-
-  // Assert
-
-  expect(result).toEqual(1);
-});
+    const mockCurrentDaysRented = jest.fn(() => 6);
+    const mockDaysRented = jest.fn(() => 5);
 
 
-it('overduePenalty should return 1.5 if overdue days < 6', () => {
+    // Act
+
+    const result = priceCalculations.overdueDays(
+      contractData,
+      mockCurrentDaysRented,
+      mockDaysRented,
+    );
+
+    // Assert
+
+    expect(result).toEqual(1);
+  });
+
+  it('daysOverUnderContract should call return the number of days when the car is in advance', () => {
   // Arramge
 
-  const overUnderDaysRented = 5;
+    const mockCurrentDaysRented = jest.fn((x) => 5);
+    const mockDaysRented = jest.fn((x) => 6);
 
 
-  // Act
+    // Act
 
-  const result = priceCalculations.overduePenalty(overUnderDaysRented);
+    const result = priceCalculations.overdueDays(
+      contractData,
+      mockCurrentDaysRented,
+      mockDaysRented,
+    );
 
-  // Assert
+    // Assert
 
-  expect(result).toEqual(1.5);
-});
+    expect(result).toEqual(-1);
+  });
 
-
-it('overduePenalty should return 2 if overdue days >= 6', () => {
+  it('daysDiscount should return 0 if the car is rented for 1 day', () => {
   // Arramge
 
-  const overUnderDaysRented = 7;
+    const mockDaysRented = jest.fn(() => 1);
+    // Act
 
-  // Act
+    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
 
-  const result = priceCalculations.overduePenalty(overUnderDaysRented);
+    // Assert
 
-  // Assert
+    expect(result).toEqual(priceDiscounts.daysDiscount1day);
+  });
 
-  expect(result).toEqual(2);
-});
-
-
-it('currentPricePerDay should return the product of its inputs', () => {
+  it('daysDiscount should return -0.15% if the car is rented for 2-6 day', () => {
   // Arramge
 
-  const overduePenaltyPercent = 2
-  const estimatedDailyPrice = 2
+    const mockDaysRented = jest.fn(() => 4);
+    // Act
+
+    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+
+    // Assert
+
+    expect(result).toEqual(priceDiscounts.daysDiscount2to6days);
+  });
+
+  it('daysDiscount should return -0.25% if the car is rented for 7+ day', () => {
+  // Arramge
+
+    const mockDaysRented = jest.fn(() => 9);
+    // Act
+
+    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+
+    // Assert
+
+    expect(result).toEqual(priceDiscounts.daysDiscount7PlusDays);
+  });
+
+  it('daysDiscount return a msg if rented days below below 1 day', () => {
+  // Arramge
+
+    const mockDaysRented = jest.fn(() => -1);
+    // Act
+
+    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+
+    // Assert
+
+    expect(result).toEqual(priceDiscounts.daysDiscountNegativeDays);
+  });
+
+  it('ageDiscount should not add any penalty if the borrower is 26+ years old', () => {
+  // Arramge
+    contractData.borrowerAge = 33;
 
 
-  // Act
+    // Act
 
-  const result = priceCalculations.currentPricePerDay(overduePenaltyPercent, estimatedDailyPrice);
+    const result = priceCalculations.ageDiscount(contractData);
 
-  // Assert
+    // Assert
 
-  expect(result).toEqual(4);
+    expect(result).toEqual(priceDiscounts.ageDiscountAbove25);
+  });
+
+  it('ageDiscount should return +20% if the borrower is between 18 - 25 years old', () => {
+  // Arramge
+    contractData.borrowerAge = 20;
+
+    // Act
+
+    const result = priceCalculations.ageDiscount(contractData);
+
+    // Assert
+
+    expect(result).toEqual(priceDiscounts.ageDiscountBelow25);
+  });
+
+  it('ageDiscount should return a msg the borrower age is below 18', () => {
+  // Arramge
+    contractData.borrowerAge = 12;
+
+    // Act
+
+    const result = priceCalculations.ageDiscount(contractData);
+
+    // Assert
+
+    expect(result).toEqual(priceDiscounts.ageDiscountBelow18);
+  });
+
+  it('totalDiscount should return the sum of all the functions provided to it', () => {
+    // Arramge
+
+    const daysDiscountFunctionMock = jest.fn(() => -1);
+    const ageDiscountFunctionMock = jest.fn(() => 2);
+    const defaultDiscountFnsMock = [daysDiscountFunctionMock, ageDiscountFunctionMock];
+
+    // Act
+
+    const result = priceCalculations.totalDiscount(contractData, defaultDiscountFnsMock);
+
+    // Assert
+
+    expect(result).toEqual(1);
+  });
+
+
+  it('estimatedPricePerDay should return the base price after discouns', () => {
+  // Arramge
+
+    const totalDiscountMock = jest.fn((x) => 0.1);
+
+    // Act
+
+    const result = priceCalculations.estimatedPricePerDay(
+      contractData, totalDiscountMock,
+    );
+
+    // Assert
+
+    expect(result).toEqual(90);
+  });
+
+
+  it('overduePenalty should return 1 if overdue days < 1', () => {
+  // Arramge
+
+    const overdueDaysFn = jest.fn(() => 0);
+
+    // Act
+
+    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+
+    // Assert
+
+    expect(result).toEqual(1);
+  });
+
+
+  it('overduePenalty should return 1.5 if overdue days < 6', () => {
+  // Arramge
+
+    const overdueDaysFn = jest.fn(() => 5);
+
+    // Act
+
+    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+
+    // Assert
+
+    expect(result).toEqual(1.5);
+  });
+
+
+  it('overduePenalty should return 2 if overdue days >= 6', () => {
+  // Arramge
+
+    const overdueDaysFn = jest.fn(() => 7);
+
+    // Act
+
+    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+
+    // Assert
+
+    expect(result).toEqual(2);
+  });
+
+  it('estimatedTotalPrice should return the product of estiamtedPricePerDay and estimatedDaysRented', () => {
+    // Arramge
+    const estimatedDaysRentedMock = jest.fn(() => 2);
+    const estiamtedPricePerDayMock = jest.fn(() => 2);
+
+    // Act
+
+    const result = priceCalculations.estimatedTotalPrice(
+      contractData,
+      estimatedDaysRentedMock,
+      estiamtedPricePerDayMock,
+    );
+
+    // Assert
+
+    expect(result).toEqual(4);
+  });
+
+  it('currentPricePerDay should return the product of its inputs', () => {
+  // Arramge
+
+    const overduePenaltyMock = jest.fn(() => 2);
+    const estimatedPricePerDayMock = jest.fn(() => 2);
+
+    // Act
+
+    const result = priceCalculations.estimatedTotalPrice(
+      contractData,
+      estimatedPricePerDayMock,
+      overduePenaltyMock,
+    );
+    // Assert
+
+    expect(result).toEqual(4);
+  });
+
+  it('currentTotalPrice should return the estimatedTotalPrice if daysOverdue are <= 0', () => {
+    // Arramge
+
+    const currentPricePerDayMock = jest.fn(() => 2);
+    const daysOverdueMock = jest.fn(() => 0);
+    const estimatedTotalPriceMock = jest.fn(() => 10);
+
+
+    // Act
+
+    const result = priceCalculations.currentTotalPrice(
+      contractData,
+      currentPricePerDayMock,
+      daysOverdueMock,
+      estimatedTotalPriceMock,
+    );
+      // Assert
+
+    expect(result).toEqual(10);
+  });
+
+  it('currentTotalPrice should return the estimatedTotalPrice if daysOverdue are <= 0', () => {
+    // Arramge
+
+    const currentPricePerDayMock = jest.fn(() => 2);
+    const daysOverdueMock = jest.fn(() => 3);
+    const estimatedTotalPriceMock = jest.fn(() => 10);
+
+    // Act
+
+    const result = priceCalculations.currentTotalPrice(
+      contractData,
+      currentPricePerDayMock,
+      daysOverdueMock,
+      estimatedTotalPriceMock,
+    );
+
+    // Assert
+
+    expect(result).toEqual(16);
+  });
 });
