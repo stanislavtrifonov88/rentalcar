@@ -10,7 +10,7 @@ import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
-import { timeStamp } from '../../shared/constants';
+import { timeStamp } from '../../shared/dateModifiers';
 
 
 export default class CheckoutPage extends React.Component {

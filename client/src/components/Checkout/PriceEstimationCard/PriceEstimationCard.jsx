@@ -4,18 +4,15 @@ import PropTypes from 'prop-types';
 import * as priceCalculations from '../../../services/PriceCalculations';
 
 const PriceEstimationCard = ({ priceEstimationForm }) => {
-  const numberOfDays = priceCalculations.estimatedDaysRented(
-    priceEstimationForm.checkoutForm.startDate,
-    priceEstimationForm.checkoutForm.contractEndDate,
+  const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(
+    priceEstimationForm.checkoutForm,
   );
-  const daysDiscount = +priceCalculations.estimatedDaysDiscount(numberOfDays);
-  const basePrice = (priceEstimationForm.car.price);
-  const priceAfterDaysDiscount = (basePrice * daysDiscount).toFixed(2);
-  const agePenalty = priceCalculations.estimatedAgeDiscount(
-    priceEstimationForm.checkoutForm.borrowerAge,
-  ).toFixed(2);
-  const priceAfterDaysAndAge = (agePenalty * priceAfterDaysDiscount).toFixed(2);
-  const totalPrice = (priceAfterDaysAndAge * numberOfDays).toFixed(2);
+  const basePrice = priceEstimationForm.checkoutForm.price;
+  const daysDiscount = priceCalculations.daysDiscount(priceEstimationForm.checkoutForm);
+  const agePenalty = priceCalculations.ageDiscount(priceEstimationForm.checkoutForm);
+  const estimatedTotalDiscount = priceCalculations.totalDiscount(priceEstimationForm.checkoutForm);
+  const currentTotalPrice = priceCalculations.currentTotalPrice(priceEstimationForm.checkoutForm);
+  const currentPricePerDay = priceCalculations.currentPricePerDay(priceEstimationForm.checkoutForm);
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -24,7 +21,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
         <h5>Contract Details</h5>
         <div className="priceItem">
           <p>Days</p>
-          <p>{numberOfDays}</p>
+          <p>{estimatedNumberOfDays}</p>
         </div>
         <div className="priceItem">
           <p>Daily price</p>
@@ -40,13 +37,8 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
             Days Discount:
           </p>
           <p>
-            -
-            {((1 - daysDiscount) * 100).toFixed(0)}
+            {daysDiscount * 100}
             %
-          </p>
-          <p>
-            {priceAfterDaysDiscount}
-            $
           </p>
         </div>
         <div className="priceItem">
@@ -54,13 +46,17 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
             Age Penalty:
           </p>
           <p>
-            +
-            {((agePenalty - 1) * 100).toFixed(0)}
+            {agePenalty * 100}
             %
           </p>
+        </div>
+        <div className="priceItem">
           <p>
-            {priceAfterDaysAndAge}
-            $
+            Total Discount:
+          </p>
+          <p>
+            {estimatedTotalDiscount * 100}
+            %
           </p>
         </div>
         <br />
@@ -68,7 +64,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
         <div className="priceItem">
           <p>Daily Price</p>
           <p>
-            {priceAfterDaysAndAge}
+            {currentPricePerDay}
             $
           </p>
         </div>
@@ -76,7 +72,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
         <div className="priceItem">
           <p className="estimatedTotalPrice">Total Price</p>
           <p className="estimatedTotalPrice">
-            {totalPrice}
+            {currentTotalPrice}
             $
           </p>
         </div>
