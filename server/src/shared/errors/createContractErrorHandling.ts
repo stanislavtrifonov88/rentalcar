@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { NewContractDTO } from '../../contracts/models/newContract.dto';
 import * as errorMessages from './error.messages';
 import { should } from '../util/Guard';
-import { timeStamp } from '../constants/constants';
+import { timeStamp } from '../constants/dateModifiers';
 
 export const createContractErrorHandling = (body: NewContractDTO): void => {
   const now = timeStamp(0, -15)
