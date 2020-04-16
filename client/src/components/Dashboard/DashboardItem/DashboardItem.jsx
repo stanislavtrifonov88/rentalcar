@@ -20,7 +20,8 @@ class DashboardItem extends React.Component {
     const estimatedTotalDiscount = priceCalculations.totalDiscount(this.props.contract);
     const estimatedPricePerDay = priceCalculations.estimatedPricePerDay((this.props.contract));
     const daysOverUnderContract = priceCalculations.overdueDays(this.props.contract);
-    const currentTotalPrice = priceCalculations.currentTotalPrice(this.props.contract)
+    const estimatedTotalPrice = priceCalculations.estimatedTotalPrice(this.props.contract)
+    const currentTotalPrice = priceCalculations.currentTotalPrice(this.props.contract);
     const currentPricePerDay = priceCalculations.currentPricePerDay(this.props.contract);
     const startDateFormatted = dateFormatter(this.props.contract.startDate);
     const returnDateFormatted = dateFormatter(this.props.contract.contractEndDate);
@@ -43,6 +44,9 @@ class DashboardItem extends React.Component {
         <td>{estimatedNumberOfDays}</td>
         <td>
           {estimatedPricePerDay.toFixed(2)}
+        </td>
+        <td>
+          {estimatedTotalPrice.toFixed(2)}
         </td>
         <td>{currentNumberOfDays}</td>
         <td>{daysOverUnderContract}</td>
