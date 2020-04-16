@@ -49,18 +49,16 @@ export class ContractsService {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
 
       createContractErrorHandling(body);
+      const newContract = this.contractsRepository.create(body);
+      newContract.car = foundCar;
+      foundCar.isBorrowed = true;
 
-      const createdContract: Contract = await getManager().transaction(async (transactionalEntityManager) => {
-        const newContract = this.contractsRepository.create(body);
-        newContract.car = foundCar;
-        const savedContract = await transactionalEntityManager.save(newContract);
-        foundCar.isBorrowed = true;
+      await getManager().transaction(async (transactionalEntityManager) => {
+        await transactionalEntityManager.save(newContract);
         await transactionalEntityManager.save(foundCar);
-
-        return savedContract
       });
 
-      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(createdContract);
+      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(newContract);
 
       return individualContractFormated;
     }
