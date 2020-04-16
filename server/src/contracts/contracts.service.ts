@@ -10,6 +10,7 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
+import { currentTotalPrice } from '../shared/calculations/priceCalculations';
 
 
 @Injectable()
@@ -65,7 +66,8 @@ export class ContractsService {
     }
 
     public async returnCar(
-        contractId: string, body: {name: number},
+        contractId: string,
+        transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO,
         ): Promise<IndividualContractDTO> {
       const foundContract = await this.contractsRepository.findOne({
         where: {
@@ -74,16 +76,18 @@ export class ContractsService {
         },
       });
 
+      const foundtContractTransformed = await transformatorToDTO(foundContract);
+      const pricePaid = currentTotalPrice(foundtContractTransformed)
+
       Guard.isFound(foundContract, errorMessages.contractNotFound);
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
+      foundCar.isBorrowed = false;
+      foundContract.deliveredDate = new Date();
+      foundContract.pricePaid = pricePaid;
+
 
       await getManager().transaction(async (transactionalEntityManager) => {
-        foundCar.isBorrowed = false;
         await transactionalEntityManager.save(foundCar);
-
-        foundContract.deliveredDate = new Date();
-        foundContract.pricePaid = body.name;
-
         await transactionalEntityManager.save(foundContract);
       });
 

@@ -41,12 +41,12 @@ export class ContractsController {
     @Put(':contractId')
     @HttpCode(HttpStatus.CREATED)
     public async returnCar(
-      @Body() body: {name: number},
+      @Body() body: {},
       @Param('contractId') contractId: string,
 
     ): Promise<IndividualContractDTO> {
-
-      const returnedCar: IndividualContractDTO = await this.contractsService.returnCar(contractId, body);
+      console.log(contractId)
+      const returnedCar: IndividualContractDTO = await this.contractsService.returnCar(contractId);
 
       return returnedCar;
     }

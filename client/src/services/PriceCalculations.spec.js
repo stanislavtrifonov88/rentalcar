@@ -233,7 +233,7 @@ describe('PriceCalcution service', () => {
 
     const daysDiscountFunctionMock = jest.fn(() => -1);
     const ageDiscountFunctionMock = jest.fn(() => 2);
-    const defaultDiscountFnsMock: any = [daysDiscountFunctionMock, ageDiscountFunctionMock];
+    const defaultDiscountFnsMock = [daysDiscountFunctionMock, ageDiscountFunctionMock];
 
     // Act
 
