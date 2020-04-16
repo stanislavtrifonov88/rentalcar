@@ -86,7 +86,7 @@ export const estimatedPricePerDay = (
 ) => {
   const totalDiscountPercent = estimatedTotalDiscountFn(contractData);
 
-  return (1 - totalDiscountPercent) * contractData.price;
+  return (1 + totalDiscountPercent) * contractData.price;
 };
 
 export const overduePenalty = (
@@ -131,16 +131,24 @@ export const currentTotalPrice = (
   contractData,
   currentPricePerDayFn = currentPricePerDay,
   daysOverdueFn = overdueDays,
-  estimatedTotalPriceFn = estimatedTotalPrice,
+  estimatedPricePerDayFn = estimatedPricePerDay,
+  currentDaysRentedFn = currentDaysRented,
 ) => {
   const currentPricePerDayValue = currentPricePerDayFn(contractData);
-  const d = daysOverdueFn(contractData);
-  const estimatedTotalPriceValue = estimatedTotalPriceFn(contractData);
+  const daysOverdueNumber = daysOverdueFn(contractData);
+  const estimatedPricePerDayValue = estimatedPricePerDayFn(contractData);
+  const currentDaysRentedNumber = currentDaysRentedFn(contractData);
   let priceOverContract = 0;
+  let estimatedPrice = 0;
 
-  if (d > 0) {
-    priceOverContract = d * currentPricePerDayValue;
+  if (daysOverdueNumber > 0) {
+    priceOverContract = daysOverdueNumber * currentPricePerDayValue;
+    estimatedPrice = (currentDaysRentedNumber - daysOverdueNumber) * estimatedPricePerDayValue;
   }
 
-  return estimatedTotalPriceValue + priceOverContract;
+  if (daysOverdueNumber <= 0) {
+    estimatedPrice = currentDaysRentedNumber * estimatedPricePerDayValue;
+  }
+
+  return estimatedPrice + priceOverContract;
 };
