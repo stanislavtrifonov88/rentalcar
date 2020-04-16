@@ -230,9 +230,10 @@ describe('PriceCalcution service', () => {
   it('totalDiscount should return the sum of all the functions provided to it', () => {
     // Arramge
 
+
     const daysDiscountFunctionMock = jest.fn(() => -1);
     const ageDiscountFunctionMock = jest.fn(() => 2);
-    const defaultDiscountFnsMock = [daysDiscountFunctionMock, ageDiscountFunctionMock];
+    const defaultDiscountFnsMock: any = [daysDiscountFunctionMock, ageDiscountFunctionMock];
 
     // Act
 
@@ -247,7 +248,7 @@ describe('PriceCalcution service', () => {
   it('estimatedPricePerDay should return the base price after discouns', () => {
   // Arramge
 
-    const totalDiscountMock = jest.fn((x) => 0.1);
+    const totalDiscountMock = jest.fn((x) => -0.1);
 
     // Act
 
@@ -341,12 +342,13 @@ describe('PriceCalcution service', () => {
     expect(result).toEqual(4);
   });
 
-  it('currentTotalPrice should return the estimatedTotalPrice if daysOverdue are <= 0', () => {
+  it('currentTotalPrice should return the correct amount when car is returned on time or before schedule', () => {
     // Arramge
 
-    const currentPricePerDayMock = jest.fn(() => 2);
+    const currentPricePerDayMock = jest.fn(() => 10);
     const daysOverdueMock = jest.fn(() => 0);
-    const estimatedTotalPriceMock = jest.fn(() => 10);
+    const estimatedPricePerDayMock = jest.fn(() => 11);
+    const currentDaysRentedMock = jest.fn(() => 10);
 
     // Act
 
@@ -354,19 +356,21 @@ describe('PriceCalcution service', () => {
       contractData,
       currentPricePerDayMock,
       daysOverdueMock,
-      estimatedTotalPriceMock,
+      estimatedPricePerDayMock,
+      currentDaysRentedMock,
     );
       // Assert
 
-    expect(result).toEqual(10);
+    expect(result).toEqual(110);
   });
 
-  it('currentTotalPrice should return the estimatedTotalPrice if daysOverdue are <= 0', () => {
+  it('currentTotalPrice should return the correct total price including interest for the overdue days', () => {
     // Arramge
 
-    const currentPricePerDayMock = jest.fn(() => 2);
-    const daysOverdueMock = jest.fn(() => 3);
-    const estimatedTotalPriceMock = jest.fn(() => 10);
+    const currentPricePerDayMock = jest.fn(() => 10);
+    const daysOverdueMock = jest.fn(() => 2);
+    const estimatedPricePerDayMock = jest.fn(() => 11);
+    const currentDaysRentedMock = jest.fn(() => 10);
 
     // Act
 
@@ -374,11 +378,11 @@ describe('PriceCalcution service', () => {
       contractData,
       currentPricePerDayMock,
       daysOverdueMock,
-      estimatedTotalPriceMock,
+      estimatedPricePerDayMock,
+      currentDaysRentedMock,
     );
+      // Assert
 
-    // Assert
-
-    expect(result).toEqual(16);
+    expect(result).toEqual(108);
   });
 });
