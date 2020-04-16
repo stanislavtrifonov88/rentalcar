@@ -45,7 +45,6 @@ export class ContractsController {
       @Param('contractId') contractId: string,
 
     ): Promise<IndividualContractDTO> {
-      console.log(contractId)
       const returnedCar: IndividualContractDTO = await this.contractsService.returnCar(contractId);
 
       return returnedCar;
