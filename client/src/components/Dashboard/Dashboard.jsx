@@ -26,9 +26,9 @@ class Dashboard extends React.Component {
       });
   }
 
-  onSubmit = (name, id) => {
+  onSubmit = ({}, id) => {
     this.setState({ loading: true });
-      fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {name})
+      fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {})
       .then(response => 
         fetchRequest(`${baseURL}/${contracts}`)
         .then((result) => {

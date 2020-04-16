@@ -52,7 +52,7 @@ class DashboardItem extends React.Component {
         <td>{daysOverUnderContract}</td>
         <td>{currentPricePerDay.toFixed(2)}</td>
         <td>{currentTotalPrice.toFixed(2)}</td>
-        <td><button className="returnCarBtn" onClick={this.handleClick} name={currentTotalPrice}>Return</button ></td>
+        <td><button className="returnCarBtn" onClick={this.handleClick}>Return</button ></td>
       </tr>
     );
   }
