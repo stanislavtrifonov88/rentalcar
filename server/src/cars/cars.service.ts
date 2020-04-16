@@ -66,12 +66,12 @@ export class CarsService {
         const foundCar: Car = await this.carsRepository.findOne({
         where: {
             id,
-            isBorrowed: true,
             isDeleted: false,
         },
     })
-
     Guard.isFound(foundCar, errorMessages.borrowedCarNotFound);
+    Guard.isFound(foundCar.isBorrowed, errorMessages.carIsAvailable);
+
 
     return foundCar;
 }

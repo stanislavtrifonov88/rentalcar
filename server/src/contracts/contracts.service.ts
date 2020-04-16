@@ -70,14 +70,16 @@ export class ContractsService {
       const foundContract = await this.contractsRepository.findOne({
         where: {
           id: contractId,
-          deliveredDate: null,
         },
       });
+
+      Guard.isFound(foundContract, errorMessages.contractNotFound);
+      Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
 
       const foundtContractTransformed = await transformatorToDTO(foundContract);
       const pricePaid = currentTotalPrice(foundtContractTransformed)
 
-      Guard.isFound(foundContract, errorMessages.contractNotFound);
+
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
       foundCar.isBorrowed = false;
       foundContract.deliveredDate = new Date();
