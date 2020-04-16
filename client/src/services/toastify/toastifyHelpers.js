@@ -1,4 +1,4 @@
-import { dateFormatter } from '../../shared/constants';
+import { dateFormatter } from '../../shared/dateModifiers';
 import { toastError } from './toastify';
 
 export const bookingFormErrors = (checkoutForm, checkoutFormValidations) => {
