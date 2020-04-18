@@ -12,6 +12,7 @@ export const standardRepositoryError = 'The resource you are trying to get canno
 export const carNotFound = 'There is no available car with this ID';
 export const contractNotFound = 'There is no contract with this ID';
 export const borrowedCarNotFound = 'There is no car with this ID';
-export const carIsAvailable = 'There is no borrowed car with this ID';
+export const carIsAvailable = 'The car with the requested ID is available';
+export const carIsBorrowed = 'The car with the requested ID is already borrowed';
 export const contractAlreadyClosed = 'The contract with this ID is already closed';
 
