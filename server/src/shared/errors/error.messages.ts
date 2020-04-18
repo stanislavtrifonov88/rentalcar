@@ -10,6 +10,8 @@ export const firstNamemaxLength = 'First name length cannot be above 25 letters'
 export const lastNamemaxLength = 'First name length cannot be above 25 letters';
 export const standardRepositoryError = 'The resource you are trying to get cannot be found';
 export const carNotFound = 'There is no available car with this ID';
-export const contractNotFound = 'There is no open contract with this ID';
-export const borrowedCarNotFound = 'There is no borrowed car with this ID';
+export const contractNotFound = 'There is no contract with this ID';
+export const borrowedCarNotFound = 'There is no car with this ID';
+export const carIsAvailable = 'There is no borrowed car with this ID';
+export const contractAlreadyClosed = 'The contract with this ID is already closed';
 

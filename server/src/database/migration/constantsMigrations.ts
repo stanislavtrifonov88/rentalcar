@@ -1,4 +1,4 @@
-import { timeStamp } from '../../shared/constants/constants';
+import { timeStamp } from '../../shared/constants/dateModifiers';
 
 // Mock class ids for the relation with cars
 export const classA_uuid = 'e52040e8-b129-40c8-a255-9161c96107c1';

@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
-import * as priceCalculations from './PriceCalculations';
-import * as priceDiscounts from './discounts/priceDiscounts';
+
+import * as priceCalculations from './priceCalculations';
+import * as priceDiscounts from '../discounts/discounts';
 
 describe('PriceCalcution service', () => {
   let contractData;
@@ -233,7 +233,7 @@ describe('PriceCalcution service', () => {
 
     const daysDiscountFunctionMock = jest.fn(() => -1);
     const ageDiscountFunctionMock = jest.fn(() => 2);
-    const defaultDiscountFnsMock = [daysDiscountFunctionMock, ageDiscountFunctionMock];
+    const defaultDiscountFnsMock: any = [daysDiscountFunctionMock, ageDiscountFunctionMock];
 
     // Act
 

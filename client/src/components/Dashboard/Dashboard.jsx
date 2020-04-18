@@ -26,9 +26,9 @@ class Dashboard extends React.Component {
       });
   }
 
-  onSubmit = (name, id) => {
+  onSubmit = ({}, id) => {
     this.setState({ loading: true });
-      fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {name})
+      fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {})
       .then(response => 
         fetchRequest(`${baseURL}/${contracts}`)
         .then((result) => {
@@ -54,6 +54,7 @@ class Dashboard extends React.Component {
         <th className="rowLength1">Return Date</th>
         <th>Days Rented</th>
         <th>Price | Day</th>
+        <th>Estimated Total Price</th>
         <th>Current Days Rented</th>
         <th>Days Overdue</th>
         <th>Current Price | Day</th>

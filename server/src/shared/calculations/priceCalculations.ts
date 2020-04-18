@@ -1,6 +1,7 @@
 
-import * as priceDiscounts from './discounts/priceDiscounts';
-import { differenceInDays, dateFormatter } from '../shared/dateModifiers';
+import * as priceDiscounts from '../discounts/discounts';
+import { differenceInDays, dateFormatter } from '../constants/dateModifiers'
+import { IndividualContractDTO } from '../../contracts/models/individualContract.dto';
 
 export const estimatedDaysRented = (contractData, differenceInDaysFn = differenceInDays) => {
   if (contractData.startDate === '' && contractData.contractEndDate === '') {

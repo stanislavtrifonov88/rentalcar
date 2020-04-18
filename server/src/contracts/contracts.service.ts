@@ -10,6 +10,7 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
+import { currentTotalPrice } from '../shared/calculations/priceCalculations';
 
 
 @Injectable()
@@ -48,42 +49,45 @@ export class ContractsService {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
 
       createContractErrorHandling(body);
+      const newContract = this.contractsRepository.create(body);
+      newContract.car = foundCar;
+      foundCar.isBorrowed = true;
 
-      const createdContract: Contract = await getManager().transaction(async (transactionalEntityManager) => {
-        const newContract = this.contractsRepository.create(body);
-        newContract.car = foundCar;
-        const savedContract = await transactionalEntityManager.save(newContract);
-        foundCar.isBorrowed = true;
+      await getManager().transaction(async (transactionalEntityManager) => {
+        await transactionalEntityManager.save(newContract);
         await transactionalEntityManager.save(foundCar);
-
-        return savedContract
       });
 
-      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(createdContract);
+      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(newContract);
 
       return individualContractFormated;
     }
 
     public async returnCar(
-        contractId: string, body: {name: number},
+        contractId: string,
+        transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO,
         ): Promise<IndividualContractDTO> {
       const foundContract = await this.contractsRepository.findOne({
         where: {
           id: contractId,
-          deliveredDate: null,
         },
       });
 
       Guard.isFound(foundContract, errorMessages.contractNotFound);
+      Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
+
+      const foundtContractTransformed = await transformatorToDTO(foundContract);
+      const pricePaid = currentTotalPrice(foundtContractTransformed)
+
+
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
+      foundCar.isBorrowed = false;
+      foundContract.deliveredDate = new Date();
+      foundContract.pricePaid = pricePaid;
+
 
       await getManager().transaction(async (transactionalEntityManager) => {
-        foundCar.isBorrowed = false;
         await transactionalEntityManager.save(foundCar);
-
-        foundContract.deliveredDate = new Date();
-        foundContract.pricePaid = body.name;
-
         await transactionalEntityManager.save(foundContract);
       });
 

@@ -1,7 +1,7 @@
 import { createContractErrorHandling } from './createContractErrorHandling';
 import { NewContractDTO } from '../../contracts/models/newContract.dto';
 import * as errorMessages from './error.messages';
-import { timeStamp } from '../constants/constants';
+import { timeStamp } from '../constants/dateModifiers';
 
 describe('createContractErrorHandling', () => {
   let mockInput: NewContractDTO = null;
