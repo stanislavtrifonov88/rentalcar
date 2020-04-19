@@ -6,12 +6,15 @@ import './AvailableCarsContainer.css';
 import fetchRequest from '../../services/Rest';
 import { baseURL } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
+import SearchInput from '../SearchBar/SearchInput';
 
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cars: [],
+      filteredList: [],
+      searchString: '',
       loading: false,
     };
   }
@@ -28,23 +31,39 @@ class AvailableCarsContainer extends React.Component {
   }
 
   onCheckout = (id) => {
-    console.log(id)
     this.props.history.push({pathname: `/cars/${id}`})
   }
 
+  filterList = (value) => {
+    const { cars } = this.state
+    let searchValue = value.trim().toLowerCase();
+    let filteredList = cars;
+
+    filteredList = filteredList.filter(item => {
+        return item.brand.toLowerCase().search(searchValue) !== -1;
+    });
+    this.setState({filteredList: filteredList});
+    this.setState({searchString: value});
+}
+
   render() {
     const { cars } = this.state;
-    const { word } = this.props;
-    const { searchWord } = word;
-    let filteredCars = null;
-    if (searchWord !== '') {
-      filteredCars = cars.filter((car) => searchWord === car.brand);
-    } else {
-      filteredCars = cars;
+    // const { word } = this.props;
+    // const { searchWord } = word;
+    let { filteredList } = this.state;
+    const { searchString } = this.state
+
+    if (searchString === '') {
+      filteredList = cars;
     }
+    // let filteredCars = null;
+    // if (searchWord !== '') {
+    //   filteredCars = cars.filter((car) => searchWord === car.brand);
+    // } else {
+    //   filteredCars = cars;
+    // }
 
-
-    let cards = filteredCars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
+    let cards = filteredList.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
     const { loading } = this.state;
     if (loading) {
       cards = <Spinner />;
@@ -53,6 +72,7 @@ class AvailableCarsContainer extends React.Component {
     return (
       <div className="container" data-element="allAvailableCarsContainer">
         <h1> Currently Available Cars</h1>
+        <SearchInput value={this.state.searchString} update={this.filterList} />
         <div className="row">
           {cards}
         </div>
