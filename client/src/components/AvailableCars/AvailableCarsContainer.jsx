@@ -16,6 +16,11 @@ class AvailableCarsContainer extends React.Component {
       filteredList: [],
       searchString: '',
       loading: false,
+      filters: {
+        brand: { isOpen: false },
+        model: { isOpen: false },
+        class: { isOpen: false },
+      }
     };
   }
 
@@ -40,8 +45,13 @@ class AvailableCarsContainer extends React.Component {
     let filteredList = cars;
 
     filteredList = filteredList.filter(item => {
+      if (item.brand.toLowerCase().search(searchValue) !== -1) {
         return item.brand.toLowerCase().search(searchValue) !== -1;
+      } else if (item.model.toLowerCase().search(searchValue) !== -1) {
+        return item.model.toLowerCase().search(searchValue) !== -1;
+      }
     });
+
     this.setState({filteredList: filteredList});
     this.setState({searchString: value});
 }
