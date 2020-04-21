@@ -7,6 +7,8 @@ import fetchRequest from '../../services/Rest';
 import { baseURL } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
 import SearchInput from '../SearchBar/SearchInput';
+import Select from '../Filters/Select'
+import {createList, filterByCriteria } from '../Filters/filterFunctions';
 
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
@@ -56,22 +58,39 @@ class AvailableCarsContainer extends React.Component {
     this.setState({searchString: value});
 }
 
+filterByBrand = (criteria) => {
+
+  let { filteredList } = this.state;
+  const { cars } = this.state
+  filteredList = filterByCriteria(filteredList, cars, criteria, 'brand')
+
+  this.setState({filteredList});
+}
+
+filterByModel = (criteria) => {
+  let { filteredList } = this.state;
+  const { cars } = this.state
+  filteredList = filterByCriteria(filteredList, cars, criteria, 'model')
+
+  this.setState({filteredList});
+}
+
+filterByClass = (criteria) => {
+
+  let { filteredList } = this.state;
+  const { cars } = this.state
+  filteredList = filterByCriteria(filteredList, cars, criteria, 'className')
+
+  this.setState({filteredList});
+}
+
+
   render() {
     const { cars } = this.state;
-    // const { word } = this.props;
-    // const { searchWord } = word;
     let { filteredList } = this.state;
-    const { searchString } = this.state
-
-    if (searchString === '') {
+    if (filteredList.length === 0) {
       filteredList = cars;
     }
-    // let filteredCars = null;
-    // if (searchWord !== '') {
-    //   filteredCars = cars.filter((car) => searchWord === car.brand);
-    // } else {
-    //   filteredCars = cars;
-    // }
 
     let cards = filteredList.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
     const { loading } = this.state;
@@ -79,10 +98,21 @@ class AvailableCarsContainer extends React.Component {
       cards = <Spinner />;
     }
 
+    const brandsList = createList(filteredList, 'id', 'brand')
+    const modelsList = createList(filteredList, 'id', 'model')
+    const classesList = createList(filteredList, 'id', 'className')
+
+
     return (
       <div className="container" data-element="allAvailableCarsContainer">
+    <div>
+    <Select options={classesList} onChildClick={this.filterByClass} type={'Class'} />
+    <Select options={brandsList} onChildClick={this.filterByBrand} type={'Brand'}/> 
+    <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} /> 
+    </div>
         <h1> Currently Available Cars</h1>
         <SearchInput value={this.state.searchString} update={this.filterList} />
+
         <div className="row">
           {cards}
         </div>
