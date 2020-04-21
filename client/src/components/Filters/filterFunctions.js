@@ -1,5 +1,15 @@
 export const createList = (array, key, value) => {
-  const none = { key: '1', value: 'None' };
+  let title = '';
+  if (value === 'model') {
+    title = 'Model';
+  }
+  if (value === 'brand') {
+    title = 'Brand';
+  }
+  if (value === 'className') {
+    title = 'Class';
+  }
+  const none = { key: '1', value: title };
   const filterArray = array.map((curr) => {
     const singleItem = { key: curr[key], value: curr[value] };
     return singleItem;
