@@ -3,6 +3,7 @@ body{
   }
   
   .select{
+    background-color: rgb(223, 227, 230);
     border: 1px solid #ececec;
     padding: 10px 20px;
     display: inline-block;
@@ -25,6 +26,7 @@ body{
   
   .show{
     display:inline-block;
+    background-color: rgb(223, 227, 230);
   }
   
   .hide{

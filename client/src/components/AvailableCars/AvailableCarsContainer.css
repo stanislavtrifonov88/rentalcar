@@ -6,3 +6,8 @@
     color: #2F4858;
     padding-bottom: 5%;
 }
+
+.filterContainer {
+    display: flex;
+    justify-content: space-around;
+}

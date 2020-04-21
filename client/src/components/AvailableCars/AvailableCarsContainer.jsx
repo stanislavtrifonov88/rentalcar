@@ -105,18 +105,19 @@ filterByClass = (criteria) => {
 
     return (
       <div className="container" data-element="allAvailableCarsContainer">
-    <div>
-    <Select options={classesList} onChildClick={this.filterByClass} type={'Class'} />
-    <Select options={brandsList} onChildClick={this.filterByBrand} type={'Brand'}/> 
-    <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} /> 
-    </div>
         <h1> Currently Available Cars</h1>
-        <SearchInput value={this.state.searchString} update={this.filterList} />
-
+        <div className="filterContainer">
+        <SearchInput value={this.state.searchString} update={this.filterList} /> 
+        <div>
+          <Select options={classesList} onChildClick={this.filterByClass} type={'Class'} />
+          <Select options={brandsList} onChildClick={this.filterByBrand} type={'Brand'}/> 
+         <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} />
+        </div>
+      </div>
         <div className="row">
           {cards}
         </div>
-      </div>
+        </div>
     );
   }
 }
