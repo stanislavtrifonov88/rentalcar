@@ -22,7 +22,7 @@ class AvailableCarsContainer extends React.Component {
         brand: { isOpen: false },
         model: { isOpen: false },
         class: { isOpen: false },
-      }
+      },
     };
   }
 

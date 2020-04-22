@@ -5,6 +5,9 @@ import fetchRequest from '../../services/Rest';
 import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { toastSuccess } from '../../services/toastify/toastify';
+import SearchInput from '../SearchBar/SearchInput';
+import {createList, filterByCriteria } from '../Filters/filterFunctions';
+import Select from '../Filters/Select';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -12,6 +15,13 @@ class Dashboard extends React.Component {
     this.state = {
       contracts: [],
       loading: false,
+      filteredList: [],
+      searchString: '',
+      filters: {
+        brand: { isOpen: false },
+        model: { isOpen: false },
+        class: { isOpen: false },
+      }
     };
   }
 
@@ -40,9 +50,51 @@ class Dashboard extends React.Component {
         }));
   }
 
+  filterList = (value) => {
+    const { contracts } = this.state
+    let searchValue = value.trim().toLowerCase();
+    let filteredList = contracts;
+    filteredList = filteredList.filter(item => {
+      if (item.brand.toLowerCase().search(searchValue) !== -1) {
+        return item.brand.toLowerCase().search(searchValue) !== -1;
+      } else if (item.model.toLowerCase().search(searchValue) !== -1) {
+        return item.model.toLowerCase().search(searchValue) !== -1;
+      } else if (item.borrowerFirstName.toLowerCase().search(searchValue) !== -1) {
+        return item.borrowerFirstName.toLowerCase().search(searchValue) !== -1;
+      } else if (item.borrowerLastName.toLowerCase().search(searchValue) !== -1) {
+        return item.borrowerLastName.toLowerCase().search(searchValue) !== -1;
+      }
+    });
+
+    this.setState({filteredList: filteredList});
+    this.setState({searchString: value});
+}
+
+filterByBrand = (criteria) => {
+
+  let { filteredList } = this.state;
+  const { contracts } = this.state
+  filteredList = filterByCriteria(filteredList, contracts, criteria, 'brand')
+
+  this.setState({filteredList});
+}
+
+filterByModel = (criteria) => {
+  let { filteredList } = this.state;
+  const { contracts } = this.state
+  filteredList = filterByCriteria(filteredList, contracts, criteria, 'model')
+
+  this.setState({filteredList});
+}
 
   render() {
-    const contracts = this.state.contracts.map((contract) => <DashboardItem key={contract.id} contract={contract} onChildClick={this.onSubmit} />);
+    let { filteredList } = this.state
+    const { contracts } = this.state
+
+    if (filteredList.length === 0) {
+      filteredList = contracts;
+    }
+    const contracts1 = filteredList.map((contract) => <DashboardItem key={contract.id} contract={contract} onChildClick={this.onSubmit} />);
     const { loading } = this.state;
     let table = <table className="dashboarTable">
     <thead>
@@ -63,7 +115,7 @@ class Dashboard extends React.Component {
       </tr>
     </thead>
     <tbody className="dataRows">
-      {contracts}
+      {contracts1}
     </tbody>
   </table>
    
@@ -71,9 +123,20 @@ class Dashboard extends React.Component {
       table = <Spinner className="spinnerDashboard" />
     }
 
+    const brandsList = createList(filteredList, 'id', 'brand')
+    const modelsList = createList(filteredList, 'id', 'model')
+
+
     return (
       <div className="dashboardContainer" data-element="dashboard">
         <h1>Rented Cars</h1>
+        <div className="filterContainer">
+        <SearchInput value={this.state.searchString} update={this.filterList} /> 
+        <div className="availableDashboardFiltersContainer">
+          <Select options={brandsList} onChildClick={this.filterByBrand} type={'Brand'}/> 
+          <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} />
+        </div>
+      </div>
         {table}
       </div>
     );

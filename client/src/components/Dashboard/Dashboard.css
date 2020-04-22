@@ -46,3 +46,13 @@ flex-direction: column;
 .spinnerDashboard {
     padding-top: 25%;
 }
+
+.availableDashboardFiltersContainer {
+    display: flex;
+    
+}
+
+.availableDashboardFiltersContainer div {
+    margin-left: 5px;
+    
+}
