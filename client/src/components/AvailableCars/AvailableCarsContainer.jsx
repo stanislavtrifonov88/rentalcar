@@ -108,10 +108,10 @@ filterByClass = (criteria) => {
         <h1> Currently Available Cars</h1>
         <div className="filterContainer">
         <SearchInput value={this.state.searchString} update={this.filterList} /> 
-        <div>
+        <div className="availableCarsFiltersContainer">
           <Select options={classesList} onChildClick={this.filterByClass} type={'Class'} />
           <Select options={brandsList} onChildClick={this.filterByBrand} type={'Brand'}/> 
-         <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} />
+          <Select options={modelsList} onChildClick={this.filterByModel} type={'Model'} />
         </div>
       </div>
         <div className="row">
