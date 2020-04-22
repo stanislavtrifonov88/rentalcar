@@ -1,4 +1,5 @@
 import React from 'react';
+import './Options.css';
 
 export default class Option extends React.Component {
 
@@ -9,7 +10,9 @@ export default class Option extends React.Component {
 
   render() {
     return (
-      <li><a onClick={this.onSelect}>{this.props.option.value}</a></li>
+      <li className="filterListItem">
+        <a onClick={this.onSelect}>{this.props.option.value}</a>       
+      </li>
     );
   }
 }

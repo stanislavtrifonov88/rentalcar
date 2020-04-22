@@ -1,0 +1,9 @@
+.filterListItem:hover {
+    color:#F6AE2D;
+    border-bottom: 1px solid #F6AE2D;
+    /* background-color: #F6AE2D;; */
+}
+
+.filterListItem {
+    width: 100%;
+}
