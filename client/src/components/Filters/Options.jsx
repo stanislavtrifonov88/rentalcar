@@ -5,13 +5,14 @@ export default class Option extends React.Component {
 
   onSelect = (e) => {
     e.preventDefault();
-    this.props.onSelect(this.props.option);
+    const data = { option: this.props.option, dataAttribute: e.target.dataset.filtername  }
+    this.props.onSelect(data);
   }
 
   render() {
     return (
       <li className="filterListItem">
-        <a onClick={this.onSelect}>{this.props.option.value}</a>       
+        <a onClick={this.onSelect} data-filtername={this.props.dataFilter}>{this.props.option.value}</a>       
       </li>
     );
   }
