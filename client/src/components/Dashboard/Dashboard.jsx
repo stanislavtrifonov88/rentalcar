@@ -6,7 +6,7 @@ import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { toastSuccess } from '../../services/toastify/toastify';
 import SearchInput from '../SearchBar/SearchInput';
-import {createList, filterByCriteria } from '../Filters/filterFunctions';
+import {createList, applyFilters } from '../Filters/filterFunctions';
 import Select from '../Filters/Select';
 
 class Dashboard extends React.Component {
@@ -70,22 +70,22 @@ class Dashboard extends React.Component {
     this.setState({searchString: value});
 }
 
-filterByBrand = (criteria) => {
+// filterByBrand = (criteria) => {
 
-  let { filteredList } = this.state;
-  const { contracts } = this.state
-  filteredList = filterByCriteria(filteredList, contracts, criteria, 'brand')
+//   let { filteredList } = this.state;
+//   const { contracts } = this.state
+//   filteredList = applyFilters(filteredList, contracts, criteria, 'brand')
 
-  this.setState({filteredList});
-}
+//   this.setState({filteredList});
+// }
 
-filterByModel = (criteria) => {
-  let { filteredList } = this.state;
-  const { contracts } = this.state
-  filteredList = filterByCriteria(filteredList, contracts, criteria, 'model')
+// filterByModel = (criteria) => {
+//   let { filteredList } = this.state;
+//   const { contracts } = this.state
+//   filteredList = applyFilters(filteredList, contracts, criteria, 'model')
 
-  this.setState({filteredList});
-}
+//   this.setState({filteredList});
+// }
 
   render() {
     let { filteredList } = this.state
