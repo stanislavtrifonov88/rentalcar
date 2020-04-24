@@ -13,7 +13,6 @@ export const createList = (array, key, value) => {
 
 export const applyFilters = (arrayToFilter, criteria) => {
   let filteredArray = arrayToFilter;
-
   if (criteria.className) {
     filteredArray = filteredArray.filter((item) => item.className.toLowerCase().search(criteria.className.trim().toLowerCase()) !== -1);
   }
