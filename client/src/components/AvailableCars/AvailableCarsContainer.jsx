@@ -24,8 +24,8 @@ class AvailableCarsContainer extends React.Component {
       },
       filters: {
         brand: { isOpen: false },
-        model: { isOpen: false },
         class: { isOpen: false },
+        model: { isOpen: false },
       },
 
     };
@@ -46,7 +46,7 @@ class AvailableCarsContainer extends React.Component {
     this.props.history.push({pathname: `/cars/${id}`})
   }
 
-  filterList = (value) => {
+searchString = (value) => {
     this.setState({searchString: value});
 }
 
@@ -79,7 +79,7 @@ filterBy = (data) => {
       <div className="container" data-element="allAvailableCarsContainer">
         <h1> Currently Available Cars</h1>
         <div className="filterContainer">
-        <SearchInput value={this.state.searchString} update={this.filterList} /> 
+        <SearchInput value={this.state.searchString} update={this.searchString} /> 
         <div className="availableCarsFiltersContainer">
           <Select id="className" options={classesList} onChildClick={this.filterBy} type={'Class'} dataFilter={"className"}/>
           <Select options={brandsList} onChildClick={this.filterBy} type={'Brand'} dataFilter={"brand"}/> 
