@@ -4,6 +4,7 @@ import { createList, applyFilters, applySearch } from './filterFunctions';
 describe('filterFunctions', () => {
   let carsArray;
   let criteria;
+  let filterProperties;
 
   beforeEach(async () => {
     carsArray = [
@@ -45,6 +46,8 @@ describe('filterFunctions', () => {
       model: '',
       className: '',
     };
+
+    filterProperties = ['brand', 'model'];
   });
 
   it('applyFilter should return the input array if no criteria are provided', () => {
