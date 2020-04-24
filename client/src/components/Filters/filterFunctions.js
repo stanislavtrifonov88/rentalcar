@@ -12,10 +12,17 @@ export const createList = (array, key, value) => {
 
 
 export const applyFilters = (arrayToFilter, criteria) => {
-  let filteredArray = [];
-  for (const [key, value] of Object.entries(criteria)) {
-    filteredArray = arrayToFilter.filter((item) => item[key].toLowerCase().search(value.toLowerCase()) !== -1);
+  let filteredArray = arrayToFilter;
+
+  if (criteria.className) {
+    filteredArray = filteredArray.filter((item) => item.className.toLowerCase().search(criteria.className.trim().toLowerCase()) !== -1);
   }
+  filteredArray = filteredArray.filter((item) => item.brand.toLowerCase().search(criteria.brand.trim().toLowerCase()) !== -1);
+  filteredArray = filteredArray.filter((item) => item.model.toLowerCase().search(criteria.model.trim().toLowerCase()) !== -1);
+
+  // for (const [key, value] of Object.entries(criteria)) {
+  // //     filteredArray = filteredArray.filter((item) => item[key].toLowerCase() === value.toLowerCase());
+  // }
 
   return filteredArray;
 };
