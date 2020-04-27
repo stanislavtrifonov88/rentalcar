@@ -1,7 +1,7 @@
 import React from 'react';
 import * as priceCalculations from '../../../services/PriceCalculations';
 import './DashboardItem.css'
-import { dateFormatter } from '../../../shared/dateModifiers';
+import { datePresentationFormat } from '../../../shared/dateModifiers';
 
 class DashboardItem extends React.Component {
 
@@ -13,18 +13,13 @@ class DashboardItem extends React.Component {
   render() {
     const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(this.props.contract);
     const currentNumberOfDays = priceCalculations.currentDaysRented(this.props.contract);
-    const daysDiscount = priceCalculations.daysDiscount(this.props.contract);
-    const basePriceMock = this.props.contract.price;
-    const priceAfterDaysDiscount = basePriceMock * daysDiscount;
-    const agePenalty = priceCalculations.ageDiscount(this.props.contract);
-    const estimatedTotalDiscount = priceCalculations.totalDiscount(this.props.contract);
     const estimatedPricePerDay = priceCalculations.estimatedPricePerDay((this.props.contract));
     const daysOverUnderContract = priceCalculations.overdueDays(this.props.contract);
     const estimatedTotalPrice = priceCalculations.estimatedTotalPrice(this.props.contract)
     const currentTotalPrice = priceCalculations.currentTotalPrice(this.props.contract);
     const currentPricePerDay = priceCalculations.currentPricePerDay(this.props.contract);
-    const startDateFormatted = dateFormatter(this.props.contract.startDate);
-    const returnDateFormatted = dateFormatter(this.props.contract.contractEndDate);
+    const startDateFormatted = datePresentationFormat(this.props.contract.startDate);
+    const returnDateFormatted = datePresentationFormat(this.props.contract.contractEndDate);
 
 
     return (
