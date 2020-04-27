@@ -19,14 +19,14 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   const daysDiscount = priceCalculations.daysDiscount(contractData);
   const agePenalty = priceCalculations.ageDiscount(contractData);
   const estimatedTotalDiscount = priceCalculations.totalDiscount(contractData);
-  const currentTotalPrice = priceCalculations.currentTotalPrice(contractData);
   const currentPricePerDay = priceCalculations.currentPricePerDay(contractData);
+  const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
       <h1>Estimated Price</h1>
       <div className="priceCalculationDetails">
-        <h5>Starting Details</h5>
+        <h5 className="visibleItem">Starting Details</h5>
         <div className="priceItem">
           <p>Daily price</p>
           <p>
@@ -39,7 +39,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           <p>{estimatedNumberOfDays}</p>
         </div>
         <br />
-        <h5>Discounts</h5>
+        <h5 className="priceItem">Discounts</h5>
         <div className={showHideDays}>
           <p>
             Days Discount:
