@@ -115,9 +115,15 @@
 
 
 .valid {
-    color: rgb(223, 227, 230);
+    visibility: hidden;
+    color: red;
 }
 
 .invalid {
+    visibility: visible;
     color: red;
+}
+
+.test {
+    visibility: visible;
 }
