@@ -7,7 +7,7 @@ class DashboardItem extends React.Component {
 
 
   handleClick = (event) => {
-    this.props.onChildClick(event.target.name, this.props.contract.id)
+    this.props.onChildClick(this.props.contract.id)
   }
 
   render() {
