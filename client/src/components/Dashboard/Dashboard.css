@@ -37,7 +37,7 @@ flex-direction: column;
 
 .dashboardContainer h1 {
     color: #2F4858;
-    padding-bottom: 5%;
+    padding-bottom: 3%;
 }
 
 .spinnerDashboard {
@@ -51,5 +51,9 @@ flex-direction: column;
 
 .availableDashboardFiltersContainer div {
     margin-left: 5px;
-    
 }
+
+.tableContainer {
+    margin-top: 3%;
+}
+

@@ -114,7 +114,9 @@ this.setState({ filterStrings });
           <Select options={modelsList} onChildClick={this.filterBy} type={'Model'} dataFilter={"model"}/>
         </div>
       </div>
-        {table}
+      <div className="tableContainer">
+      {table}
+      </div>
       </div>
     );
   }
