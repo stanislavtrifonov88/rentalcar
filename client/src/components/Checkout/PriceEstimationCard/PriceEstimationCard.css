@@ -21,6 +21,7 @@
     height: 550px;
 }
 
+
 .priceItem {
     display: flex;
     flex-wrap: wrap;
@@ -38,6 +39,8 @@
 
 .show {
     visibility: visible;
+    color: black;
+    transition: color 2s;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -53,5 +56,6 @@
     justify-content: space-between;
     padding-left: 10%;
     padding-right: 10%;
+    color: rgb(223, 227, 230);
 }
 
