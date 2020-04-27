@@ -36,3 +36,22 @@
     margin-left: 20%;
 }
 
+.show {
+    visibility: visible;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: rgb(223, 227, 230);
+}
+
+.hide{
+    visibility: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
