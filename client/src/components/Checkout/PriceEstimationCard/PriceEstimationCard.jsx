@@ -5,18 +5,22 @@ import * as priceCalculations from '../../../services/PriceCalculations';
 
 
 const PriceEstimationCard = ({ priceEstimationForm }) => {
-  const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(
-    priceEstimationForm.checkoutForm,
-  );
-  const basePrice = priceEstimationForm.car.price;
+  const contractData = priceEstimationForm.checkoutForm;
+  contractData.price = priceEstimationForm.car.price;
+
+  const basePrice = contractData.price;
   const showHideAge = priceEstimationForm.checkoutFormValidations.borrowerAge.valid ? 'show' : 'hide';
   const showHideDays = priceEstimationForm.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
-  const daysDiscount = priceCalculations.daysDiscount(priceEstimationForm.checkoutForm);
-  const agePenalty = priceCalculations.ageDiscount(priceEstimationForm.checkoutForm);
-  const estimatedTotalDiscount = priceCalculations.totalDiscount(priceEstimationForm.checkoutForm);
-  const currentTotalPrice = priceCalculations.currentTotalPrice(priceEstimationForm.checkoutForm);
-  const currentPricePerDay = priceCalculations.currentPricePerDay(priceEstimationForm.checkoutForm);
+  let estimatedNumberOfDays = 0;
+  if (priceEstimationForm.checkoutFormValidations.contractEndDate.valid) {
+    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(contractData);
+  }
+  const daysDiscount = priceCalculations.daysDiscount(contractData);
+  const agePenalty = priceCalculations.ageDiscount(contractData);
+  const estimatedTotalDiscount = priceCalculations.totalDiscount(contractData);
+  const currentTotalPrice = priceCalculations.currentTotalPrice(contractData);
+  const currentPricePerDay = priceCalculations.currentPricePerDay(contractData);
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -34,7 +38,6 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           <p>Days</p>
           <p>{estimatedNumberOfDays}</p>
         </div>
-
         <br />
         <h5>Discounts</h5>
         <div className={showHideDays}>
@@ -74,8 +77,8 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           </p>
         </div>
         <div className={showHideFinalOffer}>
-          <p >Total Price</p>
-          <p >
+          <p>Total Price</p>
+          <p>
             {currentTotalPrice}
             $
           </p>

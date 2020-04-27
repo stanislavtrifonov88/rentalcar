@@ -92,8 +92,7 @@ export default class CheckoutPage extends React.Component {
     const { checkoutForm, checkoutFormValidations } = this.state
     event.preventDefault();
     bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
-    console.log(checkoutForm)
-    console.log(this.state.checkoutFormValidations)
+
     if (
       !checkoutFormValidations.borrowerFirstName.valid ||
       !checkoutFormValidations.borrowerLastName.valid || 
@@ -104,7 +103,7 @@ export default class CheckoutPage extends React.Component {
 
         return;
       }
-      console.log(checkoutForm)
+
     this.setState({ loading: true });
 
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
