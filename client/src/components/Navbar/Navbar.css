@@ -9,23 +9,23 @@
     top: 0;
     width: 100%;
     background-color: #2F4858;
-    min-height: 65px;
+    min-height: 5%;
     box-shadow: 0px 5px 10px black; 
     z-index: 1;
 }
 
 
-.Navbar a {
+.NavbarBtnContainer a {
     width: 100px;
     font-size: 20px;
     color: #F6AE2D;
 }
 
-.Navbar a:hover {
+.NavbarBtnContainer a:hover {
     color: #DB7C26
   }
   
-.Navbar a.active {
+.NavbarBtnContainer a.active {
     color: #F6AE2D;
   }
 
@@ -57,33 +57,4 @@
 
 .leftSideContainer div {
     min-width: 25%;
-}
-
-
-
-.rightSideContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.rightSideContainer {
-    min-width: 20%;
-}
-
-.Navbar .rightSideContainer .SearchBtn {
-    width: 100px;
-    font-size: 20px;
-    color: white;
-    background-color: #F6AE2D;
-    border-radius: 14px;
-    text-decoration: none;
-}
-
-.Navbar .rightSideContainer input {
-    border-bottom: 3px solid #F6AE2D;
-}
-
-.Navbar .rightSideContainer .SearchBtn:hover {
-    background-color: #DB7C26
 }

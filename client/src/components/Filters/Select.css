@@ -8,12 +8,10 @@ body{
     align-items: center;
     background-color: #f5f5f5;
     border: 2px solid #2F4858;
-    /* padding: 4px 16px; */
     padding-top: 4px;
     height: 35px;
     width: 150px;
     text-align: center;
-    /* display: inline-block; */
     cursor: pointer;
     position: relative;
     top: 0;
@@ -26,8 +24,6 @@ body{
     background-color: white;
   }
 
-
-  
   ul{
     list-style: none;
     padding: 10px 20px;
@@ -54,6 +50,4 @@ body{
     width: 14px;
     height: 14px;
     margin-left: 5px;
-    /* padding-top: 6px; */
-
   }

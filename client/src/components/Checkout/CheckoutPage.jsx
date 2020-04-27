@@ -11,7 +11,7 @@ import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
 import { timeStamp } from '../../shared/dateModifiers';
-
+import * as moment from 'moment';
 
 export default class CheckoutPage extends React.Component {
   constructor(props) {
@@ -30,8 +30,9 @@ export default class CheckoutPage extends React.Component {
         borrowerFirstName: null,
         borrowerLastName: null,
         borrowerAge: 18,
-        startDate: timeStamp(),
-        contractEndDate: timeStamp(),
+        startDate: null,
+        contractEndDate: null,
+        contractEndTime: null,
     },
   checkoutFormValidations: {
     borrowerFirstName: {
@@ -65,6 +66,13 @@ export default class CheckoutPage extends React.Component {
     },
       valid: false,
       touched: false,
+    },
+    contractEndTime: {
+      rules: {
+      required: true,
+    },
+      valid: false,
+      touched: false,
     }
 }
     };
@@ -79,7 +87,6 @@ export default class CheckoutPage extends React.Component {
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
-
     this.setState({
         checkoutForm: Object.assign(this.state.checkoutForm, newObj),
     })
@@ -90,23 +97,40 @@ export default class CheckoutPage extends React.Component {
 
 
   onInputSubmit = (event) => {
+    const { checkoutForm, checkoutFormValidations } = this.state
     event.preventDefault();
-    bookingFormErrors(this.state.checkoutForm, this.state.checkoutFormValidations)
+    bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
+    const {
+      borrowerFirstName,
+      borrowerLastName,
+      borrowerAge,
+      startDate,
+      contractEndDate,
+    } = checkoutForm
+    const body = {
+      borrowerFirstName,
+      borrowerLastName,
+      borrowerAge,
+      startDate,
+      contractEndDate,
+    }
+    body.contractEndDate = moment(new Date((checkoutForm.contractEndDate + ' ' + checkoutForm.contractEndTime))).format('YYYY-MM-DDTHH:mm')
 
-    if (
-      !this.state.checkoutFormValidations.borrowerFirstName.valid ||
-      !this.state.checkoutFormValidations.borrowerLastName.valid || 
-      !this.state.checkoutFormValidations.borrowerAge.valid || 
-      !(this.state.checkoutForm.borrowerAge >= 18) ||
-      !this.state.checkoutFormValidations.contractEndDate.touched || 
-      !this.state.checkoutFormValidations.contractEndDate.valid ) {
 
-        return;
-      }
+    // if (
+    //   !checkoutFormValidations.borrowerFirstName.valid ||
+    //   !checkoutFormValidations.borrowerLastName.valid || 
+    //   !checkoutFormValidations.borrowerAge.valid || 
+    //   !(body.borrowerAge >= 18) ||
+    //   !body.contractEndDate.touched || 
+    //   !body.contractEndDate.valid ) {
+
+    //     return;
+    //   }
 
     this.setState({ loading: true });
 
-    fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',this.state.checkoutForm)
+    fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',body)
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
       this.setState({ loading: false }),

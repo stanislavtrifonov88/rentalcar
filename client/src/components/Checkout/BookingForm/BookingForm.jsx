@@ -11,6 +11,7 @@ const BookingForm = ({
   const validationErrorLastName = isValidField(validations.borrowerLastName);
   const validationErrorAge = isValidField(validations.borrowerAge);
   const validationErrorDate = isValidField(validations.contractEndDate);
+  const validationErrorTime = isValidField(validations.contractEndTime);
 
   return (
     <div className="checkoutFormContainer" data-element="bookingForm">
@@ -74,9 +75,25 @@ const BookingForm = ({
             <input
               id="Date"
               className="dateField"
-              type="datetime-local"
+              type="date"
               required
               data-name="contractEndDate"
+              min={timeStamp()}
+              onChange={changed}
+            />
+
+            <p className={validationErrorDate}>Please enter a valid date.</p>
+          </div>
+          <div className="inputFormContainer">
+            <label htmlFor="Time">
+              Return Time
+            </label>
+            <input
+              id="Time"
+              className="timeField"
+              type="time"
+              required
+              data-name="contractEndTime"
               min={timeStamp()}
               onChange={changed}
             />
@@ -104,6 +121,7 @@ BookingForm.propTypes = {
     borrowerLastName: PropTypes.object,
     borrowerAge: PropTypes.object,
     contractEndDate: PropTypes.object,
+    contractEndTime: PropTypes.object,
   }),
 };
 
@@ -116,6 +134,7 @@ BookingForm.defaultProps = {
     borrowerLastName: {},
     borrowerAge: {},
     contractEndDate: {},
+    contractEndTime: {},
   }),
 };
 

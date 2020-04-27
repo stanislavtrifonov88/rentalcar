@@ -10,11 +10,15 @@
     color: white;
 }
 
-.returnCarBtn:hover {
-    background-color: #DB7C26
-}
-
 .dashboardTable td {
     font-weight: 600;
     padding: 5px;
+}
+
+.dashboardTable:hover {
+    background-color: #F6AE2D;
+}
+
+.dashboardTable:hover .returnCarBtn{
+    background-color: #2F4858;
 }
