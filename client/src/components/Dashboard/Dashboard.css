@@ -26,9 +26,6 @@ flex-direction: column;
     border: 1px solid rgb(223, 227, 230);
 }
 
-.dashboardContainer .headerRow th:hover {
-    color: #DB7C26
-}
 
 .dashboardContainer .dataRows {
     background-color: rgb(223, 227, 230);
