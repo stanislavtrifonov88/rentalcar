@@ -21,10 +21,6 @@ export const applyFilters = (arrayToFilter, criteria) => {
   filteredArray = filteredArray.filter((item) => item.brand.toLowerCase().search(criteria.brand.trim().toLowerCase()) !== -1);
   filteredArray = filteredArray.filter((item) => item.model.toLowerCase().search(criteria.model.trim().toLowerCase()) !== -1);
 
-  // for (const [key, value] of Object.entries(criteria)) {
-  // //     filteredArray = filteredArray.filter((item) => item[key].toLowerCase() === value.toLowerCase());
-  // }
-
   return filteredArray;
 };
 
