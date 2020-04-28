@@ -53,7 +53,6 @@ describe('CarsService', () => {
     const expectedObject = {
       where: {
         id,
-        isBorrowed: false,
         isDeleted: false,
       },
     };
