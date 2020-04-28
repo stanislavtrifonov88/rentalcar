@@ -19,17 +19,18 @@ export default class Select extends React.Component {
   }
 
   onSelect = (data) => {
+    // console.log(data.option)
     this.setState({
       selected: data.option,
       opened: false,
     }, () => {
     });
     this.props.onChildClick(data)
-
+    // console.log(data)
   }
 
   getOptions = () => {
-    return this.props.options.map((item) => <Option className="optionItem" key={item.key} option={item} dataFilter={this.props.dataFilter} onSelect={this.onSelect}  />);
+    return this.props.options.map((item) => <Option className="optionItem" key={item} option={item} dataFilter={this.props.dataFilter} onSelect={this.onSelect}  />);
   }
 
   handleClick = (event) => {
@@ -39,9 +40,9 @@ export default class Select extends React.Component {
   render() {
     const items = this.getOptions();
     const selected = this.state.selected
-      ? this.state.selected.value : this.props.type;
+      ? this.state.selected : this.props.type;
     const showHideClass = this.state.opened ? 'show' : 'hide';
-
+    console.log(selected)
     return (
       <div className="select" onClick={this.onOpen}>
         <span>
