@@ -42,7 +42,6 @@ describe('CarsService', () => {
   });
 
   it('getAvailableCarById should call *findOne* method with the correct filtering object', async () => {
-
     // Arrange
     const id = 'test'
 
