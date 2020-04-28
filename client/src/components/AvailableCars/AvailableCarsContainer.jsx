@@ -52,8 +52,8 @@ searchString = (value) => {
 
 filterBy = (data) => {
   let { filterStrings } = this.state;
-  filterStrings[data.dataAttribute] = data.option.value
-  if (data.option.value === 'None') {
+  filterStrings[data.dataAttribute] = data.option
+  if (data.option === 'None') {
     filterStrings[data.dataAttribute] = ''
   }
 
@@ -62,7 +62,7 @@ filterBy = (data) => {
 
   render() {
     let { cars, filterStrings, searchString } = this.state;
-    cars = applyFilters(cars, filterStrings, )
+    cars = applyFilters(cars, filterStrings)
     cars = applySearch(cars, searchString, ['brand', 'model'])
 
     let cards = cars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
@@ -71,9 +71,9 @@ filterBy = (data) => {
       cards = <Spinner />;
     }
 
-    const brandsList = createList(cars, 'id', 'brand')
-    const modelsList = createList(cars, 'id', 'model')
-    const classesList = createList(cars, 'id', 'className')
+    const brandsList = createList(cars,  'brand')
+    const modelsList = createList(cars, 'model')
+    const classesList = createList(cars, 'className')
 
     return (
       <div className="container" data-element="allAvailableCarsContainer">
