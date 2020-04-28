@@ -1,13 +1,15 @@
-export const createList = (array, key, value) => {
+export const createList = (array, value) => {
   const title = 'None';
 
-  const none = { key: '1', value: title };
+  const none = { value: title };
   const filterArray = array.map((curr) => {
-    const singleItem = { key: curr[key], value: curr[value] };
+    const singleItem = { value: curr[value] };
     return singleItem;
   });
+  const a = [none, ...filterArray];
+  const unique = [...new Set(a.map((item) => item.value))];
 
-  return [none, ...filterArray];
+  return unique;
 };
 
 
