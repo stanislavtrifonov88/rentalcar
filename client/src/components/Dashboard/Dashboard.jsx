@@ -59,8 +59,8 @@ searchString = (value) => {
 
 filterBy = (data) => {
 let { filterStrings } = this.state;
-filterStrings[data.dataAttribute] = data.option.value
-if (data.option.value === 'None') {
+filterStrings[data.dataAttribute] = data.option
+if (data.option === 'None') {
   filterStrings[data.dataAttribute] = ''
 }
 
@@ -72,8 +72,8 @@ this.setState({ filterStrings });
     let { contracts, filterStrings, searchString } = this.state;
     contracts = applyFilters(contracts, filterStrings)
     contracts = applySearch(contracts, searchString, ['brand', 'model', 'borrowerFirstName', 'borrowerLastName'])
-    const brandsList = createList(contracts, 'id', 'brand')
-    const modelsList = createList(contracts, 'id', 'model')
+    const brandsList = createList(contracts, 'brand')
+    const modelsList = createList(contracts, 'model')
 
     const filteredContracts = contracts.map((contract) => <DashboardItem key={contract.id} contract={contract} onChildClick={this.onSubmit} />);
     const { loading } = this.state;
