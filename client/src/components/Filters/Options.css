@@ -7,3 +7,9 @@
 .filterListItem {
     width: 100%;
 }
+
+.filterClickableRow {
+    width: 100%;
+    background-color: transparent;
+    border: 0px
+}

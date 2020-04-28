@@ -13,7 +13,7 @@ export default class Option extends React.Component {
   render() {
     return (
       <li className="filterListItem">
-        <a onClick={this.onSelect} data-filtername={this.props.dataFilter}>{this.props.option}</a>       
+        <button className="filterClickableRow" onClick={this.onSelect} data-filtername={this.props.dataFilter}>{this.props.option}</button>       
       </li>
     );
   }
