@@ -6,5 +6,6 @@ export const dateFormatter = (date) => moment(date).format(dateFormat);
 export const differenceInDays = (endTime, startTime) => moment
   .duration(moment(endTime, dateFormat)
     .diff(moment(startTime, dateFormat))).asDays();
+export const birthYear = (years: number) => moment(new Date()).add(-years, 'years').format(dateFormat);
 
 
