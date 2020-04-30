@@ -1,7 +1,7 @@
 import React from 'react';
 import * as priceCalculations from '../../../services/PriceCalculations';
 import './DashboardItem.css'
-import { datePresentationFormat } from '../../../shared/dateModifiers';
+import { datePresentationFormat, differenceInYears } from '../../../shared/dateModifiers';
 
 class DashboardItem extends React.Component {
 
@@ -21,7 +21,6 @@ class DashboardItem extends React.Component {
     const startDateFormatted = datePresentationFormat(this.props.contract.startDate);
     const returnDateFormatted = datePresentationFormat(this.props.contract.contractEndDate);
 
-
     return (
       <tr className="dashboardTable">
         <td>
@@ -29,9 +28,9 @@ class DashboardItem extends React.Component {
           {' '}
           {this.props.contract.model}
         </td>
-        <td>{this.props.contract.borrowerFirstName}</td>
+        <td>{this.props.contract.firstName}</td>
         <td>
-          {this.props.contract.borrowerLastName}
+          {this.props.contract.lastName}
           {' '}
         </td>
         <td>{startDateFormatted}</td>
