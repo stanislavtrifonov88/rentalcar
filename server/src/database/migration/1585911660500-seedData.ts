@@ -21,6 +21,10 @@ export class seedData1585911660500 implements MigrationInterface {
             (DEFAULT, 'Opel', 'Astra', '${constants.astraImg}', DEFAULT, DEFAULT, '${constants.classB_uuid}'), 
             ('${constants.golf1_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
             ('${constants.golf2_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
+            ('${constants.golf3_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
+            ('${constants.golf4_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
+            ('${constants.astra5_uuid}', 'Opel', 'Astra', '${constants.astraImg}', TRUE, DEFAULT, '${constants.classB_uuid}'), 
+            ('${constants.corsa6_uuid}', 'Opel', 'Corsa', '${constants.opelCosrsa}', TRUE, DEFAULT, '${constants.classA_uuid}'), 
             (DEFAULT, 'BMW', 'M3', '${constants.bmwM3}', DEFAULT, DEFAULT, '${constants.classC_uuid}'),
             (DEFAULT, 'Mercedes', 'AMG-GTR-C190', '${constants.MercedesAMGGTRC190}', DEFAULT, DEFAULT, '${constants.classD_uuid}'),
             (DEFAULT, 'Mercedes', 'G-Class', '${constants.mercedesGClass}', DEFAULT, DEFAULT, '${constants.classE_uuid}'),
@@ -32,8 +36,8 @@ export class seedData1585911660500 implements MigrationInterface {
              await queryRunner.query(`INSERT INTO "contracts"
              ("id", "borrowerFirstName", "borrowerLastName", "borrowerAge", "startDate", "contractEndDate", "isDeleted", "carId") 
              VALUES 
-             (DEFAULT, 'Bruce', 'Wayne', '36', '${constants.startDate}', '${constants.contractEndDate}', DEFAULT,'${constants.golf1_uuid}'), 
-             (DEFAULT, 'General', 'Mutafciiski', '56', '${constants.startDate}', '${constants.contractEndDate14Days}', DEFAULT,'${constants.golf2_uuid}') 
+             (DEFAULT, 'Bruce', 'Wayne', '36', '${constants.startDate}', '${constants.contractEndDate}', DEFAULT,'${constants.astra5_uuid}'), 
+             (DEFAULT, 'General', 'Mutafciiski', '56', '${constants.startDate}', '${constants.contractEndDate14Days}', DEFAULT,'${constants.corsa6_uuid}') 
 
               RETURNING "isDeleted"`);
     }

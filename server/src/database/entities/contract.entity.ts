@@ -5,21 +5,13 @@ import {
     ManyToOne,
 } from 'typeorm';
 import { Car } from './car.entity';
+import { Customer } from './customer.entity';
 
 
 @Entity('contracts')
 export class Contract {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-
-    @Column({ type: 'text', nullable: false })
-    borrowerFirstName: string;
-
-    @Column({ type: 'text', nullable: false })
-    borrowerLastName: string;
-
-    @Column({ type: 'float', nullable: false })
-    borrowerAge: number;
 
     @Column({ type: 'timestamp', nullable: false })
     startDate: Date;
@@ -39,5 +31,7 @@ export class Contract {
     @ManyToOne(type => Car, car => car.contracts, {eager: true})
     car: Car;
 
+    @ManyToOne(type => Customer, customer => customer.contracts, {eager: true})
+    customer: Customer;
 
 }

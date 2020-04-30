@@ -1,4 +1,4 @@
-import { timeStamp } from '../../shared/constants/dateModifiers';
+import { timeStamp, birthYear } from '../../shared/constants/dateModifiers';
 
 // Mock class ids for the relation with cars
 export const classA_uuid = 'e52040e8-b129-40c8-a255-9161c96107c1';
@@ -10,11 +10,28 @@ export const classE_uuid = '3c378c78-2e5b-44a4-b818-108c1aaa46ba';
 // Mock car ids for contract relations
 export const golf1_uuid = '4eee2b90-788a-4aa8-ae40-8bf0e0d3b446';
 export const golf2_uuid = '39a88efb-16c5-4972-95d1-313d585a818d';
+export const golf3_uuid = '8d1cd009-ef92-41a0-84e3-24936ad797fe';
+export const golf4_uuid = 'f50d4b42-a67e-4c82-9aaf-b753ab087212';
+export const astra5_uuid = '58cb5cc1-145e-4630-942e-0a6d6cd814de';
+export const corsa6_uuid = 'b2d5d9ff-ef66-400c-8e22-e2e85f070b5c';
+
+// Mock customer phone numbers
+
+export const customer1 = '359888111222'
+export const customer2 = '359888111333'
+export const customer3 = '359888111444'
+export const customer4 = '359888111555'
+export const customer5 = '359888111666'
+export const customer6 = '359888111777'
 
 // Mock dates
 export const startDate = timeStamp();
 export const contractEndDate = timeStamp(5);
 export const contractEndDate14Days = timeStamp(14);
+export const startDateOverdue1 = timeStamp(-14);
+export const contractEndDateOverdue1 = timeStamp(-2);
+export const startDateOverdue2 = timeStamp(-12);
+export const contractEndDateOverdue2 = timeStamp(-6);
 
 // Car images
 export const fordFocus = 'http://localhost:3001/img/fordFocus.jpeg';
