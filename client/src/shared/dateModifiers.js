@@ -11,5 +11,5 @@ export const differenceInYears = (endTime, startTime = new Date()) => {
   const years = moment
     .duration(moment(startTime, dateFormat)
       .diff(moment(endTime, dateFormat))).asYears();
-  return Math.ceil(years);
+  return Math.floor(years);
 };
