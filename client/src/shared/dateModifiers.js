@@ -7,3 +7,9 @@ export const datePresentationFormat = (date) => moment(date).format('YYYY-MM-DD,
 export const differenceInDays = (endTime, startTime) => moment
   .duration(moment(endTime, dateFormat)
     .diff(moment(startTime, dateFormat))).asDays();
+export const differenceInYears = (endTime, startTime = new Date()) => {
+  const years = moment
+    .duration(moment(startTime, dateFormat)
+      .diff(moment(endTime, dateFormat))).asYears();
+  return Math.ceil(years);
+};
