@@ -3,12 +3,6 @@
 export class IndividualContractDTO {
     id: string;
 
-    borrowerFirstName: string;
-
-    borrowerLastName: string;
-
-    borrowerAge: number;
-
     startDate: string;
 
     contractEndDate: string;

@@ -71,7 +71,7 @@ this.setState({ filterStrings });
   render() {
     let { contracts, filterStrings, searchString } = this.state;
     contracts = applyFilters(contracts, filterStrings)
-    contracts = applySearch(contracts, searchString, ['brand', 'model', 'borrowerFirstName', 'borrowerLastName'])
+    contracts = applySearch(contracts, searchString, ['brand', 'model', 'firstName', 'lastName'])
     const brandsList = createList(contracts, 'brand')
     const modelsList = createList(contracts, 'model')
 

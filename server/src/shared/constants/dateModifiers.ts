@@ -7,5 +7,11 @@ export const differenceInDays = (endTime, startTime) => moment
   .duration(moment(endTime, dateFormat)
     .diff(moment(startTime, dateFormat))).asDays();
 export const birthYear = (years: number) => moment(new Date()).add(-years, 'years').format(dateFormat);
+export const differenceInYears = (endTime, startTime = new Date()) => {
+  const years = moment
+    .duration(moment(startTime, dateFormat)
+      .diff(moment(endTime, dateFormat))).asYears();
+  return Math.floor(years);
+};
 
 
