@@ -1,4 +1,4 @@
-export class IndividualCarDTO {
+export class IndividualCustomerDTO {
     phone: string;
 
     firstName: string;
