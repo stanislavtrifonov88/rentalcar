@@ -4,6 +4,14 @@ import * as constants from './constantsMigrations'
 export class addNewDummyData1588246690581 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(`INSERT INTO "cars"
+        ("id", "brand", "model", "picture", "isBorrowed", "isDeleted", "classNameId") 
+        VALUES 
+        ('${constants.golf3_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
+        ('${constants.golf4_uuid}', 'Volkswagen', 'Golf', '${constants.golfImg1}', TRUE, DEFAULT, '${constants.classB_uuid}'),
+        ('${constants.astra5_uuid}', 'Opel', 'Astra', '${constants.astraImg}', TRUE, DEFAULT, '${constants.classB_uuid}'), 
+        ('${constants.corsa6_uuid}', 'Opel', 'Corsa', '${constants.opelCosrsa}', TRUE, DEFAULT, '${constants.classA_uuid}')
+         RETURNING "isBorrowed", "isDeleted"`);
             await queryRunner.query(`INSERT INTO "customers"
             ("phone", "firstName", "lastName", "isDeleted", "birthdate") 
             VALUES 
@@ -15,8 +23,8 @@ export class addNewDummyData1588246690581 implements MigrationInterface {
         await queryRunner.query(`INSERT INTO "contracts"
              ("id", "startDate", "contractEndDate", "isDeleted", "carId", "customerPhone") 
              VALUES 
-             (DEFAULT, '${constants.startDate}', '${constants.contractEndDate}', DEFAULT,'${constants.golf1_uuid}', '${constants.customer6}'), 
-             (DEFAULT, '${constants.startDate}', '${constants.contractEndDate14Days}', DEFAULT,'${constants.golf2_uuid}', '${constants.customer5}'),
+             (DEFAULT, '${constants.startDate}', '${constants.contractEndDate}', DEFAULT,'${constants.astra5_uuid}', '${constants.customer6}'), 
+             (DEFAULT, '${constants.startDate}', '${constants.contractEndDate14Days}', DEFAULT,'${constants.corsa6_uuid}', '${constants.customer5}'),
              (DEFAULT, '${constants.startDateOverdue1}', '${constants.contractEndDateOverdue1}', DEFAULT,'${constants.golf3_uuid}', '${constants.customer4}'),
              (DEFAULT, '${constants.startDateOverdue2}', '${constants.contractEndDateOverdue2}', DEFAULT,'${constants.golf4_uuid}', '${constants.customer3}')
             RETURNING "isDeleted"`);
