@@ -7,4 +7,10 @@ export class IndividualCustomerDTO {
 
     birthdate: string;
 
+    age: number
+
+    loyaltyDiscount: number;
+
+    geoDiscount: number;
+
 }
