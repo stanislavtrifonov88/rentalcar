@@ -18,4 +18,4 @@ export const contractAlreadyClosed = 'The contract with this ID is already close
 export const customerNotFound = 'There is no customer with this phone number';
 export const customerDeleted = 'Customer with this phone number was deleted from the loyalty program';
 export const customerAlreadyExist = 'Customer with such phone number already exists';
-
+export const validBirthdate = 'Please enter a valid birthdate';
