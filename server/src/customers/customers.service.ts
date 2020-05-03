@@ -7,6 +7,7 @@ import { NewCustomerDTO } from './models/newCustomerDTO';
 import { Repository, getManager } from 'typeorm';
 import * as Guard from '../shared/util/Guard';
 import * as errorMessages from '../shared/errors/error.messages';
+import { createCustomerErrorHandling } from '../shared/errors/createCustomerErrorHandling';
 
 @Injectable()
 export class CustomersService {
@@ -15,24 +16,13 @@ export class CustomersService {
     ) { }
 
     public async getCustomerByPhone(phone: string): Promise<IndividualCustomerDTO> {
+      const foundCustomer: Customer = await this.findCustomerByPhone(phone)
+      const transformedCustomer: IndividualCustomerDTO = await transformToCustomerDTO(foundCustomer)
 
-        const foundCustomer: Customer = await this.customersRepository.findOne({
-        where: {
-            phone,
-        },
-        relations: [ 'contracts' ]
-    })
-
-    Guard.isFound(foundCustomer, errorMessages.customerNotFound);
-    Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
-
-    const transformedCustomer: IndividualCustomerDTO = await transformToCustomerDTO(foundCustomer)
-
-    return transformedCustomer;
+      return transformedCustomer;
 }
 
 public async createNewCustomer(body: NewCustomerDTO): Promise<IndividualCustomerDTO> {
-
   const foundCustomer: Customer = await this.customersRepository.findOne({
     where: {
         phone: body.phone,
@@ -42,6 +32,7 @@ public async createNewCustomer(body: NewCustomerDTO): Promise<IndividualCustomer
 })
 
 Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
+createCustomerErrorHandling(body)
 
   const newCustomer: Customer = await this.customersRepository.create(body);
 
@@ -52,5 +43,19 @@ Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
   const individualContractFormated: IndividualCustomerDTO = await transformToCustomerDTO(newCustomer);
 
   return individualContractFormated;
+}
+
+public async findCustomerByPhone(phone: string): Promise<Customer> {
+  const foundCustomer: Customer = await this.customersRepository.findOne({
+  where: {
+      phone,
+  },
+  relations: [ 'contracts' ]
+})
+
+  Guard.isFound(foundCustomer, errorMessages.customerNotFound);
+  Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
+
+  return foundCustomer;
 }
 }
