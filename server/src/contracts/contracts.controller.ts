@@ -26,14 +26,15 @@ export class ContractsController {
       return allContracts;
     }
 
-    @Post('/car/:carId')
+    @Post('/car/:carId/customer/:customerId')
     @HttpCode(HttpStatus.CREATED)
     public async newContract(
       @Body() body: NewContractDTO,
       @Param('carId') carId: string,
+      @Param('customerId') customerId: string,
     ): Promise<IndividualContractDTO> {
 
-      const individualContract: IndividualContractDTO = await this.contractsService.createContract(body, carId);
+      const individualContract: IndividualContractDTO = await this.contractsService.createContract(body, carId, customerId);
 
       return individualContract;
     }
