@@ -51,7 +51,6 @@ export class ContractsService {
         ): Promise<IndividualContractDTO> {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone(customerId)
-      console.log(foundCustomer)
 
       createContractErrorHandling(body);
       const newContract = this.contractsRepository.create(body);

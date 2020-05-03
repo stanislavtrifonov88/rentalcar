@@ -1,6 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, Body, Post } from '@nestjs/common';
 import { CustomersService } from './customers.service';
-import { Customer } from '../database/entities/customer.entity';
 import { IndividualCustomerDTO } from './models/individualCustomerDTO';
 import { NewCustomerDTO } from './models/newCustomerDTO';
 
