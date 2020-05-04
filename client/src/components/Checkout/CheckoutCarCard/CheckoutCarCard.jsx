@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const CheckoutCarCard = ({ car }) => (
   <div className="cardCheckoutCar" data-element="checkoutCarCard">
     <h1>Car</h1>
-    <img src={car.picture} alt="NO PIC" />
+    <img className="CheckoutCarPic" src={car.picture} alt="NO PIC" />
     <div className="carDetails">
       <h3>{car.model}</h3>
       <h6>{car.brand}</h6>
