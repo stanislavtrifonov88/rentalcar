@@ -120,3 +120,11 @@
 .test {
     visibility: visible;
 }
+
+.phoneField {
+    border-radius: 0px;
+}
+
+.PhoneInputCountryIconImg {
+    display: flex
+}

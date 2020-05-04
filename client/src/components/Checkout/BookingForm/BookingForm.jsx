@@ -1,11 +1,14 @@
 import React from 'react';
 import './BookingForm.css';
 import PropTypes from 'prop-types';
+import PhoneInput from 'react-phone-number-input';
 import { isValidField } from '../Validations/validationChecks';
 import { timeStamp } from '../../../shared/dateModifiers';
+import 'react-phone-number-input/style.css';
+
 
 const BookingForm = ({
-  changed, onInputSubmit, validations, onCancel,
+  changed, onInputSubmit, validations, onCancel, phoneChanged
 }) => {
   const validationErrorFirstName = isValidField(validations.borrowerFirstName);
   const validationErrorLastName = isValidField(validations.borrowerLastName);
@@ -17,6 +20,17 @@ const BookingForm = ({
     <div className="checkoutFormContainer" data-element="bookingForm">
       <h1>Booking Form</h1>
       <div className="bookingFormInputFields">
+
+        <PhoneInput
+          className="phoneField"
+          placeholder="Enter phone number"
+          // value={value}
+          data-name="phone"
+          required
+          onChange={phoneChanged}
+        />
+
+
         <div className="inputRows">
           <div className="inputFormContainer">
             <label htmlFor="FirstName">
@@ -100,6 +114,7 @@ BookingForm.propTypes = {
   changed: PropTypes.func,
   onInputSubmit: PropTypes.func,
   onCancel: PropTypes.func,
+  phoneChanged: PropTypes.func,
   validations: PropTypes.exact({
     borrowerFirstName: PropTypes.object,
     borrowerLastName: PropTypes.object,
@@ -113,6 +128,7 @@ BookingForm.defaultProps = {
   changed: () => '',
   onInputSubmit: () => '',
   onCancel: () => '',
+  phoneChanged: () => '',
   validations: PropTypes.exact({
     borrowerFirstName: {},
     borrowerLastName: {},

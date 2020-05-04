@@ -11,6 +11,8 @@ import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
 import { timeStamp } from '../../shared/dateModifiers';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import { isPossiblePhoneNumber } from 'react-phone-number-input'
 
 export default class CheckoutPage extends React.Component {
   constructor(props) {
@@ -26,6 +28,7 @@ export default class CheckoutPage extends React.Component {
       price: 1,
     },
       checkoutForm: {
+        phone: null,
         borrowerFirstName: null,
         borrowerLastName: null,
         borrowerAge: 18,
@@ -69,6 +72,11 @@ export default class CheckoutPage extends React.Component {
     };
   };
 
+  handlePhoneChanged = (value) => {
+    console.log(isValidPhoneNumber(value))
+    // console.log(isPossiblePhoneNumber(value))
+  }
+
   carCheckoutHandler = (event) => {
     const name = event.target.dataset.name;
     const value = event.target.value;
@@ -78,6 +86,7 @@ export default class CheckoutPage extends React.Component {
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
+    console.log(this.state.checkoutForm)
     
     this.setState({
         checkoutForm: Object.assign(this.state.checkoutForm, newObj),
@@ -136,7 +145,7 @@ export default class CheckoutPage extends React.Component {
 
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
-    <BookingForm car={car} changed={this.carCheckoutHandler} onCancel={this.onCancel} onInputSubmit={this.onInputSubmit}  validations={this.state.checkoutFormValidations} />
+    <BookingForm car={car} changed={this.carCheckoutHandler} phoneChanged={this.handlePhoneChanged} onCancel={this.onCancel} onInputSubmit={this.onInputSubmit}  validations={this.state.checkoutFormValidations} />
     <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
   </div>
     if (loading) {
