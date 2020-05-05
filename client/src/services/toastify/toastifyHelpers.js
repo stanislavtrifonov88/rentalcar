@@ -2,10 +2,10 @@ import { dateFormatter } from '../../shared/dateModifiers';
 import { toastError } from './toastify';
 
 export const bookingFormErrors = (checkoutForm, checkoutFormValidations) => {
-  toastError(checkoutFormValidations.borrowerFirstName.valid, 'First name must be between 2 and 25 letters');
-  toastError(checkoutFormValidations.borrowerLastName.valid, 'Last name must be between 2 and 25 letters');
-  toastError(checkoutFormValidations.borrowerAge.valid, 'Please enter a valid age');
-  toastError(checkoutForm.borrowerAge >= 18, 'You must be at least 18 years old');
+  toastError(checkoutFormValidations.firstName.valid, 'First name must be between 2 and 25 letters');
+  toastError(checkoutFormValidations.lastName.valid, 'Last name must be between 2 and 25 letters');
+  // toastError(checkoutFormValidations.borrowerAge.valid, 'Please enter a valid age');
+  // toastError(checkoutForm.borrowerAge >= 18, 'You must be at least 18 years old');
   if (!checkoutFormValidations.contractEndDate.touched) {
     toastError(checkoutFormValidations.contractEndDate.touched, 'Please select a date');
     return;
