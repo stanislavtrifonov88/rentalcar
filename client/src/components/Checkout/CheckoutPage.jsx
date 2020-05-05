@@ -6,75 +6,113 @@ import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
 import fetchRequest from '../../services/Rest';
-import { baseURL, contracts, cars }from '../../services/restAPIs/restAPIs'
+import { baseURL, contracts, cars, customers }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
 import { timeStamp } from '../../shared/dateModifiers';
-import { isValidPhoneNumber } from 'react-phone-number-input';
-import { isPossiblePhoneNumber } from 'react-phone-number-input'
+import { parsePhoneNumber } from 'react-phone-number-input';
 
 export default class CheckoutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
+      phone: {
+        value: "",
+        isValid: false,
+        touched: false,
+      },
+      foundCustomer: {
+        phone: "",
+        firstName: "",
+        lastName: "",
+        birthdate: "",
+        age: "",
+        loyaltyDiscount: "",
+        geoDiscount: "",
+      },
+      newCustomer: {
+        phone: "",
+        firstName: "",
+        lastName: "",
+        birthdate: "",
+      },
       car: { 
-      id: "",
-      brand: "",
-      model: "",
-      picture: "",
-      className: "",
-      price: 1,
+        id: "",
+        brand: "",
+        model: "",
+        picture: "",
+        className: "",
+        price: 1,
     },
       checkoutForm: {
-        phone: null,
-        borrowerFirstName: null,
-        borrowerLastName: null,
-        borrowerAge: 18,
+        phone: "",
         startDate: null,
         contractEndDate: null,
     },
-  checkoutFormValidations: {
-    borrowerFirstName: {
-      rules: {
-      required: true,
-      minLength: validationProperty.minLengthName,
-      maxLength: validationProperty.maxLengthName,
-    },
-      valid: false,
-      touched: false,
-    },
-    borrowerLastName: {
-      rules: {
-      required: true,
-      minLength: validationProperty.minLengthName,
-      maxLength: validationProperty.maxLengthName,
-    },
-      valid: false,
-    },
-    borrowerAge: {
-      rules: {
-      required: true,
-      maxLength: validationProperty.maxLengthAge,
-    },
-      valid: false,
-      touched: false,
-    },
-    contractEndDate: {
-      rules: {
-      required: true,
-    },
-      valid: false,
-      touched: false,
-    },
-}
-    };
+      checkoutFormValidations: {
+        firstName: {
+          rules: {
+          required: true,
+          minLength: validationProperty.minLengthName,
+          maxLength: validationProperty.maxLengthName,
+        },
+          valid: false,
+          touched: false,
+        },
+        lastName: {
+          rules: {
+          required: true,
+          minLength: validationProperty.minLengthName,
+          maxLength: validationProperty.maxLengthName,
+        },
+          valid: false,
+        },
+        birthdate: {
+          rules: {
+          required: true,
+        },
+          valid: false,
+          touched: false,
+        },
+        contractEndDate: {
+          rules: {
+          required: true,
+        },
+          valid: false,
+          touched: false,
+        },
+    }
   };
+};
 
   handlePhoneChanged = (value) => {
-    console.log(isValidPhoneNumber(value))
-    // console.log(isPossiblePhoneNumber(value))
+    // console.log(isValidPhoneNumber(value))
+    const phoneNumber = parsePhoneNumber(value)
+    const newObj = {};
+    newObj.touched = true;
+    newObj.value = value;
+
+    if(phoneNumber) {
+      if(phoneNumber.country === 'BG') {
+        if (newObj.value.length === 13) {
+          newObj.isValid = true
+        }
+      }
+    }
+
+    this.setState({
+        checkoutForm: Object.assign(this.state.phone, newObj),
+    })
+
+    if (newObj.isValid) {
+      fetchRequest(`${baseURL}/${customers}`,'PUT',{ phone: value })
+      .then(response => 
+        this.setState({ foundCustomer: response})
+        );
+    }
+
   }
 
   carCheckoutHandler = (event) => {
@@ -83,11 +121,11 @@ export default class CheckoutPage extends React.Component {
     const newObj = {};
     const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
+    newObj.phone = this.state.phone
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
-    console.log(this.state.checkoutForm)
-    
+
     this.setState({
         checkoutForm: Object.assign(this.state.checkoutForm, newObj),
     })
@@ -96,25 +134,55 @@ export default class CheckoutPage extends React.Component {
   })
   }
 
+  newCustomerHandler = (event) => {
+    const name = event.target.dataset.name;
+    const value = event.target.value;
+    const newObj = {};
+    const validationObj = this.state.checkoutFormValidations;
+    newObj[name] = value;
+    newObj.phone = this.state.phone.value
+    validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].touched = true;
+    // console.log(this.state.newCustomer)
+    // console.log(newObj)
+    this.setState({
+        checkoutForm: Object.assign(this.state.newCustomer, newObj),
+    })
+    this.setState({
+      checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
+  })
+  }
 
-  onInputSubmit = (event) => {
+  onRegistrationSubmit = (event) => {
+    const { newCustomer } = this.state;
+    console.log(newCustomer)
+    fetchRequest(`${baseURL}/${customers}`,'POST', newCustomer)
+    .then(response => {
+      console.log(response)
+      this.setState({ foundCustomer: response})
+    }
+      );
+  }
+
+
+  onCheckoutInputSubmit = (event) => {
     const { checkoutForm, checkoutFormValidations } = this.state
     event.preventDefault();
-    bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
+    // bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
 
-    if (
-      !checkoutFormValidations.borrowerFirstName.valid ||
-      !checkoutFormValidations.borrowerLastName.valid || 
-      !checkoutFormValidations.borrowerAge.valid || 
-      !(checkoutForm.borrowerAge >= 18) ||
-      !checkoutFormValidations.contractEndDate.touched || 
-      !checkoutFormValidations.contractEndDate.valid ) {
+    // if (
+    //   !checkoutFormValidations.firstName.valid ||
+    //   !checkoutFormValidations.lastName.valid || 
+    //   // !checkoutFormValidations.age.valid || 
+    //   // !(checkoutForm.age >= 18) ||
+    //   !checkoutFormValidations.contractEndDate.touched || 
+    //   !checkoutFormValidations.contractEndDate.valid ) {
 
-        return;
-      }
-
+    //     return;
+    //   }
+    const body = {}
     this.setState({ loading: true });
-
+    console.log(checkoutForm)
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
@@ -142,11 +210,18 @@ export default class CheckoutPage extends React.Component {
     const car = { ...this.state.car };
     const priceEstimationForm = this.state;
     const { loading } = this.state;
-
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
-    <BookingForm car={car} changed={this.carCheckoutHandler} phoneChanged={this.handlePhoneChanged} onCancel={this.onCancel} onInputSubmit={this.onInputSubmit}  validations={this.state.checkoutFormValidations} />
-    <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
+    <BookingForm car={car} 
+      newCustomerHandler={this.newCustomerHandler} 
+      phoneChanged={this.handlePhoneChanged} 
+      onCancel={this.onCancel} 
+      onRegistrationSubmit={this.onRegistrationSubmit}  
+      validations={this.state.checkoutFormValidations} 
+      foundCustomer={this.state.foundCustomer}
+      onCheckoutInputSubmit={this.onCheckoutInputSubmit}
+      />
+    {/* <PriceEstimationCard priceEstimationForm={priceEstimationForm} /> */}
   </div>
     if (loading) {
       checkoutFormCards = <Spinner />

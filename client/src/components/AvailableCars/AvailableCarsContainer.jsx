@@ -107,7 +107,7 @@ AvailableCarsContainer.propTypes = {
 
 AvailableCarsContainer.defaultProps = {
   word: PropTypes.exact({
-    searchWord: 'Ford',
+    searchWord: '',
   }),
 };
 
