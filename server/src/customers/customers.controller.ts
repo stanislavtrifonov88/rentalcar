@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Body, Post } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, Body, Post, Put } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { IndividualCustomerDTO } from './models/individualCustomerDTO';
 import { NewCustomerDTO } from './models/newCustomerDTO';
@@ -7,12 +7,13 @@ import { NewCustomerDTO } from './models/newCustomerDTO';
 export class CustomersController {
     public constructor(private readonly customersService: CustomersService) { }
 
-    @Get('/:phone')
+    @Put('')
     @HttpCode(HttpStatus.OK)
     public async getIndividualCar (
-      @Param('phone') id: string,
+      @Body() body,
     ): Promise<IndividualCustomerDTO> {
-      const individualCar: IndividualCustomerDTO = await this.customersService.getCustomerByPhone(id);
+      console.log(body)
+      const individualCar: IndividualCustomerDTO = await this.customersService.getCustomerByPhone(body.phone);
 
       return individualCar;
     }
@@ -22,7 +23,6 @@ export class CustomersController {
     public async newContract(
       @Body() body: NewCustomerDTO,
     ): Promise<IndividualCustomerDTO> {
-
       const newCustomer: IndividualCustomerDTO = await this.customersService.createNewCustomer(body);
 
       return newCustomer;

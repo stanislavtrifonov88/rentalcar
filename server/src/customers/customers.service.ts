@@ -23,17 +23,20 @@ export class CustomersService {
 }
 
 public async createNewCustomer(body: NewCustomerDTO): Promise<IndividualCustomerDTO> {
-  const foundCustomer: Customer = await this.customersRepository.findOne({
-    where: {
-        phone: body.phone,
-        isDeleted: false,
-    },
-    relations: [ 'contracts' ]
-})
+  console.log(body)
+  console.log(Number(body.phone))
+//   const foundCustomer: Customer = await this.customersRepository.findOne({
+//     where: {
+//         phone: body.phone,
+//         isDeleted: false,
+//     },
+//     relations: [ 'contracts' ]
+// })
 
-Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
+// Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
+// console.log(foundCustomer)
 createCustomerErrorHandling(body)
-
+console.log('aftererrorhandling')
   const newCustomer: Customer = await this.customersRepository.create(body);
 
   await getManager().transaction(async (transactionalEntityManager) => {
@@ -46,13 +49,15 @@ createCustomerErrorHandling(body)
 }
 
 public async findCustomerByPhone(phone: string): Promise<Customer> {
+  const a = Number(phone)
+  console.log(a)
   const foundCustomer: Customer = await this.customersRepository.findOne({
   where: {
-      phone,
+      phone: a,
   },
   relations: [ 'contracts' ]
 })
-
+  console.log(foundCustomer)
   Guard.isFound(foundCustomer, errorMessages.customerNotFound);
   Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
 
