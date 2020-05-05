@@ -1,8 +1,11 @@
 import React from 'react';
 import { timeStamp } from '../../../../shared/dateModifiers';
+import { isValidField } from '../../Validations/validationChecks';
 
 
-const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel }) => {
+const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutFormValidations, carCheckoutHandler }) => {
+  const validationErrorReturnDate = isValidField(checkoutFormValidations.contractEndDate);
+
   return (
     <>
       <div className="inputRows">
@@ -57,10 +60,10 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel }) => {
             required
             data-name="contractEndDate"
             min={timeStamp()}
-            // onChange={changed}
+            onChange={carCheckoutHandler}
           />
 
-          {/* <p className={validationErrorDate}>Please enter a valid date.</p> */}
+          <p className={validationErrorReturnDate}>Please enter a valid date.</p>
         </div>
       </div>
       <div className="checkoutBtnsContainer">

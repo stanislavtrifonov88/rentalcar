@@ -8,7 +8,8 @@ import Registration from './RegistrationForm/Registration';
 
 
 const BookingForm = ({
-  changed, validations, onCancel, phoneChanged, foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations
+  changed, checkoutFormValidations, onCancel, phoneChanged, 
+  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler
 }) => {
 
 
@@ -17,7 +18,8 @@ const BookingForm = ({
   if (foundCustomer.firstName === '') {
     names = <Registration newCustomerHandler={newCustomerHandler} registrationFormValidations={registrationFormValidations} onRegistrationSubmit={onRegistrationSubmit} />;
   } else {
-    names = <Customer foundCustomer={foundCustomer} onCheckoutInputSubmit={onCheckoutInputSubmit} onCancel={onCancel} />;
+    names = <Customer foundCustomer={foundCustomer} onCheckoutInputSubmit={onCheckoutInputSubmit} 
+    onCancel={onCancel} checkoutFormValidations={checkoutFormValidations} carCheckoutHandler={carCheckoutHandler}/>;
   }
 
 

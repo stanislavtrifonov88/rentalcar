@@ -79,33 +79,7 @@ export default class CheckoutPage extends React.Component {
         touched: false,
       },
   },
-    
       checkoutFormValidations: {
-        firstName: {
-          rules: {
-          required: true,
-          minLength: validationProperty.minLengthName,
-          maxLength: validationProperty.maxLengthName,
-        },
-          valid: false,
-          touched: false,
-        },
-        lastName: {
-          rules: {
-          required: true,
-          minLength: validationProperty.minLengthName,
-          maxLength: validationProperty.maxLengthName,
-        },
-          valid: false,
-        },
-        birthdate: {
-          rules: {
-          required: true,
-          minAge: validationProperty.minAge
-        },
-          valid: false,
-          touched: false,
-        },
         contractEndDate: {
           rules: {
           required: true,
@@ -261,8 +235,9 @@ export default class CheckoutPage extends React.Component {
       newCustomerHandler={this.newCustomerHandler} 
       phoneChanged={this.handlePhoneChanged} 
       onCancel={this.onCancel} 
+      carCheckoutHandler={this.carCheckoutHandler}
       onRegistrationSubmit={this.onRegistrationSubmit}  
-      validations={this.state.checkoutFormValidations} 
+      checkoutFormValidations={this.state.checkoutFormValidations} 
       registrationFormValidations={this.state.registrationFormValidations}
       foundCustomer={this.state.foundCustomer}
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
