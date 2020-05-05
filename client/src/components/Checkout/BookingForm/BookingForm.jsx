@@ -2,110 +2,44 @@ import React from 'react';
 import './BookingForm.css';
 import PropTypes from 'prop-types';
 import PhoneInput from 'react-phone-number-input';
-import { isValidField } from '../Validations/validationChecks';
-import { timeStamp } from '../../../shared/dateModifiers';
 import 'react-phone-number-input/style.css';
+import Customer from './Customer/Customer';
+import Registration from './RegistrationForm/Registration';
 
 
 const BookingForm = ({
-  changed, onInputSubmit, validations, onCancel, phoneChanged
+  changed, validations, onCancel, phoneChanged, foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit
 }) => {
-  const validationErrorFirstName = isValidField(validations.borrowerFirstName);
-  const validationErrorLastName = isValidField(validations.borrowerLastName);
-  const validationErrorAge = isValidField(validations.borrowerAge);
-  const validationErrorDate = isValidField(validations.contractEndDate);
+
+
+  let names = <div>hi</div>;
+
+  if (foundCustomer.firstName === '') {
+    names = <Registration newCustomerHandler={newCustomerHandler} validations={validations} onRegistrationSubmit={onRegistrationSubmit} />;
+  } else {
+    names = <Customer foundCustomer={foundCustomer} onCheckoutInputSubmit={onCheckoutInputSubmit} onCancel={onCancel} />;
+  }
 
 
   return (
     <div className="checkoutFormContainer" data-element="bookingForm">
       <h1>Booking Form</h1>
       <div className="bookingFormInputFields">
-
-        <PhoneInput
-          className="phoneField"
-          placeholder="Enter phone number"
-          // value={value}
-          data-name="phone"
-          required
-          onChange={phoneChanged}
-        />
-
-
         <div className="inputRows">
           <div className="inputFormContainer">
-            <label htmlFor="FirstName">
-              First name
-            </label>
-            <input
-              id="FirstName"
-              className="firstNameField"
+            <PhoneInput
+              className="phoneField"
+              placeholder="Enter phone number"
+              data-name="phone"
               required
-              type="text"
-              placeholder="First name"
-              data-name="borrowerFirstName"
-              onChange={changed}
+              onChange={phoneChanged}
             />
-
-            <p className={validationErrorFirstName}>First name is invalid.</p>
-          </div>
-          <div className="inputFormContainer">
-            <label htmlFor="LastName">
-              Last className:
-            </label>
-            <input
-              id="LastName"
-              className="lastNameField"
-              required
-              type="text"
-              placeholder="Last name"
-              data-name="borrowerLastName"
-              onChange={changed}
-            />
-
-            <p className={validationErrorLastName}>Last name is invalid.</p>
           </div>
         </div>
-        <div className="inputRows">
-          <div className="inputFormContainer">
-            <label htmlFor="Age">
-              Age
-            </label>
-            <input
-              id="Age"
-              className="ageField"
-              type="number"
-              placeholder="Age"
-              required
-              data-name="borrowerAge"
-              onChange={changed}
-            />
+        {names}
 
-            <p className={validationErrorAge}>Please enter a valid age.</p>
-          </div>
-          <div className="inputFormContainer">
-            <label htmlFor="Date">
-              Return Date
-            </label>
-            <input
-              id="Date"
-              className="dateField"
-              type="datetime-local"
-              required
-              data-name="contractEndDate"
-              min={timeStamp()}
-              onChange={changed}
-            />
+      </div>
 
-            <p className={validationErrorDate}>Please enter a valid date.</p>
-          </div>
-        </div>
-      </div>
-      <div className="checkoutBtnsContainer">
-        <button type="submit" className="bookCarBtn" onClick={onInputSubmit} data-element="bookingFormCheckoutBtn">
-          Checkout
-        </button>
-        <button type="submit" className="bookCarBtn" onClick={onCancel}>Cancel</button>
-      </div>
     </div>
   );
 };
@@ -115,10 +49,11 @@ BookingForm.propTypes = {
   onInputSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   phoneChanged: PropTypes.func,
+
   validations: PropTypes.exact({
-    borrowerFirstName: PropTypes.object,
-    borrowerLastName: PropTypes.object,
-    borrowerAge: PropTypes.object,
+    firstName: PropTypes.object,
+    lastName: PropTypes.object,
+    birthdate: PropTypes.object,
     contractEndDate: PropTypes.object,
     contractEndTime: PropTypes.object,
   }),
@@ -130,9 +65,9 @@ BookingForm.defaultProps = {
   onCancel: () => '',
   phoneChanged: () => '',
   validations: PropTypes.exact({
-    borrowerFirstName: {},
-    borrowerLastName: {},
-    borrowerAge: {},
+    firstName: {},
+    lastName: {},
+    birthdate: {},
     contractEndDate: {},
     contractEndTime: {},
   }),
