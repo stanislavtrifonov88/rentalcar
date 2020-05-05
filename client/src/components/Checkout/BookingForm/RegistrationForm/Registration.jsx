@@ -2,11 +2,10 @@ import React from 'react';
 import { timeStamp } from '../../../../shared/dateModifiers';
 import { isValidField } from '../../Validations/validationChecks';
 
-const Registration = ({ newCustomerHandler, validations, onCancel, onRegistrationSubmit }) => {
-  const validationErrorFirstName = isValidField(validations.firstName);
-  const validationErrorLastName = isValidField(validations.lastName);
-  const validationErrorBirthdate = isValidField(validations.birthdate);
-  const validationErrorDate = isValidField(validations.contractEndDate);
+const Registration = ({ newCustomerHandler, registrationFormValidations, onCancel, onRegistrationSubmit }) => {
+  const validationErrorFirstName = isValidField(registrationFormValidations.firstName);
+  const validationErrorLastName = isValidField(registrationFormValidations.lastName);
+  const validationErrorBirthdate = isValidField(registrationFormValidations.birthdate);
 
   return (
     <>

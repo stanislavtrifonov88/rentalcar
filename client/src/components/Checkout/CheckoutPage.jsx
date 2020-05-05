@@ -10,8 +10,9 @@ import { baseURL, contracts, cars, customers }from '../../services/restAPIs/rest
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
-import { timeStamp } from '../../shared/dateModifiers';
+import { timeStamp, differenceInYears } from '../../shared/dateModifiers';
 import { parsePhoneNumber } from 'react-phone-number-input';
+
 
 export default class CheckoutPage extends React.Component {
   constructor(props) {
@@ -51,6 +52,34 @@ export default class CheckoutPage extends React.Component {
         startDate: null,
         contractEndDate: null,
     },
+    registrationFormValidations: {
+      firstName: {
+        rules: {
+        required: true,
+        minLength: validationProperty.minLengthName,
+        maxLength: validationProperty.maxLengthName,
+      },
+        valid: false,
+        touched: false,
+      },
+      lastName: {
+        rules: {
+        required: true,
+        minLength: validationProperty.minLengthName,
+        maxLength: validationProperty.maxLengthName,
+      },
+        valid: false,
+      },
+      birthdate: {
+        rules: {
+        required: true,
+        minAge: validationProperty.minAge
+      },
+        valid: false,
+        touched: false,
+      },
+  },
+    
       checkoutFormValidations: {
         firstName: {
           rules: {
@@ -72,6 +101,7 @@ export default class CheckoutPage extends React.Component {
         birthdate: {
           rules: {
           required: true,
+          minAge: validationProperty.minAge
         },
           valid: false,
           touched: false,
@@ -138,10 +168,10 @@ export default class CheckoutPage extends React.Component {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
-    const validationObj = this.state.checkoutFormValidations;
+    const validationObj = this.state.registrationFormValidations;
     newObj[name] = value;
     newObj.phone = this.state.phone.value
-    validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].valid = checkInputValidity(newObj[name], this.state.registrationFormValidations[name].rules);
     validationObj[name].touched = true;
     // console.log(this.state.newCustomer)
     // console.log(newObj)
@@ -149,13 +179,28 @@ export default class CheckoutPage extends React.Component {
         checkoutForm: Object.assign(this.state.newCustomer, newObj),
     })
     this.setState({
-      checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
+      registrationFormValidations: Object.assign(this.state.registrationFormValidations, validationObj),
   })
   }
 
   onRegistrationSubmit = (event) => {
-    const { newCustomer } = this.state;
+    const { newCustomer, registrationFormValidations } = this.state;
     console.log(newCustomer)
+    const age = differenceInYears(newCustomer.birthdate)
+    console.log(age)
+        bookingFormErrors(newCustomer, registrationFormValidations)
+
+
+    if (
+      !registrationFormValidations.firstName.valid ||
+      !registrationFormValidations.lastName.valid || 
+      // !checkoutFormValidations.age.valid || 
+      !(age >= 18) ||
+      !registrationFormValidations.birthdate.touched || 
+      !registrationFormValidations.birthdate.valid ) {
+
+        return;
+      }
     fetchRequest(`${baseURL}/${customers}`,'POST', newCustomer)
     .then(response => {
       console.log(response)
@@ -218,6 +263,7 @@ export default class CheckoutPage extends React.Component {
       onCancel={this.onCancel} 
       onRegistrationSubmit={this.onRegistrationSubmit}  
       validations={this.state.checkoutFormValidations} 
+      registrationFormValidations={this.state.registrationFormValidations}
       foundCustomer={this.state.foundCustomer}
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
       />

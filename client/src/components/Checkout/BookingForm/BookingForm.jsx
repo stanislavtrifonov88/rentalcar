@@ -8,14 +8,14 @@ import Registration from './RegistrationForm/Registration';
 
 
 const BookingForm = ({
-  changed, validations, onCancel, phoneChanged, foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit
+  changed, validations, onCancel, phoneChanged, foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations
 }) => {
 
 
   let names = <div>hi</div>;
 
   if (foundCustomer.firstName === '') {
-    names = <Registration newCustomerHandler={newCustomerHandler} validations={validations} onRegistrationSubmit={onRegistrationSubmit} />;
+    names = <Registration newCustomerHandler={newCustomerHandler} registrationFormValidations={registrationFormValidations} onRegistrationSubmit={onRegistrationSubmit} />;
   } else {
     names = <Customer foundCustomer={foundCustomer} onCheckoutInputSubmit={onCheckoutInputSubmit} onCancel={onCancel} />;
   }
