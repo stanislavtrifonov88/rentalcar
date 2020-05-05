@@ -36,7 +36,7 @@ public async createNewCustomer(body: NewCustomerDTO): Promise<IndividualCustomer
 // Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
 // console.log(foundCustomer)
 createCustomerErrorHandling(body)
-console.log('aftererrorhandling')
+
   const newCustomer: Customer = await this.customersRepository.create(body);
 
   await getManager().transaction(async (transactionalEntityManager) => {
@@ -50,14 +50,14 @@ console.log('aftererrorhandling')
 
 public async findCustomerByPhone(phone: string): Promise<Customer> {
   const a = Number(phone)
-  console.log(a)
+
   const foundCustomer: Customer = await this.customersRepository.findOne({
   where: {
       phone: a,
   },
   relations: [ 'contracts' ]
 })
-  console.log(foundCustomer)
+
   Guard.isFound(foundCustomer, errorMessages.customerNotFound);
   Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
 

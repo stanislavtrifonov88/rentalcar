@@ -12,7 +12,6 @@ export class CustomersController {
     public async getIndividualCar (
       @Body() body,
     ): Promise<IndividualCustomerDTO> {
-      console.log(body)
       const individualCar: IndividualCustomerDTO = await this.customersService.getCustomerByPhone(body.phone);
 
       return individualCar;

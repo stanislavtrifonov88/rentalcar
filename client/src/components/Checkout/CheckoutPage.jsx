@@ -107,7 +107,7 @@ export default class CheckoutPage extends React.Component {
     }
 
     this.setState({
-        checkoutForm: Object.assign(this.state.phone, newObj),
+        phone: Object.assign(this.state.phone, newObj),
     })
 
     if (newObj.isValid) {
@@ -125,7 +125,7 @@ export default class CheckoutPage extends React.Component {
     const newObj = {};
     const validationObj = this.state.checkoutFormValidations;
     newObj[name] = value;
-    newObj.phone = this.state.phone
+    newObj.phone = this.state.phone.value
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
@@ -144,7 +144,7 @@ export default class CheckoutPage extends React.Component {
     const newObj = {};
     const validationObj = this.state.registrationFormValidations;
     newObj[name] = value;
-    newObj.phone = this.state.phone.value
+    // newObj.phone = this.state.phone.value
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.registrationFormValidations[name].rules);
     validationObj[name].touched = true;
     // console.log(this.state.newCustomer)
@@ -189,19 +189,14 @@ export default class CheckoutPage extends React.Component {
     event.preventDefault();
     // bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
 
-    // if (
-    //   !checkoutFormValidations.firstName.valid ||
-    //   !checkoutFormValidations.lastName.valid || 
-    //   // !checkoutFormValidations.age.valid || 
-    //   // !(checkoutForm.age >= 18) ||
-    //   !checkoutFormValidations.contractEndDate.touched || 
-    //   !checkoutFormValidations.contractEndDate.valid ) {
+    if (
+      !checkoutFormValidations.contractEndDate.touched || 
+      !checkoutFormValidations.contractEndDate.valid ) {
 
-    //     return;
-    //   }
+        return;
+      }
     const body = {}
     this.setState({ loading: true });
-    console.log(checkoutForm)
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
@@ -226,6 +221,7 @@ export default class CheckoutPage extends React.Component {
   }
 
   render() {
+    console.log(this.state.checkoutForm)
     const car = { ...this.state.car };
     const priceEstimationForm = this.state;
     const { loading } = this.state;

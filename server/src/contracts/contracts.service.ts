@@ -47,13 +47,15 @@ export class ContractsService {
     public async createContract(
         body: NewContractDTO, 
         carId: string,
-        customerId: string
         ): Promise<IndividualContractDTO> {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
-      const foundCustomer: Customer = await this.customersService.findCustomerByPhone(customerId)
-
+      console.log('foundcar')
+      const foundCustomer: Customer = await this.customersService.findCustomerByPhone(body.phone)
+      console.log('belowfoundcustomer')
+      const bodyForContract = { startDate: body.startDate, contractEndDate: body.contractEndDate}
       createContractErrorHandling(body);
-      const newContract = this.contractsRepository.create(body);
+      const newContract = this.contractsRepository.create(bodyForContract);
+      console.log('belownewcontract')
       newContract.car = foundCar;
       newContract.customer = foundCustomer;
       foundCar.isBorrowed = true;
