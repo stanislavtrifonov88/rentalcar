@@ -8,7 +8,7 @@ import { checkInputValidity } from './Validations/validationChecks'
 import fetchRequest from '../../services/Rest';
 import { baseURL, contracts, cars, customers }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
-import { bookingFormErrors } from '../../services/toastify/toastifyHelpers';
+import { bookingFormErrors, carCheckoutErrors } from '../../services/toastify/toastifyHelpers';
 import { toastSuccess } from '../../services/toastify/toastify';
 import { timeStamp, differenceInYears } from '../../shared/dateModifiers';
 import { parsePhoneNumber } from 'react-phone-number-input';
@@ -144,11 +144,9 @@ export default class CheckoutPage extends React.Component {
     const newObj = {};
     const validationObj = this.state.registrationFormValidations;
     newObj[name] = value;
-    // newObj.phone = this.state.phone.value
+    newObj.phone = this.state.phone.value
     validationObj[name].valid = checkInputValidity(newObj[name], this.state.registrationFormValidations[name].rules);
     validationObj[name].touched = true;
-    // console.log(this.state.newCustomer)
-    // console.log(newObj)
     this.setState({
         checkoutForm: Object.assign(this.state.newCustomer, newObj),
     })
@@ -159,9 +157,7 @@ export default class CheckoutPage extends React.Component {
 
   onRegistrationSubmit = (event) => {
     const { newCustomer, registrationFormValidations } = this.state;
-    console.log(newCustomer)
     const age = differenceInYears(newCustomer.birthdate)
-    console.log(age)
         bookingFormErrors(newCustomer, registrationFormValidations)
 
 
@@ -188,7 +184,7 @@ export default class CheckoutPage extends React.Component {
     const { checkoutForm, checkoutFormValidations } = this.state
     event.preventDefault();
     // bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
-
+    carCheckoutErrors(checkoutForm, checkoutFormValidations)
     if (
       !checkoutFormValidations.contractEndDate.touched || 
       !checkoutFormValidations.contractEndDate.valid ) {
