@@ -1,12 +1,8 @@
 
 
 export class NewContractDTO {
-    borrowerFirstName: string;
-
-    borrowerLastName: string;
-
-    borrowerAge: number;
-
+    phone: string
+    
     startDate: string;
    
     contractEndDate: string;

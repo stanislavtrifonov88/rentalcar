@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const AvailableCarCard = ({ car, onCheckout }) => (
   <div className="col-lg-4 col-md-6">
     <div className="cardAvailableCar" data-element="availableCarCard">
-      <img src={car.picture} alt="NO PIC" />
+      <img className="AvailableCarCardPic" src={car.picture} alt="NO PIC" />
       <div className="carDetails">
         <h3>{car.model}</h3>
         <h6>{car.brand}</h6>

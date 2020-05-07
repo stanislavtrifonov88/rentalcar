@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Car } from '../database/entities/car.entity';
 import { IndividualCarDTO } from './models/individualCar.dto';
-import * as errorMessages from '../shared/errors/error.messages'
+import * as errorMessages from '../shared/errors/error.messages';
 import { transformToCarDTO } from './transformers/transformToCarDTO';
 import * as Guard from '../shared/util/Guard';
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
 import './AvailableCarsContainer.css';
-import fetchRequest from '../../services/Rest';
+import { fetchRequest } from '../../services/Rest';
 import { baseURL } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
 import SearchInput from '../SearchBar/SearchInput';
@@ -107,7 +107,7 @@ AvailableCarsContainer.propTypes = {
 
 AvailableCarsContainer.defaultProps = {
   word: PropTypes.exact({
-    searchWord: 'Ford',
+    searchWord: '',
   }),
 };
 

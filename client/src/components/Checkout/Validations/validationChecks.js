@@ -1,4 +1,5 @@
 import * as validationStatus from './validationStatus';
+import { differenceInYears } from '../../../shared/dateModifiers';
 
 export const isValidField = (field) => {
   if (!field.valid && field.touched) {
@@ -21,6 +22,14 @@ export const checkInputValidity = (value, rules) => {
 
   if (rules.maxLength) {
     isValid = value.length <= rules.maxLength && isValid;
+  }
+
+  if (rules.maxLength) {
+    isValid = value.length <= rules.maxLength && isValid;
+  }
+
+  if (rules.minAge) {
+    isValid = differenceInYears(value) >= 18 && isValid;
   }
 
   return isValid;

@@ -11,14 +11,16 @@ import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
 import { currentTotalPrice } from '../shared/calculations/priceCalculations';
+import { CustomersService } from '../customers/customers.service';
+import { Customer } from '../database/entities/customer.entity';
 
 
 @Injectable()
 export class ContractsService {
     public constructor(
-        @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
         @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>,
         private readonly carsService: CarsService,
+        private readonly customersService: CustomersService,
     ) { }
 
     public async getAllContracts(
@@ -44,13 +46,18 @@ export class ContractsService {
 
     public async createContract(
         body: NewContractDTO, 
-        carId: string
+        carId: string,
         ): Promise<IndividualContractDTO> {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
-
+      console.log('foundcar')
+      const foundCustomer: Customer = await this.customersService.findCustomerByPhone(body.phone)
+      console.log('belowfoundcustomer')
+      const bodyForContract = { startDate: body.startDate, contractEndDate: body.contractEndDate}
       createContractErrorHandling(body);
-      const newContract = this.contractsRepository.create(body);
+      const newContract = this.contractsRepository.create(bodyForContract);
+      console.log('belownewcontract')
       newContract.car = foundCar;
+      newContract.customer = foundCustomer;
       foundCar.isBorrowed = true;
 
       await getManager().transaction(async (transactionalEntityManager) => {
