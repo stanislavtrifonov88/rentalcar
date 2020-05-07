@@ -11,7 +11,8 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
   foundCustomer.age = differenceInYears(foundCustomer.birthdate)
 
   const basePrice = foundCustomer.price;
-  const showHideAge = priceEstimationForm.registrationFormValidations.birthdate.valid ? 'show' : 'hide';
+  const showHideAge = priceEstimationForm.registrationFormValidations.birthdate ? 'show' : 'hide';
+  console.log(priceEstimationForm.registrationFormValidations.birthdate.valid)
   const showHideDays = priceEstimationForm.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
   let estimatedNumberOfDays = 0;
@@ -51,8 +52,8 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
             %
           </p>
         </div>
-        <div>
-        {/* <div className={showHideAge}> */}
+
+        <div className={showHideAge}>
           <p>
             Age Penalty:
           </p>
@@ -62,7 +63,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           </p>
         </div>
         <div>
-        {/* <div className={showHideFinalOffer}> */}
+        <div className={showHideFinalOffer}>
           <p>
             Total Discount:
           </p>
@@ -71,24 +72,26 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
             %
           </p>
         </div>
+        </div>
         <br />
         <h5>Final Offer</h5>
         <div >
-        {/* <div className={showHideFinalOffer}> */}
+        <div className={showHideFinalOffer}>
           <p>Daily Price</p>
           <p>
             {currentPricePerDay}
             $
           </p>
         </div>
-        <div >
-        {/* <div className={showHideFinalOffer}> */}
+        </div>
+        <div className={showHideFinalOffer}>
           <p>Total Price</p>
           <p>
             {currentTotalPrice}
             $
           </p>
         </div>
+
       </div>
     </div>
   );
