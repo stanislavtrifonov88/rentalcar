@@ -8,18 +8,28 @@ import Registration from './RegistrationForm/Registration';
 
 
 const BookingForm = ({
-  changed, checkoutFormValidations, onCancel, phoneChanged, 
-  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler
+  changed, checkoutFormValidations, onCancel, phoneChanged,
+  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler,
 }) => {
-
-
   let names = <div>hi</div>;
 
   if (foundCustomer.firstName === '') {
     names = <Registration newCustomerHandler={newCustomerHandler} registrationFormValidations={registrationFormValidations} onRegistrationSubmit={onRegistrationSubmit} />;
   } else {
-    names = <Customer foundCustomer={foundCustomer} onCheckoutInputSubmit={onCheckoutInputSubmit} 
-    onCancel={onCancel} checkoutFormValidations={checkoutFormValidations} carCheckoutHandler={carCheckoutHandler}/>;
+    names = (
+      <Customer
+        foundCustomer={foundCustomer}
+        onCheckoutInputSubmit={onCheckoutInputSubmit}
+        onCancel={onCancel}
+        checkoutFormValidations={checkoutFormValidations}
+        carCheckoutHandler={carCheckoutHandler}
+      />
+    );
+  }
+
+  let found = <p className="notFound">Client not found!</p>;
+  if (foundCustomer.firstName !== '') {
+  found = <p className="found">Welcome back, {foundCustomer.firstName}!</p>;
   }
 
 
@@ -29,9 +39,9 @@ const BookingForm = ({
       <div className="bookingFormInputFields">
         <div className="inputRows">
           <div className="inputFormContainer">
-          <label>
-            Phone number
-          </label>
+            <label>
+              Phone number
+            </label>
             <PhoneInput
               className="phoneField"
               placeholder="Enter phone number"
@@ -39,7 +49,11 @@ const BookingForm = ({
               required
               onChange={phoneChanged}
             />
+            {found}
           </div>
+
+
+
         </div>
         {names}
 

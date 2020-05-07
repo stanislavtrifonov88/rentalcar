@@ -122,7 +122,7 @@
 
 .phoneField {
     border-radius: 0px;
-    padding-bottom: 30px;
+    /* padding-bottom: 30px; */
 }
 
 .PhoneInputCountryIconImg {
@@ -133,4 +133,16 @@
     color: #F6AE2D;
     padding-bottom: 5%;
     width: 100%;
+}
+
+.notFound {
+    color: red;
+    margin-left: 10px;
+    /* width: 100px; */
+}
+
+.found {
+    color: green;
+    /* margin-left: 10px; */
+    /* width: 100px; */
 }
