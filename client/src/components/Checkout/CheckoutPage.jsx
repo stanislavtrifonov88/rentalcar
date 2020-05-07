@@ -243,7 +243,7 @@ export default class CheckoutPage extends React.Component {
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
       phone={this.state.phone}
       />
-    {/* <PriceEstimationCard priceEstimationForm={priceEstimationForm} /> */}
+    <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
   </div>
     if (loading) {
       checkoutFormCards = <Spinner />
