@@ -9,12 +9,18 @@ import Registration from './RegistrationForm/Registration';
 
 const BookingForm = ({
   changed, checkoutFormValidations, onCancel, phoneChanged,
-  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler,
+  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler, phone,
 }) => {
   let names = <div>hi</div>;
 
   if (foundCustomer.firstName === '') {
-    names = <Registration newCustomerHandler={newCustomerHandler} registrationFormValidations={registrationFormValidations} onRegistrationSubmit={onRegistrationSubmit} />;
+    names = (
+      <Registration
+        newCustomerHandler={newCustomerHandler}
+        registrationFormValidations={registrationFormValidations}
+        onRegistrationSubmit={onRegistrationSubmit}
+      />
+    );
   } else {
     names = (
       <Customer
@@ -28,8 +34,18 @@ const BookingForm = ({
   }
 
   let found = <p className="notFound">Client not found!</p>;
-  if (foundCustomer.firstName !== '') {
-  found = <p className="found">Welcome back, {foundCustomer.firstName}!</p>;
+  if (!phone.touched) {
+    found = <p className="invisible">Client not found!</p>;
+  } else if (foundCustomer.firstName !== '') {
+      found = (
+        <p className="found">
+          Welcome back,
+          {foundCustomer.firstName}
+          !
+        </p>
+      );
+
+
   }
 
 
@@ -51,9 +67,6 @@ const BookingForm = ({
             />
             {found}
           </div>
-
-
-
         </div>
         {names}
 

@@ -241,6 +241,7 @@ export default class CheckoutPage extends React.Component {
       registrationFormValidations={this.state.registrationFormValidations}
       foundCustomer={this.state.foundCustomer}
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
+      phone={this.state.phone}
       />
     {/* <PriceEstimationCard priceEstimationForm={priceEstimationForm} /> */}
   </div>
