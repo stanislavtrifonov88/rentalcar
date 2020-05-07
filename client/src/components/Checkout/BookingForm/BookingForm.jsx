@@ -29,6 +29,9 @@ const BookingForm = ({
       <div className="bookingFormInputFields">
         <div className="inputRows">
           <div className="inputFormContainer">
+          <label>
+            Phone number
+          </label>
             <PhoneInput
               className="phoneField"
               placeholder="Enter phone number"

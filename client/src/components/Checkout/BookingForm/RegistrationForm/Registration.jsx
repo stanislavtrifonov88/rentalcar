@@ -9,6 +9,7 @@ const Registration = ({ newCustomerHandler, registrationFormValidations, onCance
 
   return (
     <>
+    <h3 className="secondaryHeader">Registration</h3>
       <div className="inputRows">
         <div className="inputFormContainer">
           <label htmlFor="FirstName">
@@ -63,7 +64,7 @@ const Registration = ({ newCustomerHandler, registrationFormValidations, onCance
       </div>
       <div className="checkoutBtnsContainer">
         <button type="submit" className="bookCarBtn" onClick={onRegistrationSubmit} data-element="bookingFormCheckoutBtn">
-          Checkout
+          Register
         </button>
         <button type="submit" className="bookCarBtn" onClick={onCancel}>Cancel</button>
       </div>

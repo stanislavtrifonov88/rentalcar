@@ -8,6 +8,7 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutForm
 
   return (
     <>
+      <h3 className="secondaryHeader">Contract</h3>
       <div className="inputRows">
         <div className="inputFormContainer">
           <label htmlFor="FirstName">
