@@ -93,7 +93,12 @@ export default class CheckoutPage extends React.Component {
 
   handlePhoneChanged = (value) => {
     // console.log(isValidPhoneNumber(value))
-    const phoneNumber = parsePhoneNumber(value)
+    let phoneNumber = '';
+    const { phone } = this.state;
+    if (value !== undefined) {
+      phoneNumber = parsePhoneNumber(value)
+    }
+
     const newObj = {};
     newObj.touched = true;
     newObj.value = value;
