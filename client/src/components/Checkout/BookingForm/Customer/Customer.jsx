@@ -3,7 +3,9 @@ import { timeStamp } from '../../../../shared/dateModifiers';
 import { isValidField } from '../../Validations/validationChecks';
 
 
-const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutFormValidations, carCheckoutHandler }) => {
+const Customer = ({
+  foundCustomer, onCheckoutInputSubmit, onCancel, checkoutFormValidations, carCheckoutHandler,
+}) => {
   const validationErrorReturnDate = isValidField(checkoutFormValidations.contractEndDate);
 
   return (
@@ -22,6 +24,7 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutForm
             value={foundCustomer.firstName}
             disabled
           />
+          <p className="valid">Invalid field</p>
         </div>
         <div className="inputFormContainer">
           <label htmlFor="LastName">
@@ -35,6 +38,7 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutForm
             value={foundCustomer.lastName}
             disabled
           />
+          <p className="valid">Invalid field</p>
         </div>
       </div>
       <div className="inputRows">
@@ -49,6 +53,7 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutForm
             value={foundCustomer.birthdate}
             disabled
           />
+          <p className="valid">Invalid field</p>
         </div>
         <div className="inputFormContainer">
           <label htmlFor="Date">
@@ -63,7 +68,6 @@ const Customer = ({ foundCustomer, onCheckoutInputSubmit, onCancel, checkoutForm
             min={timeStamp()}
             onChange={carCheckoutHandler}
           />
-
           <p className={validationErrorReturnDate}>Please enter a valid date.</p>
         </div>
       </div>
