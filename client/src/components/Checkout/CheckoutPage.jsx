@@ -5,7 +5,7 @@ import BookingForm from './BookingForm/BookingForm';
 import PriceEstimationCard from './PriceEstimationCard/PriceEstimationCard';
 import * as validationProperty from './Validations/validationProperty'
 import { checkInputValidity } from './Validations/validationChecks'
-import fetchRequest from '../../services/Rest';
+import { fetchRequest, fetchRequestCustomer } from '../../services/Rest';
 import { baseURL, contracts, cars, customers }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { bookingFormErrors, carCheckoutErrors } from '../../services/toastify/toastifyHelpers';
@@ -116,9 +116,12 @@ export default class CheckoutPage extends React.Component {
     })
 
     if (newObj.isValid) {
-      fetchRequest(`${baseURL}/${customers}`,'PUT',{ phone: value })
-      .then(response => 
-        this.setState({ foundCustomer: response})
+      fetchRequestCustomer(`${baseURL}/${customers}`,'PUT',{ phone: value })
+      .then(response => {
+        if (response) {
+          this.setState({ foundCustomer: response})
+        }
+      }
         );
     }
 

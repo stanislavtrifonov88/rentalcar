@@ -1,5 +1,4 @@
-const fetchRequest = async (path, method = 'GET', body = null) => {
-
+export const fetchRequest = async (path, method = 'GET', body = null) => {
   let requestInfo = {};
 
   if (method !== 'GET') {
@@ -21,4 +20,33 @@ const fetchRequest = async (path, method = 'GET', body = null) => {
     });
 };
 
-export default fetchRequest;
+export const fetchRequestCustomer = async (path, method = 'GET', body = null) => {
+  let requestInfo = {};
+
+  if (method !== 'GET') {
+    requestInfo = {
+      method,
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return fetch(path, requestInfo)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return {
+
+        phone: '',
+        firstName: '',
+        lastName: '',
+        birthdate: '',
+        age: '',
+        loyaltyDiscount: '',
+        geoDiscount: '',
+      };
+    });
+};
