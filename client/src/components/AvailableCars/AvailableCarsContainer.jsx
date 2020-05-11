@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
 import './AvailableCarsContainer.css';
@@ -94,11 +93,6 @@ filterBy = (data) => {
   }
 }
 
-const mapStateToProps = (state) => ({
-  word: state.searchWord,
-});
-
-
 AvailableCarsContainer.propTypes = {
   word: PropTypes.exact({
     searchWord: PropTypes.string,
@@ -111,4 +105,4 @@ AvailableCarsContainer.defaultProps = {
   }),
 };
 
-export default connect(mapStateToProps, null)(AvailableCarsContainer);
+export default AvailableCarsContainer;

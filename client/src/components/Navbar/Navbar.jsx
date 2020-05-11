@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import { connect } from 'react-redux';
-import SEARCH_WORD from '../redux/actionTypes';
+
 
 
 class NavigationBarCars extends React.Component {
@@ -36,8 +35,5 @@ class NavigationBarCars extends React.Component {
   }
 } 
 
-const mapDispatchToProps = (dispatch) => ({
-  onSearch: (searchedWord) => dispatch({ type: SEARCH_WORD, searchedWord: searchedWord }),
-});
 
-export default connect(null, mapDispatchToProps)(NavigationBarCars);
+export default NavigationBarCars;
