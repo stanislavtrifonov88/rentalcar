@@ -8,7 +8,9 @@ import Spinner from '../Spinner/Spinner';
 import SearchInput from '../SearchBar/SearchInput';
 import Select from '../Filters/Select'
 import {createList, applyFilters, applySearch } from '../Filters/filterFunctions';
+import { observer } from 'mobx-react';
 
+@observer
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
