@@ -8,28 +8,30 @@ import Spinner from '../Spinner/Spinner';
 import SearchInput from '../SearchBar/SearchInput';
 import Select from '../Filters/Select'
 import {createList, applyFilters, applySearch } from '../Filters/filterFunctions';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
+@inject('store') 
 @observer
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cars: [],
-      searchString: '',
+      // cars: [],
+      // searchString: '',
       loading: false,
-      filterStrings: {
-        brand: '',
-        model: '',
-        className: '',
-      },
-      filters: {
-        brand: { isOpen: false },
-        class: { isOpen: false },
-        model: { isOpen: false },
-      },
+      // filterStrings: {
+      //   brand: '',
+      //   model: '',
+      //   className: '',
+      // },
+      // filters: {
+      //   brand: { isOpen: false },
+      //   class: { isOpen: false },
+      //   model: { isOpen: false },
+      // },
 
     };
+    this.store = this.props.store;
   }
 
   componentDidMount() {
@@ -37,9 +39,10 @@ class AvailableCarsContainer extends React.Component {
     fetchRequest(`${baseURL}/cars`)
       .then((result) => {
         this.setState({
-          cars: result,
+          // cars: result,
           loading: false,
         });
+        this.store.cars = result
       });
   }
 
@@ -48,11 +51,13 @@ class AvailableCarsContainer extends React.Component {
   }
 
 searchString = (value) => {
-    this.setState({searchString: value});
+    // this.setState({searchString: value});
+    this.store.searchString = value
 }
 
 filterBy = (data) => {
-  let { filterStrings } = this.state;
+  // let { filterStrings } = this.state;
+  let { filterStrings } = this.store;
   filterStrings[data.dataAttribute] = data.option
   if (data.option === 'None') {
     filterStrings[data.dataAttribute] = ''
@@ -62,9 +67,11 @@ filterBy = (data) => {
 }
 
   render() {
-    let { cars, filterStrings, searchString } = this.state;
+    // let {  cars, searchString, filterStrings } = this.state;
+    let { cars, searchString, filterStrings } = this.store
     cars = applyFilters(cars, filterStrings)
     cars = applySearch(cars, searchString, ['brand', 'model'])
+    console.log(cars)
 
     let cards = cars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
     const { loading } = this.state;
@@ -80,7 +87,7 @@ filterBy = (data) => {
       <div className="container" data-element="allAvailableCarsContainer">
         <h1> Currently Available Cars</h1>
         <div className="filterContainer">
-        <SearchInput value={this.state.searchString} update={this.searchString} /> 
+        <SearchInput value={searchString} update={this.searchString} /> 
         <div className="availableCarsFiltersContainer">
           <Select id="className" options={classesList} onChildClick={this.filterBy} type={'Class'} dataFilter={"className"}/>
           <Select options={brandsList} onChildClick={this.filterBy} type={'Brand'} dataFilter={"brand"}/> 

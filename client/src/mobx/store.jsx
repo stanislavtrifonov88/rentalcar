@@ -1,7 +1,14 @@
 import { observable, action, autorun } from 'mobx'
 
-class TodoStore {
-    @observable cars= [];
+class AvailableCarsStore {
+    @observable cars= [{
+      id: "b08ce9ff-9f8c-4795-9d55-36abda9045f4",
+      brand: "Opel",
+      model: "Corsa",
+      picture: "http://localhost:3001/img/opelCorsa.jpeg",
+      className: "A",
+      price: 50,
+    }];
     @observable searchString= '';
     @observable loading= false;
     @observable filterStrings= {
@@ -17,11 +24,6 @@ class TodoStore {
   
 }
 
-const store = window.store = new TodoStore
+const store = window.store = new AvailableCarsStore
 
 export default store
-
-autorun(() => {
-    console.log(store.filter)
-    console.log(store.todos[0])
-})
