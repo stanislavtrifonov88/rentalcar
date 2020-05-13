@@ -8,75 +8,63 @@ import { toastSuccess } from '../../services/toastify/toastify';
 import SearchInput from '../SearchBar/SearchInput';
 import {createList, applyFilters, applySearch } from '../Filters/filterFunctions';
 import Select from '../Filters/Select';
+import { observer, inject } from 'mobx-react';
 
+@inject('dashboardStore') 
+@observer
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      contracts: [],
-      loading: false,
-      filteredList: [],
-      searchString: '',
-      filterStrings: {
-        brand: '',
-        model: '',
-      },
-      filters: {
-        brand: { isOpen: false },
-        model: { isOpen: false },
-      }
-    };
+    this.store = this.props.dashboardStore
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
+    this.store.loading = true
     fetchRequest(`${baseURL}/${contracts}`)
       .then((result) => {
-        this.setState({
-          contracts: result,
-          loading: false,
-        });
+        this.store.contracts = result;
+        this.store.loading = false
       });
+
   }
 
   onSubmit = (id) => {
-    this.setState({ loading: true });
+    this.store.loading = true
       fetchRequest(`${baseURL}/${contracts}/${id}`, 'PUT', {})
       .then(response => 
         fetchRequest(`${baseURL}/${contracts}`)
         .then((result) => {
-          this.setState({
-            contracts: result,
-            loading: false,
-          });
+          this.store.contracts = result;
+          this.store.loading = false
           toastSuccess("Car successfully returned")
         }));
   }
 
 searchString = (value) => {
-  this.setState({searchString: value});
+  this.store.searchString = value;
 }
 
 filterBy = (data) => {
-let { filterStrings } = this.state;
+let { filterStrings } = this.store;
 filterStrings[data.dataAttribute] = data.option
 if (data.option === 'None') {
   filterStrings[data.dataAttribute] = ''
 }
 
-this.setState({ filterStrings });
+this.store.filterStrings = filterStrings;
 }
 
 
   render() {
-    let { contracts, filterStrings, searchString } = this.state;
+    let { contracts } = this.store;
+    const { loading, filterStrings, searchString } = this.store;
     contracts = applyFilters(contracts, filterStrings)
     contracts = applySearch(contracts, searchString, ['brand', 'model', 'firstName', 'lastName'])
     const brandsList = createList(contracts, 'brand')
     const modelsList = createList(contracts, 'model')
 
     const filteredContracts = contracts.map((contract) => <DashboardItem key={contract.id} contract={contract} onChildClick={this.onSubmit} />);
-    const { loading } = this.state;
+
     let table = <table className="dashboarTable">
     <thead>
       <tr className="headerRow">
@@ -108,7 +96,7 @@ this.setState({ filterStrings });
       <div className="dashboardContainer" data-element="dashboard">
         <h1>Rented Cars</h1>
         <div className="filterContainer">
-        <SearchInput value={this.state.searchString} update={this.searchString} /> 
+        <SearchInput value={searchString} update={this.searchString} /> 
         <div className="availableDashboardFiltersContainer">
           <Select options={brandsList} onChildClick={this.filterBy} type={'Brand'} dataFilter={"brand"}/> 
           <Select options={modelsList} onChildClick={this.filterBy} type={'Model'} dataFilter={"model"}/>

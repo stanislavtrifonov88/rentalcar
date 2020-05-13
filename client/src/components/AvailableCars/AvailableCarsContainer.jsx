@@ -10,28 +10,15 @@ import Select from '../Filters/Select'
 import {createList, applyFilters, applySearch } from '../Filters/filterFunctions';
 import { observer, inject } from 'mobx-react';
 
-@inject('store') 
+@inject('availableCarStore') 
 @observer
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // cars: [],
-      // searchString: '',
       loading: false,
-      // filterStrings: {
-      //   brand: '',
-      //   model: '',
-      //   className: '',
-      // },
-      // filters: {
-      //   brand: { isOpen: false },
-      //   class: { isOpen: false },
-      //   model: { isOpen: false },
-      // },
-
     };
-    this.store = this.props.store;
+    this.store = this.props.availableCarStore;
   }
 
   componentDidMount() {
@@ -39,7 +26,6 @@ class AvailableCarsContainer extends React.Component {
     fetchRequest(`${baseURL}/cars`)
       .then((result) => {
         this.setState({
-          // cars: result,
           loading: false,
         });
         this.store.cars = result
@@ -51,12 +37,10 @@ class AvailableCarsContainer extends React.Component {
   }
 
 searchString = (value) => {
-    // this.setState({searchString: value});
     this.store.searchString = value
 }
 
 filterBy = (data) => {
-  // let { filterStrings } = this.state;
   let { filterStrings } = this.store;
   filterStrings[data.dataAttribute] = data.option
   if (data.option === 'None') {
@@ -67,11 +51,9 @@ filterBy = (data) => {
 }
 
   render() {
-    // let {  cars, searchString, filterStrings } = this.state;
     let { cars, searchString, filterStrings } = this.store
     cars = applyFilters(cars, filterStrings)
     cars = applySearch(cars, searchString, ['brand', 'model'])
-    console.log(cars)
 
     let cards = cars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
     const { loading } = this.state;

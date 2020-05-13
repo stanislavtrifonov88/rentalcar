@@ -5,11 +5,15 @@ import NavigationBarCars from './components/Navbar/Navbar';
 import AppRouter from './AppRouter';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'mobx-react';
-import store from './mobx/store'
+import availableCarStore from './mobx/availableCarStore';
+import dashboardStore from './mobx/dashboardStore';
 
 function App() {
   return (
-    <Provider store={store}>
+    <Provider 
+    availableCarStore={availableCarStore}
+    dashboardStore={dashboardStore}
+    >
     <div className="App">
       <NavigationBarCars />
       <AppRouter />
