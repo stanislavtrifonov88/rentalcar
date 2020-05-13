@@ -15,20 +15,15 @@ import { observer, inject } from 'mobx-react';
 class AvailableCarsContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false,
-    };
     this.store = this.props.availableCarStore;
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
+    this.store.loading = true;
     fetchRequest(`${baseURL}/cars`)
       .then((result) => {
-        this.setState({
-          loading: false,
-        });
-        this.store.cars = result
+        this.store.loading = false;
+        this.store.cars = result;
       });
   }
 
@@ -37,7 +32,7 @@ class AvailableCarsContainer extends React.Component {
   }
 
 searchString = (value) => {
-    this.store.searchString = value
+    this.store.searchString = value;
 }
 
 filterBy = (data) => {
@@ -46,17 +41,16 @@ filterBy = (data) => {
   if (data.option === 'None') {
     filterStrings[data.dataAttribute] = ''
   }
-
-  this.setState({ filterStrings});
 }
 
   render() {
-    let { cars, searchString, filterStrings } = this.store
+    let { cars } = this.store;
+    const { loading, searchString, filterStrings } = this.store;
     cars = applyFilters(cars, filterStrings)
     cars = applySearch(cars, searchString, ['brand', 'model'])
 
     let cards = cars.map((car) => <AvailableCarCard key={car.id} car={car} onCheckout={this.onCheckout} />);
-    const { loading } = this.state;
+  
     if (loading) {
       cards = <Spinner />;
     }
