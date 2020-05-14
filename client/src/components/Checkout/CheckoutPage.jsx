@@ -14,7 +14,7 @@ import { timeStamp, differenceInYears } from '../../shared/dateModifiers';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import { observer, inject } from 'mobx-react';
 
-@inject('customerStore', 'individualCarStore') 
+@inject('customerStore', 'individualCarStore', 'checkoutFormStore') 
 @observer
 export default class CheckoutPage extends React.Component {
   constructor(props) {
@@ -49,50 +49,51 @@ export default class CheckoutPage extends React.Component {
     //     className: "",
     //     price: 1,
     // },
-      checkoutForm: {
-        phone: "",
-        startDate: null,
-        contractEndDate: null,
-    },
-    registrationFormValidations: {
-      firstName: {
-        rules: {
-        required: true,
-        minLength: validationProperty.minLengthName,
-        maxLength: validationProperty.maxLengthName,
-      },
-        valid: false,
-        touched: false,
-      },
-      lastName: {
-        rules: {
-        required: true,
-        minLength: validationProperty.minLengthName,
-        maxLength: validationProperty.maxLengthName,
-      },
-        valid: false,
-      },
-      birthdate: {
-        rules: {
-        required: true,
-        minAge: validationProperty.minAge
-      },
-        valid: false,
-        touched: false,
-      },
-  },
-      checkoutFormValidations: {
-        contractEndDate: {
-          rules: {
-          required: true,
-        },
-          valid: false,
-          touched: false,
-        },
-    }
+    //   checkoutForm: {
+    //     phone: "",
+    //     startDate: null,
+    //     contractEndDate: null,
+    // },
+  //   registrationFormValidations: {
+  //     firstName: {
+  //       rules: {
+  //       required: true,
+  //       minLength: validationProperty.minLengthName,
+  //       maxLength: validationProperty.maxLengthName,
+  //     },
+  //       valid: false,
+  //       touched: false,
+  //     },
+  //     lastName: {
+  //       rules: {
+  //       required: true,
+  //       minLength: validationProperty.minLengthName,
+  //       maxLength: validationProperty.maxLengthName,
+  //     },
+  //       valid: false,
+  //     },
+  //     birthdate: {
+  //       rules: {
+  //       required: true,
+  //       minAge: validationProperty.minAge
+  //     },
+  //       valid: false,
+  //       touched: false,
+  //     },
+  // },
+    //   checkoutFormValidations: {
+    //     contractEndDate: {
+    //       rules: {
+    //       required: true,
+    //     },
+    //       valid: false,
+    //       touched: false,
+    //     },
+    // }
   };
   this.customerStore = this.props.customerStore;
   this.individualCarStore = this.props.individualCarStore;
+  this.checkoutFormStore = this.props.checkoutFormStore;
 };
 
   handlePhoneChanged = (value) => {
@@ -138,19 +139,22 @@ export default class CheckoutPage extends React.Component {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
-    const validationObj = this.state.checkoutFormValidations;
+    // const validationObj = this.state.checkoutFormValidations;
+    const validationObj = this.checkoutFormValidations;
     newObj[name] = value;
-    newObj.phone = this.state.phone.value
+    newObj.phone = this.customerStore.phone.value
     newObj.startDate = timeStamp();
-    validationObj[name].valid = checkInputValidity(newObj[name], this.state.checkoutFormValidations[name].rules);
+    validationObj[name].valid = checkInputValidity(newObj[name], this.checkoutFormValidations.checkoutFormValidations[name].rules);
     validationObj[name].touched = true;
 
-    this.setState({
-        checkoutForm: Object.assign(this.state.checkoutForm, newObj),
-    })
-    this.setState({
-      checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
-  })
+    // this.setState({
+    //     checkoutForm: Object.assign(this.state.checkoutForm, newObj),
+    // })
+    this.checkoutFormStore.checkoutForm = newObj;
+  //   this.setState({
+  //     checkoutFormValidations: Object.assign(this.state.checkoutFormValidations, validationObj),
+  // })
+  this.checkoutFormStore.checkoutFormValidations = validationObj;
   }
 
   newCustomerHandler = (event) => {
@@ -161,7 +165,7 @@ export default class CheckoutPage extends React.Component {
     const { registrationFormValidations } = this.customerStore;
     const validationObj = registrationFormValidations;
     newObj[name] = value;
-    newObj.phone = this.state.phone.value
+    newObj.phone = this.customerStore.value
     validationObj[name].valid = checkInputValidity(newObj[name], registrationFormValidations[name].rules);
     validationObj[name].touched = true;
   //   this.setState({
@@ -176,7 +180,7 @@ export default class CheckoutPage extends React.Component {
 
   onRegistrationSubmit = (event) => {
     // const { newCustomer, registrationFormValidations } = this.state;
-    const { newCustomer, registrationFormValidations } = this.foundCustomer;
+    const { newCustomer, registrationFormValidations } = this.customerStore;
     const age = differenceInYears(newCustomer.birthdate)
         bookingFormErrors(newCustomer, registrationFormValidations)
 
@@ -202,7 +206,8 @@ export default class CheckoutPage extends React.Component {
 
 
   onCheckoutInputSubmit = (event) => {
-    const { checkoutForm, checkoutFormValidations } = this.state
+    // const { checkoutForm, checkoutFormValidations } = this.state;
+    const { checkoutForm, checkoutFormValidations } = this.checkoutFormStore;
     event.preventDefault();
     // bookingFormErrors(this.state.checkoutForm, checkoutFormValidations)
     carCheckoutErrors(checkoutForm, checkoutFormValidations)
@@ -215,7 +220,7 @@ export default class CheckoutPage extends React.Component {
     // const body = {}
     // this.setState({ loading: true });
     this.individualCarStore.loading = true;
-    fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
+    fetchRequest(`${baseURL}/${contracts}/car/${this.individualCarStore.car.id}`,'POST',checkoutForm)
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
       // this.setState({ loading: false }),
@@ -233,10 +238,10 @@ export default class CheckoutPage extends React.Component {
     const { id }= this.props.match.params;
       fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {
-        this.setState({
+        // this.setState({
           // car: result,
           // loading: false,
-        });
+        // });
         this.individualCarStore.car = result;
         this.individualCarStore.loading = false;
       });
@@ -247,7 +252,7 @@ export default class CheckoutPage extends React.Component {
     const { car, loading } = this.individualCarStore;
     // const { registrationFormValidations } = this.state;
     // const car = { ...this.state.car };
-    const priceEstimationForm = this.state;
+    // const priceEstimationForm = this.state;
     // const { loading } = this.state;
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
@@ -258,13 +263,13 @@ export default class CheckoutPage extends React.Component {
       onCancel={this.onCancel} 
       carCheckoutHandler={this.carCheckoutHandler}
       onRegistrationSubmit={this.onRegistrationSubmit}  
-      checkoutFormValidations={this.state.checkoutFormValidations} 
+      checkoutFormValidations={this.checkoutFormStore.checkoutFormValidations} 
       registrationFormValidations={registrationFormValidations}
       foundCustomer={foundCustomer}
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
       phone={phone}
       />
-    <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
+    {/* <PriceEstimationCard priceEstimationForm={priceEstimationForm} /> */}
   </div>
     if (loading) {
       checkoutFormCards = <Spinner />
