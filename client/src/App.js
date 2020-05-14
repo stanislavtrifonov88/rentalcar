@@ -9,6 +9,7 @@ import availableCarStore from './mobx/availableCarStore';
 import dashboardStore from './mobx/dashboardStore';
 import customerStore from './mobx/customerStore';
 import individualCarStore from './mobx/individualCarStore';
+import checkoutFormStore from './mobx/checkoutFormStore';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
     dashboardStore={dashboardStore}
     customerStore={customerStore}
     individualCarStore={individualCarStore}
+    checkoutFormStore={checkoutFormStore}
     >
     <div className="App">
       <NavigationBarCars />
