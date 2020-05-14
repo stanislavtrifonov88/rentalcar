@@ -9,11 +9,6 @@ class AvailableCarsStore {
         model: '',
         className: '',
       };
-    @observable filters= {
-        brand: { isOpen: false },
-        class: { isOpen: false },
-        model: { isOpen: false },
-      };
 }
 
 const availableCarStore = new AvailableCarsStore
