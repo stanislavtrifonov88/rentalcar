@@ -2,6 +2,7 @@ import React from "react";
 import CheckoutCarCard from "./CheckoutCarCard/CheckoutCarCard";
 import "./CheckoutPage.css";
 import BookingForm from "./BookingForm/BookingForm";
+import PriceEstimationCard from "./PriceEstimationCard/PriceEstimationCard"
 import { checkInputValidity } from "./Validations/validationChecks";
 import { fetchRequest, fetchRequestCustomer } from "../../services/Rest";
 import {
@@ -59,10 +60,18 @@ export default class CheckoutPage extends React.Component {
           this.customerStore.foundCustomer = response;
         }
       });
+    } else {
+      this.customerStore.foundCustomer = {
+        phone: "",
+        firstName: "",
+        lastName: "",
+        birthdate: "",
+        age: "",
+        loyaltyDiscount: "",
+        geoDiscount: "",
+      };
     }
   };
-
-
 
   newCustomerHandler = (event) => {
     const name = event.target.dataset.name;
@@ -102,18 +111,18 @@ export default class CheckoutPage extends React.Component {
       }
     );
   };
-  
+
   carCheckoutHandler = (event) => {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
-    const validationObj = this.checkoutFormValidations;
+    const validationObj = this.checkoutFormStore.checkoutFormValidations;
     newObj[name] = value;
     newObj.phone = this.customerStore.phone.value;
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(
       newObj[name],
-      this.checkoutFormValidations.checkoutFormValidations[name].rules
+      this.checkoutFormStore.checkoutFormValidations[name].rules
     );
     validationObj[name].touched = true;
 
@@ -181,7 +190,7 @@ export default class CheckoutPage extends React.Component {
           onCheckoutInputSubmit={this.onCheckoutInputSubmit}
           phone={phone}
         />
-        {/* <PriceEstimationCard priceEstimationForm={priceEstimationForm} /> */}
+        <PriceEstimationCard />
       </div>
     );
     if (loading) {
