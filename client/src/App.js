@@ -7,12 +7,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'mobx-react';
 import availableCarStore from './mobx/availableCarStore';
 import dashboardStore from './mobx/dashboardStore';
+import customerStore from './mobx/customerStore';
 
 function App() {
   return (
     <Provider 
     availableCarStore={availableCarStore}
     dashboardStore={dashboardStore}
+    customerStore={customerStore}
     >
     <div className="App">
       <NavigationBarCars />
