@@ -6,29 +6,29 @@ import { differenceInYears } from '../../../shared/dateModifiers';
 
 
 const PriceEstimationCard = ({ priceEstimationForm }) => {
-  const { foundCustomer } = priceEstimationForm;
-  foundCustomer.price = priceEstimationForm.car.price;
-  foundCustomer.age = differenceInYears(foundCustomer.birthdate)
+  // const { foundCustomer } = priceEstimationForm;
+  // foundCustomer.price = priceEstimationForm.car.price;
+  // foundCustomer.age = differenceInYears(foundCustomer.birthdate)
 
-  const basePrice = foundCustomer.price;
-  const showHideAge = priceEstimationForm.registrationFormValidations.birthdate ? 'show' : 'hide';
-  console.log(priceEstimationForm.registrationFormValidations.birthdate.valid)
-  const showHideDays = priceEstimationForm.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
-  const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
-  let estimatedNumberOfDays = 0;
-  if (priceEstimationForm.checkoutFormValidations.contractEndDate.valid) {
-    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(foundCustomer);
-  }
-  const daysDiscount = priceCalculations.daysDiscount(foundCustomer);
-  const agePenalty = priceCalculations.ageDiscount(foundCustomer);
-  const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
-  const currentPricePerDay = priceCalculations.currentPricePerDay(foundCustomer);
-  const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  // const basePrice = foundCustomer.price;
+  // const showHideAge = priceEstimationForm.registrationFormValidations.birthdate ? 'show' : 'hide';
+  // console.log(priceEstimationForm.registrationFormValidations.birthdate.valid)
+  // const showHideDays = priceEstimationForm.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
+  // const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
+  // let estimatedNumberOfDays = 0;
+  // if (priceEstimationForm.checkoutFormValidations.contractEndDate.valid) {
+  //   estimatedNumberOfDays = priceCalculations.estimatedDaysRented(foundCustomer);
+  // }
+  // const daysDiscount = priceCalculations.daysDiscount(foundCustomer);
+  // const agePenalty = priceCalculations.ageDiscount(foundCustomer);
+  // const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
+  // const currentPricePerDay = priceCalculations.currentPricePerDay(foundCustomer);
+  // const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
       <h1>Estimated Price</h1>
-      <div className="priceCalculationDetails">
+      {/* <div className="priceCalculationDetails">
         <h5 className="visibleItem">Starting Details</h5>
         <div className="priceItem">
           <p>Daily price</p>
@@ -92,7 +92,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           </p>
         </div>
 
-      </div>
+      </div> */}
     </div>
   );
 };

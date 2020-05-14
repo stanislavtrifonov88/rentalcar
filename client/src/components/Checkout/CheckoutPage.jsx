@@ -12,33 +12,35 @@ import { bookingFormErrors, carCheckoutErrors } from '../../services/toastify/to
 import { toastSuccess } from '../../services/toastify/toastify';
 import { timeStamp, differenceInYears } from '../../shared/dateModifiers';
 import { parsePhoneNumber } from 'react-phone-number-input';
+import { observer, inject } from 'mobx-react';
 
-
+@inject('customerStore') 
+@observer
 export default class CheckoutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      phone: {
-        value: "",
-        isValid: false,
-        touched: false,
-      },
-      foundCustomer: {
-        phone: "",
-        firstName: "",
-        lastName: "",
-        birthdate: "",
-        age: "",
-        loyaltyDiscount: "",
-        geoDiscount: "",
-      },
-      newCustomer: {
-        phone: "",
-        firstName: "",
-        lastName: "",
-        birthdate: "",
-      },
+      // phone: {
+      //   value: "",
+      //   isValid: false,
+      //   touched: false,
+      // },
+      // foundCustomer: {
+      //   phone: "",
+      //   firstName: "",
+      //   lastName: "",
+      //   birthdate: "",
+      //   age: "",
+      //   loyaltyDiscount: "",
+      //   geoDiscount: "",
+      // },
+      // newCustomer: {
+      //   phone: "",
+      //   firstName: "",
+      //   lastName: "",
+      //   birthdate: "",
+      // },
       car: { 
         id: "",
         brand: "",
@@ -89,12 +91,14 @@ export default class CheckoutPage extends React.Component {
         },
     }
   };
+  this.customerStore = this.props.customerStore;
 };
 
   handlePhoneChanged = (value) => {
     // console.log(isValidPhoneNumber(value))
     let phoneNumber = '';
-    const { phone } = this.state;
+    // const { phone } = this.state;
+    const { phone } = this.customerStore
     if (value !== undefined) {
       phoneNumber = parsePhoneNumber(value)
     }
@@ -103,28 +107,30 @@ export default class CheckoutPage extends React.Component {
     newObj.touched = true;
     newObj.value = value;
 
-    if(phoneNumber) {
-      if(phoneNumber.country === 'BG') {
+    if (phoneNumber) {
+      if (phoneNumber.country === 'BG') {
         if (newObj.value.length === 13) {
           newObj.isValid = true
         }
       }
     }
 
-    this.setState({
-        phone: Object.assign(this.state.phone, newObj),
-    })
+    // this.setState({
+    //     phone: Object.assign(this.state.phone, newObj),
+    // })
+
+    this.customerStore.phone = newObj;
 
     if (newObj.isValid) {
       fetchRequestCustomer(`${baseURL}/${customers}`,'PUT',{ phone: value })
       .then(response => {
         if (response) {
-          this.setState({ foundCustomer: response})
+          // this.setState({ foundCustomer: response})
+          this.customerStore.foundCustomer = response;
         }
       }
         );
     }
-
   }
 
   carCheckoutHandler = (event) => {
@@ -150,21 +156,26 @@ export default class CheckoutPage extends React.Component {
     const name = event.target.dataset.name;
     const value = event.target.value;
     const newObj = {};
-    const validationObj = this.state.registrationFormValidations;
+    // const validationObj = this.state.registrationFormValidations;
+    const { registrationFormValidations } = this.customerStore;
+    const validationObj = registrationFormValidations;
     newObj[name] = value;
     newObj.phone = this.state.phone.value
-    validationObj[name].valid = checkInputValidity(newObj[name], this.state.registrationFormValidations[name].rules);
+    validationObj[name].valid = checkInputValidity(newObj[name], registrationFormValidations[name].rules);
     validationObj[name].touched = true;
-    this.setState({
-        checkoutForm: Object.assign(this.state.newCustomer, newObj),
-    })
-    this.setState({
-      registrationFormValidations: Object.assign(this.state.registrationFormValidations, validationObj),
-  })
+  //   this.setState({
+  //       checkoutForm: Object.assign(this.state.newCustomer, newObj),
+  //   })
+  //   this.setState({
+  //     registrationFormValidations: Object.assign(this.state.registrationFormValidations, validationObj),
+  // })
+    this.customerStore.newCustomer = newObj;
+    this.customerStore.registrationFormValidations = validationObj;
   }
 
   onRegistrationSubmit = (event) => {
-    const { newCustomer, registrationFormValidations } = this.state;
+    // const { newCustomer, registrationFormValidations } = this.state;
+    const { newCustomer, registrationFormValidations } = this.foundCustomer;
     const age = differenceInYears(newCustomer.birthdate)
         bookingFormErrors(newCustomer, registrationFormValidations)
 
@@ -182,9 +193,10 @@ export default class CheckoutPage extends React.Component {
     fetchRequest(`${baseURL}/${customers}`,'POST', newCustomer)
     .then(response => {
       console.log(response)
-      this.setState({ foundCustomer: response})
-    }
-      );
+      // this.setState({ foundCustomer: response})
+      this.customerStore.foundCustomer = response;
+      }
+    );
   }
 
 
@@ -199,7 +211,7 @@ export default class CheckoutPage extends React.Component {
 
         return;
       }
-    const body = {}
+    // const body = {}
     this.setState({ loading: true });
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
     .then(response => 
@@ -225,23 +237,25 @@ export default class CheckoutPage extends React.Component {
   }
 
   render() {
-    console.log(this.state.checkoutForm)
+    const { foundCustomer, phone, registrationFormValidations } = this.customerStore
+    // const { registrationFormValidations } = this.state;
     const car = { ...this.state.car };
     const priceEstimationForm = this.state;
     const { loading } = this.state;
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
-    <BookingForm car={car} 
+    <BookingForm 
+      car={car} 
       newCustomerHandler={this.newCustomerHandler} 
       phoneChanged={this.handlePhoneChanged} 
       onCancel={this.onCancel} 
       carCheckoutHandler={this.carCheckoutHandler}
       onRegistrationSubmit={this.onRegistrationSubmit}  
       checkoutFormValidations={this.state.checkoutFormValidations} 
-      registrationFormValidations={this.state.registrationFormValidations}
-      foundCustomer={this.state.foundCustomer}
+      registrationFormValidations={registrationFormValidations}
+      foundCustomer={foundCustomer}
       onCheckoutInputSubmit={this.onCheckoutInputSubmit}
-      phone={this.state.phone}
+      phone={phone}
       />
     <PriceEstimationCard priceEstimationForm={priceEstimationForm} />
   </div>

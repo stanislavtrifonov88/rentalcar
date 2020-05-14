@@ -1,4 +1,5 @@
 import { observable, action, autorun } from "mobx";
+import * as validationProperty from '../components/Checkout/Validations/validationProperty';
 
 class CustomerStore {
   @observable phone = {
