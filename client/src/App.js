@@ -8,6 +8,7 @@ import { Provider } from 'mobx-react';
 import availableCarStore from './mobx/availableCarStore';
 import dashboardStore from './mobx/dashboardStore';
 import customerStore from './mobx/customerStore';
+import individualCarStore from './mobx/individualCarStore';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
     availableCarStore={availableCarStore}
     dashboardStore={dashboardStore}
     customerStore={customerStore}
+    individualCarStore={individualCarStore}
     >
     <div className="App">
       <NavigationBarCars />

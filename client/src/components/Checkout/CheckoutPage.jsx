@@ -14,13 +14,13 @@ import { timeStamp, differenceInYears } from '../../shared/dateModifiers';
 import { parsePhoneNumber } from 'react-phone-number-input';
 import { observer, inject } from 'mobx-react';
 
-@inject('customerStore') 
+@inject('customerStore', 'individualCarStore') 
 @observer
 export default class CheckoutPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      // loading: false,
       // phone: {
       //   value: "",
       //   isValid: false,
@@ -41,14 +41,14 @@ export default class CheckoutPage extends React.Component {
       //   lastName: "",
       //   birthdate: "",
       // },
-      car: { 
-        id: "",
-        brand: "",
-        model: "",
-        picture: "",
-        className: "",
-        price: 1,
-    },
+    //   car: { 
+    //     id: "",
+    //     brand: "",
+    //     model: "",
+    //     picture: "",
+    //     className: "",
+    //     price: 1,
+    // },
       checkoutForm: {
         phone: "",
         startDate: null,
@@ -92,6 +92,7 @@ export default class CheckoutPage extends React.Component {
     }
   };
   this.customerStore = this.props.customerStore;
+  this.individualCarStore = this.props.individualCarStore;
 };
 
   handlePhoneChanged = (value) => {
@@ -212,11 +213,13 @@ export default class CheckoutPage extends React.Component {
         return;
       }
     // const body = {}
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
+    this.individualCarStore.loading = true;
     fetchRequest(`${baseURL}/${contracts}/car/${this.state.car.id}`,'POST',checkoutForm)
     .then(response => 
       this.props.history.push({pathname: '/dashboard'},
-      this.setState({ loading: false }),
+      // this.setState({ loading: false }),
+      this.individualCarStore.loading = false,
       toastSuccess('Car successfully borrowed')
       ))
   }
@@ -225,23 +228,27 @@ export default class CheckoutPage extends React.Component {
 
 
   componentDidMount() {
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
+    this.individualCarStore.loading = true;
     const { id }= this.props.match.params;
       fetchRequest(`${baseURL}/${cars}/${id}`)
       .then((result) => {
         this.setState({
-          car: result,
-          loading: false,
+          // car: result,
+          // loading: false,
         });
+        this.individualCarStore.car = result;
+        this.individualCarStore.loading = false;
       });
   }
 
   render() {
-    const { foundCustomer, phone, registrationFormValidations } = this.customerStore
+    const { foundCustomer, phone, registrationFormValidations } = this.customerStore;
+    const { car, loading } = this.individualCarStore;
     // const { registrationFormValidations } = this.state;
-    const car = { ...this.state.car };
+    // const car = { ...this.state.car };
     const priceEstimationForm = this.state;
-    const { loading } = this.state;
+    // const { loading } = this.state;
     let checkoutFormCards = <div className="formItems">
     <CheckoutCarCard car={car} />
     <BookingForm 
