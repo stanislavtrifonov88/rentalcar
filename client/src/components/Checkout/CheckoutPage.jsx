@@ -76,26 +76,25 @@ export default class CheckoutPage extends React.Component {
   newCustomerHandler = (event) => {
     const name = event.target.dataset.name;
     const value = event.target.value;
-    const newObj = {};
+    const newObj = this.customerStore.newCustomer;
     const { registrationFormValidations } = this.customerStore;
     const validationObj = registrationFormValidations;
     newObj[name] = value;
-    newObj.phone = this.customerStore.value;
+    newObj.phone = this.customerStore.phone.value;
     validationObj[name].valid = checkInputValidity(
       newObj[name],
       registrationFormValidations[name].rules
     );
     validationObj[name].touched = true;
 
-    this.customerStore.newCustomer = newObj;
-    this.customerStore.registrationFormValidations = validationObj;
+    this.customerStore.newCustomer = Object.assign(this.customerStore.newCustomer, newObj);
+    this.customerStore.registrationFormValidations = Object.assign(this.customerStore.registrationFormValidations, validationObj);
   };
 
   onRegistrationSubmit = (event) => {
     const { newCustomer, registrationFormValidations } = this.customerStore;
     const age = differenceInYears(newCustomer.birthdate);
     bookingFormErrors(newCustomer, registrationFormValidations);
-
     if (
       !registrationFormValidations.firstName.valid ||
       !registrationFormValidations.lastName.valid ||

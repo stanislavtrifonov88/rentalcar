@@ -32,7 +32,6 @@ export class ContractsController {
       @Body() body,
       @Param('carId') carId: string,
     ): Promise<IndividualContractDTO> {
-      console.log(body)
       const individualContract: IndividualContractDTO = await this.contractsService.createContract(body, carId);
 
       return individualContract;
