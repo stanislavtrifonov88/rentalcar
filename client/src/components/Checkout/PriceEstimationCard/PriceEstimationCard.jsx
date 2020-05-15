@@ -10,10 +10,6 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const { checkoutForm } = checkoutFormStore;
   const { car } = individualCarStore;
   const basePrice = car.price;
-  // foundCustomer.price = car.price;
-  foundCustomer.age = differenceInYears(foundCustomer.birthdate)
-  console.log(foundCustomer)
-
   const showHideAge = customerStore.foundCustomer.birthdate ? 'show' : 'hide';
   const showHideDays = checkoutFormStore.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
@@ -23,12 +19,10 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   }
   const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
-  // const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
   const estimatedTotalDiscount = daysDiscount + agePenalty + foundCustomer.loyaltyDiscount + foundCustomer.geoDiscount;
-  console.log(estimatedTotalDiscount)
   const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
   const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
-  console.log(customerStore)
+
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
       <h1>Estimated Price</h1>
