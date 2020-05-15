@@ -7,6 +7,7 @@ import { observer, inject } from "mobx-react";
 
 const PriceEstimationCard = inject("customerStore", "individualCarStore", "checkoutFormStore")(observer(({ customerStore, individualCarStore, checkoutFormStore }) => {
   const { foundCustomer } = customerStore;
+  const { checkoutForm } = checkoutFormStore;
   const { car } = individualCarStore;
   const basePrice = car.price;
   // foundCustomer.price = car.price;
@@ -20,7 +21,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   if (checkoutFormStore.checkoutFormValidations.contractEndDate.valid) {
     estimatedNumberOfDays = priceCalculations.estimatedDaysRented(foundCustomer);
   }
-  const daysDiscount = priceCalculations.daysDiscount(foundCustomer);
+  const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
   // const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
   const estimatedTotalDiscount = daysDiscount + agePenalty + foundCustomer.loyaltyDiscount + foundCustomer.geoDiscount;
