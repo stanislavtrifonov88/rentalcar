@@ -58,10 +58,10 @@ export const daysDiscount = (contractData, daysRentedFunc = estimatedDaysRented)
 };
 
 export const ageDiscount = (contractData) => {
-  if (contractData.borrowerAge > 25) {
+  if (contractData.age > 25) {
     return priceDiscounts.ageDiscountAbove25;
   }
-  if (contractData.borrowerAge >= 18 && contractData.borrowerAge <= 25) {
+  if (contractData.age >= 18 && contractData.age <= 25) {
     return priceDiscounts.ageDiscountBelow25;
   }
 
