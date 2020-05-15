@@ -19,15 +19,15 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
   let estimatedNumberOfDays = 0;
   if (checkoutFormStore.checkoutFormValidations.contractEndDate.valid) {
-    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(foundCustomer);
+    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(checkoutForm);
   }
   const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
   // const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
   const estimatedTotalDiscount = daysDiscount + agePenalty + foundCustomer.loyaltyDiscount + foundCustomer.geoDiscount;
   console.log(estimatedTotalDiscount)
-  // const currentPricePerDay = priceCalculations.currentPricePerDay(foundCustomer);
-  // const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
+  const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
   console.log(customerStore)
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -46,7 +46,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
           <p>{estimatedNumberOfDays}</p>
         </div>
         <br />
-        <h5 className="priceItem">Discounts</h5>
+        <h5 className="visibleItem">Discounts</h5>
         <div className={showHideAge}>
           <p>
             Loyalty Bonus:
@@ -101,7 +101,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
         <div className={showHideFinalOffer}>
           <p>Daily Price</p>
           <p>
-            {/* {currentPricePerDay} */}
+            {currentPricePerDay.toFixed(2)}
             $
           </p>
         </div>
@@ -109,7 +109,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
         <div className={showHideFinalOffer}>
           <p>Total Price</p>
           <p>
-            {/* {currentTotalPrice} */}
+            {currentTotalPrice.toFixed(2)}
             $
           </p>
         </div>
