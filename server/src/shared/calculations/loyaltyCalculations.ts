@@ -1,7 +1,7 @@
 import * as loyaltyDiscounts from '../discounts/loyaltyDiscounts';
 
-export const loyaltyDiscount = (customerData) => {
-    const previousContracts = customerData.contracts.length;
+export const loyaltyDiscount = async (numberOfContracts) => {
+    const previousContracts = numberOfContracts;
    let discount = 0
 
     if (previousContracts === 0) {
@@ -20,7 +20,16 @@ export const loyaltyDiscount = (customerData) => {
 };
 
 export const geoDiscount = (customerData) => {
-    const previousContracts = 0.05
+    customerData.phone.toString()
+    let previousContracts = 0
+    // console.log(customerData.phone.substring(0,3) === '359')
+    if (customerData.phone.substring(0,3)  === '359') {
+        previousContracts = loyaltyDiscounts.geoDiscount
+    }
 
+    if (customerData.phone.substring(0,2) === '40') {
+        previousContracts = loyaltyDiscounts.geoDiscount
+    }
+    
   return previousContracts
 };
