@@ -2,6 +2,7 @@ import React from 'react';
 import './PriceEstimationCard.css';
 import PropTypes from 'prop-types';
 import * as priceCalculations from '../../../services/PriceCalculations';
+import * as loyaltyCalculations from '../../../services/loyaltyCalculations';
 import { differenceInYears } from '../../../shared/dateModifiers';
 import { observer, inject } from "mobx-react";
 
@@ -9,6 +10,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const { foundCustomer } = customerStore;
   const { checkoutForm } = checkoutFormStore;
   const { car } = individualCarStore;
+  const totalInfo = { ...checkoutForm, ...foundCustomer, ...car }
   const basePrice = car.price;
   const showHideAge = customerStore.foundCustomer.birthdate ? 'show' : 'hide';
   const showHideDays = checkoutFormStore.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
@@ -19,9 +21,15 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   }
   const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
-  const estimatedTotalDiscount = daysDiscount + agePenalty + foundCustomer.loyaltyDiscount + foundCustomer.geoDiscount;
-  const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
-  const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  const geoDiscount = loyaltyCalculations.geoDiscount(foundCustomer)
+  const loyaltyDiscount = loyaltyCalculations.loyaltyDiscount(foundCustomer)
+  const estimatedTotalDiscount = daysDiscount + agePenalty + loyaltyDiscount + geoDiscount;
+  const totalDiscount = priceCalculations.totalDiscount(totalInfo)
+  const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
+  const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
+  // const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
+  // const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  console.log(totalDiscount)
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -46,7 +54,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Loyalty Bonus:
           </p>
           <p>
-            {foundCustomer.loyaltyDiscount * 100}
+            {loyaltyDiscount * 100}
             %
           </p>
         </div>
@@ -55,7 +63,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Geo Discount:
           </p>
           <p>
-            {foundCustomer.geoDiscount * 100}
+            {geoDiscount * 100}
             %
           </p>
         </div>
