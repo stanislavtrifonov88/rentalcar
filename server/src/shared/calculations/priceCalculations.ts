@@ -2,6 +2,7 @@
 import * as priceDiscounts from '../discounts/discounts';
 import { differenceInDays, dateFormatter } from '../constants/dateModifiers'
 import { IndividualContractDTO } from '../../contracts/models/individualContract.dto';
+import * as loyaltyCalculations from './loyaltyCalculations';
 
 export const estimatedDaysRented = (contractData, differenceInDaysFn = differenceInDays) => {
   if (contractData.startDate === '' && contractData.contractEndDate === '') {
@@ -69,13 +70,14 @@ export const ageDiscount = (contractData) => {
   return 0;
 };
 
-const defaultDiscountFns = [ageDiscount, daysDiscount];
+const defaultDiscountFns = [ageDiscount, daysDiscount, loyaltyCalculations.loyaltyDiscount, loyaltyCalculations.geoDiscount];
 
 export const totalDiscount = (contractData, discountFns = defaultDiscountFns) => {
   let discount = 0;
 
   discountFns.forEach((discountFn) => {
     discount += discountFn(contractData);
+
   });
 
   return discount;
