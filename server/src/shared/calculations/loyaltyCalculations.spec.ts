@@ -3,48 +3,26 @@ import * as loyaltyDiscounts from '../discounts/loyaltyDiscounts';
 
 
 describe('LoyaltyCalcution service', () => {
-  let customerData;
+  let returnedCarData;
 
   beforeEach(async () => {
-    customerData = {
-        phone: '3233',
-        firstName: 'General',
-        lastName: 'Mutafciiski',
-        birthdate: '1964-05-01',
-        isDeleted: false,
-        contracts:
-         [ 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-         ]}
+    returnedCarData = {
+      startDate: '2020-05-18T11:55:00.000Z',
+      contractEndDate: '2020-05-20T22:01:00.000Z',
+      phone: '359888111444',
+      age: 52,
+      price: 70,
+      previousContracts: 54 }
   });
 
 
   it('loyaltyDiscount case 1: customer has no previous contracts', () => {
   // Arramge
-    customerData.contracts = []
+    returnedCarData.previousContracts = 0;
 
     // Act
 
-    const result = loyaltyCalculations.loyaltyDiscount(customerData);
+    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
 
     // Assert
 
@@ -53,15 +31,11 @@ describe('LoyaltyCalcution service', () => {
 
   it('loyaltyDiscount case 2: customer has 1-4 previous contracts', () => {
     // Arramge
-      customerData.contracts = [
-        { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-        { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-        { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-      ]
+      returnedCarData.previousContracts = 4;
   
       // Act
   
-      const result = loyaltyCalculations.loyaltyDiscount(customerData);
+      const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
   
       // Assert
   
@@ -70,65 +44,25 @@ describe('LoyaltyCalcution service', () => {
 
     it('loyaltyDiscount case 3: customer has 5-9 previous contracts', () => {
         // Arramge
-          customerData.contracts = [
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-            { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-          ]
+          returnedCarData.previousContracts = 9;
       
           // Act
       
-          const result = loyaltyCalculations.loyaltyDiscount(customerData);
+          const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
       
           // Assert
       
           expect(result).toEqual(loyaltyDiscounts.previousContracts5To9);
         });
 
-        it('loyaltyDiscount case 4: customer has 5-9 previous contracts', () => {
+
+        it('loyaltyDiscount case 5: customer has 10-19 previous contracts', () => {
             // Arramge
-              customerData.contracts = [
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-              ]
+              returnedCarData.previousContracts = 19;
           
               // Act
           
-              const result = loyaltyCalculations.loyaltyDiscount(customerData);
-          
-              // Assert
-          
-              expect(result).toEqual(loyaltyDiscounts.previousContracts10To19);
-            });
-                    it('loyaltyDiscount case 5: customer has 10-19 previous contracts', () => {
-            // Arramge
-              customerData.contracts = [
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'}, 
-                { id: 'ec81e572-4fe3-49e6-b76b-5705bcb46a13'},
-              ]
-          
-              // Act
-          
-              const result = loyaltyCalculations.loyaltyDiscount(customerData);
+              const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
           
               // Assert
           
@@ -138,7 +72,7 @@ describe('LoyaltyCalcution service', () => {
             it('loyaltyDiscount case 6: customer has 20 or more previous contracts', () => {
                   // Act
               
-                  const result = loyaltyCalculations.loyaltyDiscount(customerData);
+                  const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
               
                   // Assert
               
