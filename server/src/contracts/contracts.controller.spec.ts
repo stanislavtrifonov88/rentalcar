@@ -34,15 +34,15 @@ describe('Contracts Controller', () => {
       .spyOn(contractsService, 'getAllContracts')
       .mockImplementation(async () => output);
 
-  // Act
+    // Act
 
-  const result = await contractsService.getAllContracts()
+    const result = await contractsService.getAllContracts();
 
-  // Assert
+    // Assert
 
-  expect(spy).toHaveBeenCalledTimes(1)
-  expect(result).toEqual(output);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(output);
 
-  spy.mockClear();
-});
+    spy.mockClear();
+  });
 });

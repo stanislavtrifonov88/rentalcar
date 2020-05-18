@@ -5,11 +5,10 @@ import { Class } from '../database/entities/class.entity';
 import { CarsController } from './cars.controller';
 import { CarsService } from './cars.service';
 
-
 @Module({
-    imports: [TypeOrmModule.forFeature([Car, Class, ])],
-    controllers: [CarsController],
-    providers: [CarsService],
-    exports: [CarsService],
+  imports: [TypeOrmModule.forFeature([Car, Class])],
+  controllers: [CarsController],
+  providers: [CarsService],
+  exports: [CarsService],
 })
 export class CarsModule {}

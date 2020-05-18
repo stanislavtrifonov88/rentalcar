@@ -28,14 +28,14 @@ describe('ContractsService', () => {
 
   const carsRepository = {
     find(): any {
-        /* empty */
-      },
+      /* empty */
+    },
     findOne(): any {
-        /* empty */
-      },
+      /* empty */
+    },
     save(): any {
-        /* empty */
-      },
+      /* empty */
+    },
   };
 
   const carsService = {
@@ -52,21 +52,21 @@ describe('ContractsService', () => {
     },
     getBorrowedCarById(): any {
       /* empty */
-    }
-  }
+    },
+  };
 
-    const customerService = {
-      findCustomerByPhone(): any {
-        /* empty */
-      },
-  
-      createNewCustomer(): any {
-        /* empty */
-      },
-  
-      getCustomerByPhone(): any {
-        /* empty */
-      },
+  const customerService = {
+    findCustomerByPhone(): any {
+      /* empty */
+    },
+
+    createNewCustomer(): any {
+      /* empty */
+    },
+
+    getCustomerByPhone(): any {
+      /* empty */
+    },
   };
 
   beforeEach(async () => {
@@ -94,17 +94,16 @@ describe('ContractsService', () => {
 
     service = module.get<ContractsService>(ContractsService);
 
+    spy = jest
+      .spyOn(contractsRepository, 'find')
+      .mockImplementation(async () => ['test']);
 
-  spy = jest
-    .spyOn(contractsRepository, 'find')
-    .mockImplementation(async () => ['test']);
-
-  expectedObject = {
-    where: {
-      deliveredDate: null,
-      isDeleted: false,
-    },
-  };
+    expectedObject = {
+      where: {
+        deliveredDate: null,
+        isDeleted: false,
+      },
+    };
   });
 
   it('should be defined', () => {
@@ -126,13 +125,12 @@ describe('ContractsService', () => {
     spy.mockClear();
   });
 
-
   it('getAllContracts should call *transformToContractDTO* function with the correct filtering object', async () => {
     // Arrange
-    const mockedCallValue = 'test'
+    const mockedCallValue = 'test';
 
     const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue(mockedCallValue)
+    mockTransformer.mockReturnValue(mockedCallValue);
 
     // Act
 
@@ -145,5 +143,4 @@ describe('ContractsService', () => {
 
     spy.mockClear();
   });
-
 });

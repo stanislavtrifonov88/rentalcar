@@ -12,8 +12,8 @@ describe('Customers Controller', () => {
       /* empty */
     },
     findCustomerByPhone(): any {
-        /* empty */
-      },
+      /* empty */
+    },
   };
 
   beforeEach(async () => {
@@ -28,5 +28,4 @@ describe('Customers Controller', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
 });

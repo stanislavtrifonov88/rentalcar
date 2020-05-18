@@ -1,15 +1,13 @@
-
-
 export class IndividualContractDTO {
-    id: string;
+  id: string;
 
-    startDate: string;
+  startDate: string;
 
-    contractEndDate: string;
+  contractEndDate: string;
 
-    brand: string;
+  brand: string;
 
-    model: string;
+  model: string;
 
-    price: number;
+  price: number;
 }

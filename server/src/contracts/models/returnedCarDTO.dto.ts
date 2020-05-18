@@ -1,15 +1,13 @@
 export class ReturnedCarDTO {
+  startDate: string;
 
-    startDate: string;
+  contractEndDate: string;
 
-    contractEndDate: string;
+  phone: string;
 
-    phone: string;
+  age: number;
 
-    age: number;
+  price: number;
 
-    price: number;
-
-    previousContracts: number
-
+  previousContracts: number;
 }

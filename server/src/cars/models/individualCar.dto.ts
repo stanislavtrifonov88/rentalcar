@@ -1,15 +1,13 @@
-
-
 export class IndividualCarDTO {
-    id: string;
+  id: string;
 
-    brand: string;
+  brand: string;
 
-    model: string;
+  model: string;
 
-    picture: string;
+  picture: string;
 
-    className: string;
+  className: string;
 
-    price: number;
+  price: number;
 }
