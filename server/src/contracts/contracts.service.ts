@@ -15,6 +15,7 @@ import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
 import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
 import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
+import { ReturnedCarDTO } from './models/returnedCarDTO.dto';
 
 
 @Injectable()
@@ -73,7 +74,7 @@ export class ContractsService {
 
     public async returnCar(
         contractId: string,
-        transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO,
+        transformatorToDTO: (contract: Contract, car: Car, customer: Customer) => Promise<ReturnedCarDTO> = transformToReturnedCarDTO,
         ): Promise<IndividualContractDTO> {
       const foundContract = await this.contractsRepository.findOne({
         where: {
@@ -86,9 +87,9 @@ export class ContractsService {
 
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone((foundContract.customer.phone).toString())
-      const returnedCar = await transformToReturnedCarDTO(foundContract, foundCar, foundCustomer)
+      const returnedCar = await transformatorToDTO(foundContract, foundCar, foundCustomer)
       const pricePaid = currentTotalPrice(returnedCar)
-      console.log(returnedCar)
+
       foundCar.isBorrowed = false;
       foundContract.deliveredDate = new Date();
       foundContract.pricePaid = pricePaid;
