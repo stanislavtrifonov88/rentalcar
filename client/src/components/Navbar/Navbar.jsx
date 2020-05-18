@@ -7,15 +7,6 @@ import './Navbar.css';
 class NavigationBarCars extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      searchWord: '',
-    }
-  }
-
-  onInputChange = (event) => {
-    this.setState({
-      searchWord: event.target.value,
-    })
   }
 
   render() {
@@ -24,7 +15,7 @@ class NavigationBarCars extends React.Component {
         <div className="leftSideContainer">
         <a className="brandName" href="http://localhost:8000/">Awesome Cars</a>
         <div className="NavbarBtnContainer">
-        <Link className="StandardLink" onClick={() => this.props.onSearch('')} to="/" data-element="navbarHomeLink">Home</Link>
+        <Link className="StandardLink" to="/" data-element="navbarHomeLink">Home</Link>
         <Link className="StandardLink" to="/dashboard" data-element="navbarDashboardLink">Dashboard</Link>
         </div>
         </div>
@@ -34,6 +25,5 @@ class NavigationBarCars extends React.Component {
     );
   }
 } 
-
 
 export default NavigationBarCars;

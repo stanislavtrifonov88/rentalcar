@@ -11,56 +11,64 @@ import { createCustomerErrorHandling } from '../shared/errors/createCustomerErro
 
 @Injectable()
 export class CustomersService {
-    public constructor(
-        @InjectRepository(Customer) private readonly customersRepository: Repository<Customer>,
-    ) { }
+  public constructor(
+    @InjectRepository(Customer)
+    private readonly customersRepository: Repository<Customer>,
+  ) {}
 
-    public async getCustomerByPhone(phone: string): Promise<IndividualCustomerDTO> {
-      const foundCustomer: Customer = await this.findCustomerByPhone(phone)
-      const transformedCustomer: IndividualCustomerDTO = await transformToCustomerDTO(foundCustomer)
+  public async getCustomerByPhone(
+    phone: string,
+  ): Promise<IndividualCustomerDTO> {
+    const foundCustomer: Customer = await this.findCustomerByPhone(phone);
+    const transformedCustomer: IndividualCustomerDTO = await transformToCustomerDTO(
+      foundCustomer,
+    );
 
-      return transformedCustomer;
-}
+    return transformedCustomer;
+  }
 
-public async createNewCustomer(body: NewCustomerDTO): Promise<IndividualCustomerDTO> {
-  console.log(body)
-  console.log(Number(body.phone))
-//   const foundCustomer: Customer = await this.customersRepository.findOne({
-//     where: {
-//         phone: body.phone,
-//         isDeleted: false,
-//     },
-//     relations: [ 'contracts' ]
-// })
+  public async createNewCustomer(
+    body: NewCustomerDTO,
+  ): Promise<IndividualCustomerDTO> {
+    const foundCustomer: Customer = await this.customersRepository.findOne({
+      where: {
+        phone: body.phone,
+        isDeleted: false,
+      },
+      relations: ['contracts'],
+    });
 
-// Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
-// console.log(foundCustomer)
-createCustomerErrorHandling(body)
+    Guard.isFound(!foundCustomer, errorMessages.customerAlreadyExist);
+    createCustomerErrorHandling(body);
 
-  const newCustomer: Customer = await this.customersRepository.create(body);
+    const newCustomer: Customer = await this.customersRepository.create(body);
 
-  await getManager().transaction(async (transactionalEntityManager) => {
-    await transactionalEntityManager.save(newCustomer);
-  });
+    await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(newCustomer);
+    });
+    const foundCustomerAfterSave = await this.findCustomerByPhone(
+      newCustomer.phone.toString(),
+    );
+    const individualContractFormated: IndividualCustomerDTO = await transformToCustomerDTO(
+      foundCustomerAfterSave,
+    );
 
-  const individualContractFormated: IndividualCustomerDTO = await transformToCustomerDTO(newCustomer);
+    return individualContractFormated;
+  }
 
-  return individualContractFormated;
-}
+  public async findCustomerByPhone(phone: string): Promise<Customer> {
+    const formattedPhone = Number(phone);
 
-public async findCustomerByPhone(phone: string): Promise<Customer> {
-  const a = Number(phone)
+    const foundCustomer: Customer = await this.customersRepository.findOne({
+      where: {
+        phone: formattedPhone,
+      },
+      relations: ['contracts'],
+    });
 
-  const foundCustomer: Customer = await this.customersRepository.findOne({
-  where: {
-      phone: a,
-  },
-  relations: [ 'contracts' ]
-})
+    Guard.isFound(foundCustomer, errorMessages.customerNotFound);
+    Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
 
-  Guard.isFound(foundCustomer, errorMessages.customerNotFound);
-  Guard.isFound(!foundCustomer.isDeleted, errorMessages.customerDeleted);
-
-  return foundCustomer;
-}
+    return foundCustomer;
+  }
 }

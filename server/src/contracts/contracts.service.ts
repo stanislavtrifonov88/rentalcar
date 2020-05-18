@@ -10,9 +10,12 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
-import { currentTotalPrice } from '../shared/calculations/priceCalculations';
+import { currentTotalPrice, estimatedPricePerDay, daysDiscount } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
+import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
+import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
+import { ReturnedCarDTO } from './models/returnedCarDTO.dto';
 
 
 @Injectable()
@@ -49,13 +52,12 @@ export class ContractsService {
         carId: string,
         ): Promise<IndividualContractDTO> {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
-      console.log('foundcar')
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone(body.phone)
-      console.log('belowfoundcustomer')
       const bodyForContract = { startDate: body.startDate, contractEndDate: body.contractEndDate}
+
       createContractErrorHandling(body);
       const newContract = this.contractsRepository.create(bodyForContract);
-      console.log('belownewcontract')
+
       newContract.car = foundCar;
       newContract.customer = foundCustomer;
       foundCar.isBorrowed = true;
@@ -72,7 +74,7 @@ export class ContractsService {
 
     public async returnCar(
         contractId: string,
-        transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO,
+        transformatorToDTO: (contract: Contract, car: Car, customer: Customer) => Promise<ReturnedCarDTO> = transformToReturnedCarDTO,
         ): Promise<IndividualContractDTO> {
       const foundContract = await this.contractsRepository.findOne({
         where: {
@@ -83,15 +85,14 @@ export class ContractsService {
       Guard.isFound(foundContract, errorMessages.contractNotFound);
       Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
 
-      const foundtContractTransformed = await transformatorToDTO(foundContract);
-      const pricePaid = currentTotalPrice(foundtContractTransformed)
-
-
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
+      const foundCustomer: Customer = await this.customersService.findCustomerByPhone((foundContract.customer.phone).toString())
+      const returnedCar = await transformatorToDTO(foundContract, foundCar, foundCustomer)
+      const pricePaid = currentTotalPrice(returnedCar)
+
       foundCar.isBorrowed = false;
       foundContract.deliveredDate = new Date();
       foundContract.pricePaid = pricePaid;
-
 
       await getManager().transaction(async (transactionalEntityManager) => {
         await transactionalEntityManager.save(foundCar);

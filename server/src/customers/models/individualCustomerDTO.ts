@@ -9,8 +9,6 @@ export class IndividualCustomerDTO {
 
     age: number
 
-    loyaltyDiscount: number;
-
-    geoDiscount: number;
+   previousContracts: number;
 
 }

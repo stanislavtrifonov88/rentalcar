@@ -2,28 +2,34 @@ import React from 'react';
 import './PriceEstimationCard.css';
 import PropTypes from 'prop-types';
 import * as priceCalculations from '../../../services/PriceCalculations';
+import * as loyaltyCalculations from '../../../services/loyaltyCalculations';
 import { differenceInYears } from '../../../shared/dateModifiers';
+import { observer, inject } from "mobx-react";
 
-
-const PriceEstimationCard = ({ priceEstimationForm }) => {
-  const { foundCustomer } = priceEstimationForm;
-  foundCustomer.price = priceEstimationForm.car.price;
-  foundCustomer.age = differenceInYears(foundCustomer.birthdate)
-
-  const basePrice = foundCustomer.price;
-  const showHideAge = priceEstimationForm.registrationFormValidations.birthdate ? 'show' : 'hide';
-  console.log(priceEstimationForm.registrationFormValidations.birthdate.valid)
-  const showHideDays = priceEstimationForm.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
+const PriceEstimationCard = inject("customerStore", "individualCarStore", "checkoutFormStore")(observer(({ customerStore, individualCarStore, checkoutFormStore }) => {
+  const { foundCustomer } = customerStore;
+  const { checkoutForm } = checkoutFormStore;
+  const { car } = individualCarStore;
+  const totalInfo = { ...checkoutForm, ...foundCustomer, ...car }
+  const basePrice = car.price;
+  const showHideAge = customerStore.foundCustomer.birthdate ? 'show' : 'hide';
+  const showHideDays = checkoutFormStore.checkoutFormValidations.contractEndDate.valid ? 'show' : 'hide';
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
   let estimatedNumberOfDays = 0;
-  if (priceEstimationForm.checkoutFormValidations.contractEndDate.valid) {
-    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(foundCustomer);
+  if (checkoutFormStore.checkoutFormValidations.contractEndDate.valid) {
+    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(checkoutForm);
   }
-  const daysDiscount = priceCalculations.daysDiscount(foundCustomer);
+  const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
-  const estimatedTotalDiscount = priceCalculations.totalDiscount(foundCustomer);
-  const currentPricePerDay = priceCalculations.currentPricePerDay(foundCustomer);
-  const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  const geoDiscount = loyaltyCalculations.geoDiscount(foundCustomer)
+  const loyaltyDiscount = loyaltyCalculations.loyaltyDiscount(foundCustomer)
+  const estimatedTotalDiscount = daysDiscount + agePenalty + loyaltyDiscount + geoDiscount;
+  const totalDiscount = priceCalculations.totalDiscount(totalInfo)
+  const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
+  const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
+  // const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
+  // const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
+  console.log(totalDiscount)
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -42,13 +48,22 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           <p>{estimatedNumberOfDays}</p>
         </div>
         <br />
-        <h5 className="priceItem">Discounts</h5>
-        <div className={showHideDays}>
+        <h5 className="visibleItem">Discounts</h5>
+        <div className={showHideAge}>
           <p>
-            Days Discount:
+            Loyalty Bonus:
           </p>
           <p>
-            {daysDiscount * 100}
+            {loyaltyDiscount * 100}
+            %
+          </p>
+        </div>
+        <div className={showHideAge}>
+          <p>
+            Geo Discount:
+          </p>
+          <p>
+            {geoDiscount * 100}
             %
           </p>
         </div>
@@ -63,6 +78,15 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
           </p>
         </div>
         <div>
+        <div className={showHideDays}>
+          <p>
+            Days Discount:
+          </p>
+          <p>
+            {daysDiscount * 100}
+            %
+          </p>
+        </div>
         <div className={showHideFinalOffer}>
           <p>
             Total Discount:
@@ -79,7 +103,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
         <div className={showHideFinalOffer}>
           <p>Daily Price</p>
           <p>
-            {currentPricePerDay}
+            {currentPricePerDay.toFixed(2)}
             $
           </p>
         </div>
@@ -87,7 +111,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
         <div className={showHideFinalOffer}>
           <p>Total Price</p>
           <p>
-            {currentTotalPrice}
+            {currentTotalPrice.toFixed(2)}
             $
           </p>
         </div>
@@ -95,7 +119,7 @@ const PriceEstimationCard = ({ priceEstimationForm }) => {
       </div>
     </div>
   );
-};
+}));
 
 
 PriceEstimationCard.propTypes = {

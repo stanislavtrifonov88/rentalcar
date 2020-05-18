@@ -7,7 +7,6 @@ export default class Option extends React.Component {
     e.preventDefault();
     const data = { option: this.props.option, dataAttribute: e.target.dataset.filtername  }
     this.props.onSelect(data);
-    console.log(data)
   }
 
   render() {

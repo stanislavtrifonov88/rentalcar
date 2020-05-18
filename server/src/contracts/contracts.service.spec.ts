@@ -4,6 +4,7 @@ import { ContractsService } from './contracts.service';
 import { Contract } from '../database/entities/contract.entity';
 import { Car } from '../database/entities/car.entity';
 import { CarsService } from '../cars/cars.service';
+import { CustomersService } from '../customers/customers.service';
 
 describe('ContractsService', () => {
   let service: ContractsService;
@@ -51,7 +52,21 @@ describe('ContractsService', () => {
     },
     getBorrowedCarById(): any {
       /* empty */
-    },
+    }
+  }
+
+    const customerService = {
+      findCustomerByPhone(): any {
+        /* empty */
+      },
+  
+      createNewCustomer(): any {
+        /* empty */
+      },
+  
+      getCustomerByPhone(): any {
+        /* empty */
+      },
   };
 
   beforeEach(async () => {
@@ -69,6 +84,10 @@ describe('ContractsService', () => {
         {
           provide: CarsService,
           useValue: carsService,
+        },
+        {
+          provide: CustomersService,
+          useValue: customerService,
         },
       ],
     }).compile();

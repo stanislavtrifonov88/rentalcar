@@ -10,7 +10,7 @@ import PageError from './components/ErrorPages/PageError';
 const AppRouter = () => (
   <div className="routingContainer">
     <Switch>
-      <Route path="/" component={AvailableCarsContainer} exact />
+      <Route path="/" component={AvailableCarsContainer} exact/>
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/cars/:id" component={CheckoutPage} />
       <Route component={PageError} />

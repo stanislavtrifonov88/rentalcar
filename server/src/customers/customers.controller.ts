@@ -9,7 +9,7 @@ export class CustomersController {
 
     @Put('')
     @HttpCode(HttpStatus.OK)
-    public async getIndividualCar (
+    public async getIndividualCustomer (
       @Body() body,
     ): Promise<IndividualCustomerDTO> {
       const individualCar: IndividualCustomerDTO = await this.customersService.getCustomerByPhone(body.phone);
@@ -19,7 +19,7 @@ export class CustomersController {
 
     @Post('')
     @HttpCode(HttpStatus.CREATED)
-    public async newContract(
+    public async newCustomer(
       @Body() body: NewCustomerDTO,
     ): Promise<IndividualCustomerDTO> {
       const newCustomer: IndividualCustomerDTO = await this.customersService.createNewCustomer(body);

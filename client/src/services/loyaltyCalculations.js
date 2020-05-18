@@ -1,4 +1,4 @@
-import * as loyaltyDiscounts from '../discounts/loyaltyDiscounts';
+import * as loyaltyDiscounts from './discounts/loyaltyDiscounts';
 
 export const loyaltyDiscount = (customerData) => {
     const previousContracts = customerData.previousContracts;
@@ -21,15 +21,14 @@ export const loyaltyDiscount = (customerData) => {
 
 export const geoDiscount = (customerData) => {
     customerData.phone.toString()
-    let previousContracts = 0
-    // console.log(customerData.phone.substring(0,3) === '359')
+    let geoDiscountPercent = 0
     if (customerData.phone.substring(0,3)  === '359') {
-        previousContracts = loyaltyDiscounts.geoDiscount
+        geoDiscountPercent = loyaltyDiscounts.geoDiscount
     }
 
     if (customerData.phone.substring(0,2) === '40') {
-        previousContracts = loyaltyDiscounts.geoDiscount
+        geoDiscountPercent = loyaltyDiscounts.geoDiscount
     }
     
-  return previousContracts
+  return geoDiscountPercent
 };
