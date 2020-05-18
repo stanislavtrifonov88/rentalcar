@@ -1,7 +1,7 @@
 import * as loyaltyDiscounts from '../discounts/loyaltyDiscounts';
 
-export const loyaltyDiscount = async (numberOfContracts) => {
-    const previousContracts = numberOfContracts;
+export const loyaltyDiscount = (customerData) => {
+    const previousContracts = customerData.previousContracts;
    let discount = 0
 
     if (previousContracts === 0) {
