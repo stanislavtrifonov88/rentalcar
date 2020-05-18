@@ -10,11 +10,10 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
-import { currentTotalPrice, estimatedPricePerDay, daysDiscount } from '../shared/calculations/priceCalculations';
+import { currentTotalPrice } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
 import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
-import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
 import { ReturnedCarDTO } from './models/returnedCarDTO.dto';
 
 
