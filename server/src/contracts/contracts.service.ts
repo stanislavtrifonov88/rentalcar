@@ -13,7 +13,7 @@ import * as Guard from '../shared/util/Guard';
 import { currentTotalPrice, estimatedPricePerDay, daysDiscount } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
-import { returnCarDTO } from './transformers/returnCarDTO';
+import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
 import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
 
 
@@ -84,26 +84,14 @@ export class ContractsService {
       Guard.isFound(foundContract, errorMessages.contractNotFound);
       Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
 
-      const foundtContractTransformed = await transformatorToDTO(foundContract);
-
-    
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone((foundContract.customer.phone).toString())
-      const returnedCar = await returnCarDTO(foundContract, foundCar, foundCustomer)
-
-      const loyalty = loyaltyCalculations.loyaltyDiscount(returnedCar)
-      const geo = loyaltyCalculations.geoDiscount(returnedCar)
-      const estimatedPricePerDay1 = estimatedPricePerDay(returnedCar)
-      const a = daysDiscount(returnedCar)
-      console.log(a)
+      const returnedCar = await transformToReturnedCarDTO(foundContract, foundCar, foundCustomer)
       const pricePaid = currentTotalPrice(returnedCar)
-      console.log(estimatedPricePerDay1)
-
-
+      console.log(returnedCar)
       foundCar.isBorrowed = false;
       foundContract.deliveredDate = new Date();
       foundContract.pricePaid = pricePaid;
-
 
       await getManager().transaction(async (transactionalEntityManager) => {
         await transactionalEntityManager.save(foundCar);
