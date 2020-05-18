@@ -12,7 +12,7 @@ export const transformToContractDTO = async (contract: Contract): Promise<Indivi
                 startDate,
                 contractEndDate }))(contract);
             const carInfo = (({ brand, model }): any => ({ brand, model }))(contract.car);
-            const customerInfo = (({ firstName, lastName, birthdate}): any => ({ firstName, lastName, birthdate }))(contract.customer);
+            const customerInfo = (({ phone, firstName, lastName, birthdate}): any => ({ phone, firstName, lastName, birthdate }))(contract.customer);
             const tempPrice = (contract.car).className;
             const {price} = tempPrice;
             const age = differenceInYears(customerInfo.birthdate)
