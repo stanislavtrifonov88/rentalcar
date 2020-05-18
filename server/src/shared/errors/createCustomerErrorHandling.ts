@@ -19,4 +19,15 @@ export const createCustomerErrorHandling = (body: NewCustomerDTO): void => {
   should(body.lastName.length >= 2, errorMessages.lastNameMinLength)
 
   should(body.lastName.length < 25, errorMessages.lastNamemaxLength)
+  const phoneStr = body.phone.toString()
+
+  if (phoneStr.substring(0,3)  === '359') {
+    should(phoneStr.length === 13, errorMessages.validBGPhoneNumber )
+  }
+
+  if (phoneStr.substring(0,2) === '40') {
+    should(phoneStr.length === 12, errorMessages.validROPhoneNumber )
+  }
+
+  should(phoneStr.length > 10, errorMessages.validIntPhoneNumber )
 };
