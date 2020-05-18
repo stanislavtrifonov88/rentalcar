@@ -19,3 +19,6 @@ export const customerNotFound = 'There is no customer with this phone number';
 export const customerDeleted = 'Customer with this phone number was deleted from the loyalty program';
 export const customerAlreadyExist = 'Customer with such phone number already exists';
 export const validBirthdate = 'Please enter a valid birthdate';
+export const validBGPhoneNumber = 'BG mobile phone numbers must be 13 digits';
+export const validROPhoneNumber = 'RO mobile phone numbers must be 12 digits';
+export const validIntPhoneNumber = 'International phone numbers must be at least 10 digits';
