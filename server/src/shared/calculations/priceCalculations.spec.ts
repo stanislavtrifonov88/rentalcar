@@ -3,20 +3,17 @@ import * as priceCalculations from './priceCalculations';
 import * as priceDiscounts from '../discounts/discounts';
 
 describe('PriceCalcution service', () => {
-  let contractData;
+  let returnedCarData;
 
   beforeEach(async () => {
-    contractData = {
-      id: '71e542f1-0936-4319-8d66-f5768b770eb9',
-      borrowerFirstName: 'asd',
-      borrowerLastName: 'asd',
-      borrowerAge: 23,
-      startDate: '2020-01-01T15:20:00.000Z',
-      contractEndDate: '2020-01-02T15:20:00.000Z',
-      brand: 'Volkswagen',
-      model: 'Golf',
-      price: 100,
-    };
+    returnedCarData = {
+        startDate: '2020-05-18T11:55:00.000Z',
+        contractEndDate: '2020-05-20T22:01:00.000Z',
+        phone: '359888111444',
+        age: 52,
+        price: 70,
+        previousContracts: 54 
+      };
   });
 
 
@@ -27,7 +24,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedDaysRented(
-      contractData, daysRented,
+      returnedCarData, daysRented,
     );
 
     // Assert
@@ -43,7 +40,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedDaysRented(
-      contractData, daysRented,
+      returnedCarData, daysRented,
     );
 
     // Assert
@@ -58,7 +55,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedDaysRented(
-      contractData, daysRented,
+      returnedCarData, daysRented,
     );
 
     // Assert
@@ -73,7 +70,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.currentDaysRented(contractData, daysRented, dateFormatter);
+    const result = priceCalculations.currentDaysRented(returnedCarData, daysRented, dateFormatter);
 
     // Assert
 
@@ -87,7 +84,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.currentDaysRented(contractData, daysRented, dateFormatter);
+    const result = priceCalculations.currentDaysRented(returnedCarData, daysRented, dateFormatter);
 
 
     // Assert
@@ -105,7 +102,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.overdueDays(
-      contractData,
+      returnedCarData,
       mockCurrentDaysRented,
       mockDaysRented,
     );
@@ -125,7 +122,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.overdueDays(
-      contractData,
+      returnedCarData,
       mockCurrentDaysRented,
       mockDaysRented,
     );
@@ -141,7 +138,7 @@ describe('PriceCalcution service', () => {
     const mockDaysRented = jest.fn(() => 1);
     // Act
 
-    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+    const result = priceCalculations.daysDiscount(returnedCarData, mockDaysRented);
 
     // Assert
 
@@ -154,7 +151,7 @@ describe('PriceCalcution service', () => {
     const mockDaysRented = jest.fn(() => 4);
     // Act
 
-    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+    const result = priceCalculations.daysDiscount(returnedCarData, mockDaysRented);
 
     // Assert
 
@@ -167,7 +164,7 @@ describe('PriceCalcution service', () => {
     const mockDaysRented = jest.fn(() => 9);
     // Act
 
-    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+    const result = priceCalculations.daysDiscount(returnedCarData, mockDaysRented);
 
     // Assert
 
@@ -180,7 +177,7 @@ describe('PriceCalcution service', () => {
     const mockDaysRented = jest.fn(() => -1);
     // Act
 
-    const result = priceCalculations.daysDiscount(contractData, mockDaysRented);
+    const result = priceCalculations.daysDiscount(returnedCarData, mockDaysRented);
 
     // Assert
 
@@ -189,12 +186,12 @@ describe('PriceCalcution service', () => {
 
   it('ageDiscount should not add any penalty if the borrower is 26+ years old', () => {
   // Arramge
-    contractData.borrowerAge = 33;
+    returnedCarData.borrowerAge = 33;
 
 
     // Act
 
-    const result = priceCalculations.ageDiscount(contractData);
+    const result = priceCalculations.ageDiscount(returnedCarData);
 
     // Assert
 
@@ -203,11 +200,11 @@ describe('PriceCalcution service', () => {
 
   it('ageDiscount should return +20% if the borrower is between 18 - 25 years old', () => {
   // Arramge
-    contractData.borrowerAge = 20;
+    returnedCarData.borrowerAge = 20;
 
     // Act
 
-    const result = priceCalculations.ageDiscount(contractData);
+    const result = priceCalculations.ageDiscount(returnedCarData);
 
     // Assert
 
@@ -216,11 +213,11 @@ describe('PriceCalcution service', () => {
 
   it('ageDiscount should return a msg the borrower age is below 18', () => {
   // Arramge
-    contractData.borrowerAge = 12;
+    returnedCarData.borrowerAge = 12;
 
     // Act
 
-    const result = priceCalculations.ageDiscount(contractData);
+    const result = priceCalculations.ageDiscount(returnedCarData);
 
     // Assert
 
@@ -237,7 +234,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.totalDiscount(contractData, defaultDiscountFnsMock);
+    const result = priceCalculations.totalDiscount(returnedCarData, defaultDiscountFnsMock);
 
     // Assert
 
@@ -253,12 +250,12 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedPricePerDay(
-      contractData, totalDiscountMock,
+      returnedCarData, totalDiscountMock,
     );
 
     // Assert
 
-    expect(result).toEqual(90);
+    expect(result).toEqual(63);
   });
 
 
@@ -269,7 +266,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+    const result = priceCalculations.overduePenalty(returnedCarData, overdueDaysFn);
 
     // Assert
 
@@ -284,7 +281,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+    const result = priceCalculations.overduePenalty(returnedCarData, overdueDaysFn);
 
     // Assert
 
@@ -299,7 +296,7 @@ describe('PriceCalcution service', () => {
 
     // Act
 
-    const result = priceCalculations.overduePenalty(contractData, overdueDaysFn);
+    const result = priceCalculations.overduePenalty(returnedCarData, overdueDaysFn);
 
     // Assert
 
@@ -314,7 +311,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedTotalPrice(
-      contractData,
+      returnedCarData,
       estimatedDaysRentedMock,
       estiamtedPricePerDayMock,
     );
@@ -333,7 +330,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.estimatedTotalPrice(
-      contractData,
+      returnedCarData,
       estimatedPricePerDayMock,
       overduePenaltyMock,
     );
@@ -353,7 +350,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.currentTotalPrice(
-      contractData,
+      returnedCarData,
       currentPricePerDayMock,
       daysOverdueMock,
       estimatedPricePerDayMock,
@@ -375,7 +372,7 @@ describe('PriceCalcution service', () => {
     // Act
 
     const result = priceCalculations.currentTotalPrice(
-      contractData,
+      returnedCarData,
       currentPricePerDayMock,
       daysOverdueMock,
       estimatedPricePerDayMock,
