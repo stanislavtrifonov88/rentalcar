@@ -10,9 +10,11 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
-import { currentTotalPrice } from '../shared/calculations/priceCalculations';
+import { currentTotalPrice, estimatedPricePerDay, daysDiscount } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
+import { returnCarDTO } from './transformers/returnCarDTO';
+import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
 
 
 @Injectable()
@@ -49,13 +51,12 @@ export class ContractsService {
         carId: string,
         ): Promise<IndividualContractDTO> {
       const foundCar: Car = await this.carsService.getAvailableCarById(carId);
-      console.log('foundcar')
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone(body.phone)
-      console.log('belowfoundcustomer')
       const bodyForContract = { startDate: body.startDate, contractEndDate: body.contractEndDate}
+
       createContractErrorHandling(body);
       const newContract = this.contractsRepository.create(bodyForContract);
-      console.log('belownewcontract')
+
       newContract.car = foundCar;
       newContract.customer = foundCustomer;
       foundCar.isBorrowed = true;
@@ -84,10 +85,21 @@ export class ContractsService {
       Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
 
       const foundtContractTransformed = await transformatorToDTO(foundContract);
-      const pricePaid = currentTotalPrice(foundtContractTransformed)
 
-
+    
       const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
+      const foundCustomer: Customer = await this.customersService.findCustomerByPhone((foundContract.customer.phone).toString())
+      const returnedCar = await returnCarDTO(foundContract, foundCar, foundCustomer)
+
+      const loyalty = loyaltyCalculations.loyaltyDiscount(returnedCar)
+      const geo = loyaltyCalculations.geoDiscount(returnedCar)
+      const estimatedPricePerDay1 = estimatedPricePerDay(returnedCar)
+      const a = daysDiscount(returnedCar)
+      console.log(a)
+      const pricePaid = currentTotalPrice(returnedCar)
+      console.log(estimatedPricePerDay1)
+
+
       foundCar.isBorrowed = false;
       foundContract.deliveredDate = new Date();
       foundContract.pricePaid = pricePaid;
