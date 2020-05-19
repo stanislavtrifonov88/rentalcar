@@ -1,6 +1,5 @@
 import * as priceDiscounts from '../discounts/discounts';
 import { differenceInDays, dateFormatter } from '../constants/dateModifiers';
-import { IndividualContractDTO } from '../../contracts/models/individualContract.dto';
 import * as loyaltyCalculations from './loyaltyCalculations';
 
 export const estimatedDaysRented = (
