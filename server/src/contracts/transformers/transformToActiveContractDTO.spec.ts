@@ -1,5 +1,4 @@
-import { transformToContractDTO } from './transformToContractDTO';
-import { transformToReturnedCarDTO } from './transformToReturnedCarDTO';
+import { transformToActiveContractDTO } from './transformToActiveContractDTO';
 
 describe('transformToReturnedCarDTO', () => {
   it('should get *Contract*, *Car* and *Customer* entities and transform them to *ReturnedCarDTO*', async () => {
@@ -39,7 +38,7 @@ describe('transformToReturnedCarDTO', () => {
 
     // Act
 
-    const result = await transformToReturnedCarDTO(
+    const result = await transformToActiveContractDTO(
       mockContract,
       mockCar,
       mockCustomer,
