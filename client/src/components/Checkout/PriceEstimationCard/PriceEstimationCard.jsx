@@ -23,8 +23,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
   const geoDiscount = loyaltyCalculations.geoDiscount(foundCustomer)
   const loyaltyDiscount = loyaltyCalculations.loyaltyDiscount(foundCustomer)
-  const estimatedTotalDiscount = daysDiscount + agePenalty + loyaltyDiscount + geoDiscount;
-  const totalDiscount = priceCalculations.totalDiscount(totalInfo)
+  const estimatedTotalDiscount = priceCalculations.totalDiscount(totalInfo)
   const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
   const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
 
