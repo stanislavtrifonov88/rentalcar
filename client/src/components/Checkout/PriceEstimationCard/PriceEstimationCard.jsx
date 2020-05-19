@@ -27,9 +27,6 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const totalDiscount = priceCalculations.totalDiscount(totalInfo)
   const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
   const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
-  // const currentPricePerDay = (1 + estimatedTotalDiscount) * basePrice;
-  // const currentTotalPrice = currentPricePerDay * estimatedNumberOfDays;
-  console.log(totalDiscount)
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -54,7 +51,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Loyalty Bonus:
           </p>
           <p>
-            {loyaltyDiscount * 100}
+            {(loyaltyDiscount * 100).toFixed()}
             %
           </p>
         </div>
@@ -63,7 +60,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Geo Discount:
           </p>
           <p>
-            {geoDiscount * 100}
+            {(geoDiscount * 100).toFixed()}
             %
           </p>
         </div>
@@ -73,7 +70,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Age Penalty:
           </p>
           <p>
-            {agePenalty * 100}
+            {(agePenalty * 100).toFixed()}
             %
           </p>
         </div>
@@ -83,7 +80,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Days Discount:
           </p>
           <p>
-            {daysDiscount * 100}
+            {(daysDiscount * 100).toFixed()}
             %
           </p>
         </div>
