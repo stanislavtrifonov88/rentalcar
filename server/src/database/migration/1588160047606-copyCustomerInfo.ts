@@ -18,7 +18,6 @@ export class copyCustomerInfo1588160047606 implements MigrationInterface {
     };
 
     for (let i = 0; i < ids.length; i++) {
-      console.log(ids[i].id);
       await queryRunner.query(`INSERT INTO "customers"
             ("phone", "firstName", "lastName", "borrowerAge", "birthdate", "id") 
             VALUES 
