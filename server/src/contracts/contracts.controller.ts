@@ -12,6 +12,7 @@ import {
 import { ContractsService } from './contracts.service';
 import { NewContractDTO } from './models/newContract.dto';
 import { IndividualContractDTO } from './models/individualContract.dto';
+import { ActiveContractDTO } from './models/activeContractDTO.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -19,16 +20,16 @@ export class ContractsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  public async getAllAvailableCars(): Promise<IndividualContractDTO[]> {
-    const allContracts: IndividualContractDTO[] = await this.contractsService.getAllContracts();
-
+  public async getAllAvailableCars(): Promise<ActiveContractDTO[]> {
+    const allContracts: ActiveContractDTO[] = await this.contractsService.getAllContracts();
+    console.log(allContracts)
     return allContracts;
   }
 
   @Post('/car/:carId')
   @HttpCode(HttpStatus.CREATED)
   public async newContract(
-    @Body() body,
+    @Body() body: NewContractDTO,
     @Param('carId') carId: string,
   ): Promise<IndividualContractDTO> {
     const individualContract: IndividualContractDTO = await this.contractsService.createContract(

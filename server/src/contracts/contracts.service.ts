@@ -13,8 +13,8 @@ import * as Guard from '../shared/util/Guard';
 import { currentTotalPrice } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
-import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
-import { ReturnedCarDTO } from './models/returnedCarDTO.dto';
+import { transformToActiveContractDTO } from './transformers/transformToActiveContractDTO';
+import { ActiveContractDTO } from './models/activeContractDTO.dto';
 
 @Injectable()
 export class ContractsService {
@@ -27,9 +27,11 @@ export class ContractsService {
 
   public async getAllContracts(
     transformatorToDTO: (
-      n: Contract,
-    ) => Promise<IndividualContractDTO> = transformToContractDTO,
-  ): Promise<IndividualContractDTO[]> {
+      contract: Contract,
+      car: Car,
+      customer: Customer,
+    ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
+  ): Promise<ActiveContractDTO[]> {
     const allContractsData: Contract[] = await this.contractsRepository.find({
       where: {
         deliveredDate: null,
@@ -37,18 +39,28 @@ export class ContractsService {
       },
     });
 
-    let allContractsDataFormated: IndividualContractDTO[] = [];
+    let allContractsDataFormated: ActiveContractDTO[] = [];
 
-    allContractsData.map(async (contract: Contract) => {
-      const individualContractFormated: IndividualContractDTO = await transformatorToDTO(
-        contract,
+    const allActiveContracts = allContractsData.map(async (contract: Contract) => {
+      const foundCar = await this.carsService.getBorrowedCarById(
+        contract.car.id,
       );
+      const foundCustomer: Customer = await this.customersService.findCustomerByPhone(
+        contract.customer.phone.toString(),
+      );
+      const individualContractFormated: ActiveContractDTO = await transformatorToDTO(
+        contract,
+        foundCar,
+        foundCustomer
+      );
+
       allContractsDataFormated = [
         ...allContractsDataFormated,
         individualContractFormated,
       ];
+
     });
-    await Promise.resolve(allContractsDataFormated);
+    await Promise.all(allActiveContracts);
 
     return allContractsDataFormated;
   }
@@ -91,7 +103,7 @@ export class ContractsService {
       contract: Contract,
       car: Car,
       customer: Customer,
-    ) => Promise<ReturnedCarDTO> = transformToReturnedCarDTO,
+    ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
   ): Promise<IndividualContractDTO> {
     const foundContract = await this.contractsRepository.findOne({
       where: {
