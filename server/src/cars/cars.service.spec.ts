@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { CarsService } from './cars.service';
 import { Car } from '../database/entities/car.entity';
 import { Class } from '../database/entities/class.entity';
-import * as errorMessages from '../shared/errors/error.messages'
+import * as errorMessages from '../shared/errors/error.messages';
 
 describe('CarsService', () => {
   let service: CarsService;
@@ -43,7 +43,7 @@ describe('CarsService', () => {
 
   it('getAvailableCarById should call *findOne* method with the correct filtering object', async () => {
     // Arrange
-    const id = 'test'
+    const id = 'test';
 
     const spy = jest
       .spyOn(carsRepository, 'findOne')
@@ -68,11 +68,7 @@ describe('CarsService', () => {
     spy.mockClear();
   });
 
-
-
-
   it('getAllAvailableCars should call *find* method with the correct filtering object', async () => {
-
     // Arrange
 
     const spy = jest
@@ -87,7 +83,7 @@ describe('CarsService', () => {
     };
 
     const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue("test")
+    mockTransformer.mockReturnValue('test');
 
     // Act
 
@@ -96,18 +92,17 @@ describe('CarsService', () => {
     // / Assert
 
     expect(mockTransformer).toHaveBeenCalledTimes(1);
-    expect(mockTransformer).toHaveBeenCalledWith("test");
+    expect(mockTransformer).toHaveBeenCalledWith('test');
 
     spy.mockClear();
   });
 
   it('getIndividualCar should call transformToCarDTO function once', async () => {
-
     // Arrange
-    const id = 'test'
+    const id = 'test';
 
     const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue("test")
+    mockTransformer.mockReturnValue('test');
 
     // Act
 
@@ -116,32 +111,27 @@ describe('CarsService', () => {
     // / Assert
 
     expect(mockTransformer).toHaveBeenCalledTimes(1);
-
   });
 
   it('getIndividualCar should return the result of transformToCarDTO', async () => {
-
     // Arrange
     const id = '123';
-    const mockedResult = 'test'
+    const mockedResult = 'test';
 
     const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue("test")
+    mockTransformer.mockReturnValue('test');
 
     // Act
 
     const result = await service.getIndividualCar(id, mockTransformer);
 
     // / Assert
-    expect(result).toBe(mockedResult)
-
+    expect(result).toBe(mockedResult);
   });
-
 
   it('getAvailableCarById should throw an error if *findOne* method returns undefined', async () => {
-
     // Arrange
-    const id = '12345'
+    const id = '12345';
 
     const spy = jest
       .spyOn(carsRepository, 'findOne')
@@ -155,19 +145,18 @@ describe('CarsService', () => {
       },
     };
 
-
     // Act && Assert
 
-    await expect(service.getAvailableCarById(id)).rejects.toThrowError(errorMessages.carNotFound);
+    await expect(service.getAvailableCarById(id)).rejects.toThrowError(
+      errorMessages.carNotFound,
+    );
 
     spy.mockClear();
   });
-
 
   it('getBorrowedCarById should throw an error if *findOne* method returns undefined', async () => {
-
     // Arrange
-    const id = '12345'
+    const id = '12345';
 
     const spy = jest
       .spyOn(carsRepository, 'findOne')
@@ -183,9 +172,10 @@ describe('CarsService', () => {
 
     // Act && Assert
 
-    await expect(service.getBorrowedCarById(id)).rejects.toThrowError(errorMessages.borrowedCarNotFound);
+    await expect(service.getBorrowedCarById(id)).rejects.toThrowError(
+      errorMessages.borrowedCarNotFound,
+    );
 
     spy.mockClear();
   });
-
 });

@@ -4,13 +4,13 @@ import { CarRentalSystemError } from '../exceptions/carRental-system.error';
 
 @Catch(CarRentalSystemError)
 export class CarRentalSystemErrorFilter implements ExceptionFilter {
-    public catch(exception: CarRentalSystemError, host: ArgumentsHost) {
-        const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
+  public catch(exception: CarRentalSystemError, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
 
-        response.status(exception.code).json({
-            status: exception.code,
-            error: exception.message,
-        });
-    }
+    response.status(exception.code).json({
+      status: exception.code,
+      error: exception.message,
+    });
+  }
 }

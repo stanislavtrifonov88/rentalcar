@@ -1,10 +1,9 @@
 export class NewCustomerDTO {
-    phone: number;
+  phone: number;
 
-    firstName: string;
+  firstName: string;
 
-    lastName: string;
+  lastName: string;
 
-    birthdate: string;
-
+  birthdate: string;
 }

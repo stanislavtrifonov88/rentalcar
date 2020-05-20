@@ -12,8 +12,6 @@ import { Car } from './car.entity';
 
 @Entity('customers')
 export class Customer {
-    // @PrimaryGeneratedColumn('uuid')
-    // id: string;
     @PrimaryColumn({ type: 'bigint', nullable: false })
     phone: number;
 

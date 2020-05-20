@@ -1,14 +1,13 @@
 export class IndividualCustomerDTO {
-    phone: string;
+  phone: string;
 
-    firstName: string;
+  firstName: string;
 
-    lastName: string;
+  lastName: string;
 
-    birthdate: string;
+  birthdate: string;
 
-    age: number
+  age: number;
 
-   previousContracts: number;
-
+  previousContracts: number;
 }

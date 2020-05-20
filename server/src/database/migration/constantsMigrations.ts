@@ -16,13 +16,12 @@ export const astra5_uuid = '58cb5cc1-145e-4630-942e-0a6d6cd814de';
 export const corsa6_uuid = 'b2d5d9ff-ef66-400c-8e22-e2e85f070b5c';
 
 // Mock customer phone numbers
-
-export const customer1 = '359888111222'
-export const customer2 = '359888111333'
-export const customer3 = '359888111444'
-export const customer4 = '359888111555'
-export const customer5 = '359888111666'
-export const customer6 = '359888111777'
+export const customer1 = '359888111222';
+export const customer2 = '359888111333';
+export const customer3 = '359888111444';
+export const customer4 = '359888111555';
+export const customer5 = '359888111666';
+export const customer6 = '359888111777';
 
 // Mock dates
 export const startDate = timeStamp();
@@ -35,16 +34,12 @@ export const contractEndDateOverdue2 = timeStamp(-6);
 
 // Car images
 export const fordFocus = 'http://localhost:3001/img/fordFocus.jpeg';
-export const mercedesGClass =  `http://localhost:3001/img/MercedesGClass.jpeg`;
+export const mercedesGClass = `http://localhost:3001/img/MercedesGClass.jpeg`;
 export const astraImg = `http://localhost:3001/img/opelAstra.jpeg`;
 export const golfImg1 = `http://localhost:3001/img/vwGolf.jpeg`;
 export const dodgeRam = `http://localhost:3001/img/dodgeRam.jpeg`;
 export const volvo40 = `http://localhost:3001/img/XC40.jpeg`;
-export const audiq7 =  `http://localhost:3001/img/audiA7.jpeg`;
-export const MercedesAMGGTRC190 =  `http://localhost:3001/img/MercedesAMG.jpeg`;
+export const audiq7 = `http://localhost:3001/img/audiA7.jpeg`;
+export const MercedesAMGGTRC190 = `http://localhost:3001/img/MercedesAMG.jpeg`;
 export const opelCosrsa = `http://localhost:3001/img/opelCorsa.jpeg`;
-export const bmwM3= `http://localhost:3001/img/bmwM3.jpeg`;
-
-
-
-
+export const bmwM3 = `http://localhost:3001/img/bmwM3.jpeg`;

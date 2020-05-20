@@ -28,14 +28,14 @@ describe('ContractsService', () => {
 
   const carsRepository = {
     find(): any {
-        /* empty */
-      },
+      /* empty */
+    },
     findOne(): any {
-        /* empty */
-      },
+      /* empty */
+    },
     save(): any {
-        /* empty */
-      },
+      /* empty */
+    },
   };
 
   const carsService = {
@@ -52,21 +52,21 @@ describe('ContractsService', () => {
     },
     getBorrowedCarById(): any {
       /* empty */
-    }
-  }
+    },
+  };
 
-    const customerService = {
-      findCustomerByPhone(): any {
-        /* empty */
-      },
-  
-      createNewCustomer(): any {
-        /* empty */
-      },
-  
-      getCustomerByPhone(): any {
-        /* empty */
-      },
+  const customerService = {
+    findCustomerByPhone(): any {
+      /* empty */
+    },
+
+    createNewCustomer(): any {
+      /* empty */
+    },
+
+    getCustomerByPhone(): any {
+      /* empty */
+    },
   };
 
   beforeEach(async () => {
@@ -94,56 +94,19 @@ describe('ContractsService', () => {
 
     service = module.get<ContractsService>(ContractsService);
 
+    spy = jest
+      .spyOn(contractsRepository, 'find')
+      .mockImplementation(async () => ['test']);
 
-  spy = jest
-    .spyOn(contractsRepository, 'find')
-    .mockImplementation(async () => ['test']);
-
-  expectedObject = {
-    where: {
-      deliveredDate: null,
-      isDeleted: false,
-    },
-  };
+    expectedObject = {
+      where: {
+        deliveredDate: null,
+        isDeleted: false,
+      },
+    };
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  it('getAllContracts should call *find* method with the correct filtering object', async () => {
-    // Arrange
-
-    // Act
-
-    await service.getAllContracts();
-
-    // Assert
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expectedObject);
-
-    spy.mockClear();
-  });
-
-
-  it('getAllContracts should call *transformToContractDTO* function with the correct filtering object', async () => {
-    // Arrange
-    const mockedCallValue = 'test'
-
-    const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue(mockedCallValue)
-
-    // Act
-
-    await service.getAllContracts(mockTransformer);
-
-    // Assert
-
-    expect(mockTransformer).toHaveBeenCalledTimes(1);
-    expect(mockTransformer).toHaveBeenCalledWith('test');
-
-    spy.mockClear();
-  });
-
 });

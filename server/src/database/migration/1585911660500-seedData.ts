@@ -1,11 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
-import * as constants from './constantsMigrations'
+import { MigrationInterface, QueryRunner } from 'typeorm';
+import * as constants from './constantsMigrations';
 
 export class seedData1585911660500 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<any> {
-        
-            await queryRunner.query(`INSERT INTO "classes"
+  public async up(queryRunner: QueryRunner): Promise<any> {
+    await queryRunner.query(`INSERT INTO "classes"
             ("id", "className", "price", "isDeleted") 
             VALUES 
             ('${constants.classA_uuid}', 'A', 50, DEFAULT), 
@@ -14,7 +12,7 @@ export class seedData1585911660500 implements MigrationInterface {
             ('${constants.classD_uuid}', 'D', 110, DEFAULT), 
             ('${constants.classE_uuid}', 'E', 130, DEFAULT)  
             RETURNING "id", "isDeleted"`);
-            await queryRunner.query(`INSERT INTO "cars"
+    await queryRunner.query(`INSERT INTO "cars"
             ("id", "brand", "model", "picture", "isBorrowed", "isDeleted", "classNameId") 
             VALUES 
             (DEFAULT, 'Opel', 'Corsa', '${constants.opelCosrsa}', DEFAULT, DEFAULT, '${constants.classA_uuid}'), 
@@ -29,16 +27,14 @@ export class seedData1585911660500 implements MigrationInterface {
             (DEFAULT, 'Audi', 'A7', '${constants.audiq7}', DEFAULT, DEFAULT, '${constants.classE_uuid}'),
             (DEFAULT, 'Volvo', 'XC40', '${constants.volvo40}', DEFAULT, DEFAULT, '${constants.classE_uuid}')
              RETURNING "isBorrowed", "isDeleted"`);
-             await queryRunner.query(`INSERT INTO "contracts"
+    await queryRunner.query(`INSERT INTO "contracts"
              ("id", "borrowerFirstName", "borrowerLastName", "borrowerAge", "startDate", "contractEndDate", "isDeleted", "carId") 
              VALUES 
              (DEFAULT, 'Bruce', 'Wayne', '36', '${constants.startDate}', '${constants.contractEndDate}', DEFAULT,'${constants.golf1_uuid}'), 
              (DEFAULT, 'General', 'Mutafciiski', '56', '${constants.startDate}', '${constants.contractEndDate14Days}', DEFAULT,'${constants.golf2_uuid}')
 
               RETURNING "isDeleted"`);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<any> {}
 }

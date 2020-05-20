@@ -10,97 +10,130 @@ import { createContractErrorHandling } from '../shared/errors/createContractErro
 import * as errorMessages from '../shared/errors/error.messages';
 import { CarsService } from '../cars/cars.service';
 import * as Guard from '../shared/util/Guard';
-import { currentTotalPrice, estimatedPricePerDay, daysDiscount } from '../shared/calculations/priceCalculations';
+import { currentTotalPrice } from '../shared/calculations/priceCalculations';
 import { CustomersService } from '../customers/customers.service';
 import { Customer } from '../database/entities/customer.entity';
-import { transformToReturnedCarDTO } from './transformers/transformToReturnedCarDTO';
-import * as loyaltyCalculations from '../shared/calculations/loyaltyCalculations';
-import { ReturnedCarDTO } from './models/returnedCarDTO.dto';
-
+import { transformToActiveContractDTO } from './transformers/transformToActiveContractDTO';
+import { ActiveContractDTO } from './models/activeContractDTO.dto';
 
 @Injectable()
 export class ContractsService {
-    public constructor(
-        @InjectRepository(Contract) private readonly contractsRepository: Repository<Contract>,
-        private readonly carsService: CarsService,
-        private readonly customersService: CustomersService,
-    ) { }
+  public constructor(
+    @InjectRepository(Contract)
+    private readonly contractsRepository: Repository<Contract>,
+    private readonly carsService: CarsService,
+    private readonly customersService: CustomersService,
+  ) {}
 
-    public async getAllContracts(
-      transformatorToDTO: (n: Contract) => Promise<IndividualContractDTO> = transformToContractDTO,
-    ): Promise<IndividualContractDTO[]> {
-      const allContractsData: Contract[] = await this.contractsRepository.find({
-        where: {
-          deliveredDate: null,
-          isDeleted: false,
-        },
-      });
+  public async getAllContracts(
+    transformatorToDTO: (
+      contract: Contract,
+      customer: Customer,
+    ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
+  ): Promise<ActiveContractDTO[]> {
+    const allContractsData: Contract[] = await this.contractsRepository.find({
+      where: {
+        deliveredDate: null,
+        isDeleted: false,
+      },
+    });
 
-      let allContractsDataFormated: IndividualContractDTO[] = [];
+    let allContractsDataFormated: ActiveContractDTO[] = [];
 
-      allContractsData.map(async (contract: Contract) => {
-        const individualContractFormated: IndividualContractDTO = await transformatorToDTO(contract);
-        allContractsDataFormated = [...allContractsDataFormated, individualContractFormated];
-      });
-      await Promise.resolve(allContractsDataFormated);
+    const allActiveContracts = allContractsData.map(
+      async (contract: Contract) => {
+        const foundCustomer: Customer = await this.customersService.findCustomerByPhone(
+          contract.customer.phone.toString(),
+        );
+        const individualContractFormated: ActiveContractDTO = await transformatorToDTO(
+          contract,
+          foundCustomer,
+        );
 
-      return allContractsDataFormated;
-    }
+        allContractsDataFormated = [
+          ...allContractsDataFormated,
+          individualContractFormated,
+        ];
+      },
+    );
+    await Promise.all(allActiveContracts);
 
-    public async createContract(
-        body: NewContractDTO, 
-        carId: string,
-        ): Promise<IndividualContractDTO> {
-      const foundCar: Car = await this.carsService.getAvailableCarById(carId);
-      const foundCustomer: Customer = await this.customersService.findCustomerByPhone(body.phone)
-      const bodyForContract = { startDate: body.startDate, contractEndDate: body.contractEndDate}
+    return allContractsDataFormated;
+  }
 
-      createContractErrorHandling(body);
-      const newContract = this.contractsRepository.create(bodyForContract);
+  public async createContract(
+    body: NewContractDTO,
+    carId: string,
+  ): Promise<IndividualContractDTO> {
+    const foundCar: Car = await this.carsService.getAvailableCarById(carId);
+    const foundCustomer: Customer = await this.customersService.findCustomerByPhone(
+      body.phone,
+    );
+    const bodyForContract = {
+      startDate: body.startDate,
+      contractEndDate: body.contractEndDate,
+    };
 
-      newContract.car = foundCar;
-      newContract.customer = foundCustomer;
-      foundCar.isBorrowed = true;
+    createContractErrorHandling(body);
+    const newContract = this.contractsRepository.create(bodyForContract);
 
-      await getManager().transaction(async (transactionalEntityManager) => {
-        await transactionalEntityManager.save(newContract);
-        await transactionalEntityManager.save(foundCar);
-      });
+    newContract.car = foundCar;
+    newContract.customer = foundCustomer;
+    foundCar.isBorrowed = true;
 
-      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(newContract);
+    await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(newContract);
+      await transactionalEntityManager.save(foundCar);
+    });
 
-      return individualContractFormated;
-    }
+    const individualContractFormated: IndividualContractDTO = await transformToContractDTO(
+      newContract,
+    );
 
-    public async returnCar(
-        contractId: string,
-        transformatorToDTO: (contract: Contract, car: Car, customer: Customer) => Promise<ReturnedCarDTO> = transformToReturnedCarDTO,
-        ): Promise<IndividualContractDTO> {
-      const foundContract = await this.contractsRepository.findOne({
-        where: {
-          id: contractId,
-        },
-      });
+    return individualContractFormated;
+  }
 
-      Guard.isFound(foundContract, errorMessages.contractNotFound);
-      Guard.isFound(foundContract.deliveredDate === null, errorMessages.contractAlreadyClosed);
+  public async returnCar(
+    contractId: string,
+    transformatorToDTO: (
+      contract: Contract,
+      customer: Customer,
+    ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
+  ): Promise<IndividualContractDTO> {
+    const foundContract = await this.contractsRepository.findOne({
+      where: {
+        id: contractId,
+      },
+    });
 
-      const foundCar = await this.carsService.getBorrowedCarById(foundContract.car.id)
-      const foundCustomer: Customer = await this.customersService.findCustomerByPhone((foundContract.customer.phone).toString())
-      const returnedCar = await transformatorToDTO(foundContract, foundCar, foundCustomer)
-      const pricePaid = currentTotalPrice(returnedCar)
+    Guard.isFound(foundContract, errorMessages.contractNotFound);
+    Guard.isFound(
+      foundContract.deliveredDate === null,
+      errorMessages.contractAlreadyClosed,
+    );
 
-      foundCar.isBorrowed = false;
-      foundContract.deliveredDate = new Date();
-      foundContract.pricePaid = pricePaid;
+    const foundCar = await this.carsService.getBorrowedCarById(
+      foundContract.car.id,
+    );
+    const foundCustomer: Customer = await this.customersService.findCustomerByPhone(
+      foundContract.customer.phone.toString(),
+    );
+    const returnedCar = await transformatorToDTO(foundContract, foundCustomer);
+    const pricePaid = currentTotalPrice(returnedCar);
 
-      await getManager().transaction(async (transactionalEntityManager) => {
-        await transactionalEntityManager.save(foundCar);
-        await transactionalEntityManager.save(foundContract);
-      });
+    foundCar.isBorrowed = false;
+    foundContract.deliveredDate = new Date();
+    foundContract.pricePaid = pricePaid;
 
-      const individualContractFormated: IndividualContractDTO = await transformToContractDTO(foundContract);
+    await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(foundCar);
+      await transactionalEntityManager.save(foundContract);
+    });
 
-      return individualContractFormated;
-    }
+    const individualContractFormated: IndividualContractDTO = await transformToContractDTO(
+      foundContract,
+    );
+
+    return individualContractFormated;
+  }
 }
