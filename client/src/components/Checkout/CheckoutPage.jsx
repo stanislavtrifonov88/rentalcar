@@ -32,49 +32,6 @@ export default class CheckoutPage extends React.Component {
   }
 
 
-  carCheckoutHandler = (event) => {
-    const name = event.target.dataset.name;
-    const value = event.target.value;
-    const newObj = {};
-    const validationObj = this.checkoutFormStore.checkoutFormValidations;
-    newObj[name] = value;
-    newObj.phone = this.customerStore.phone.value;
-    newObj.startDate = timeStamp();
-    validationObj[name].valid = checkInputValidity(
-      newObj[name],
-      this.checkoutFormStore.checkoutFormValidations[name].rules
-    );
-    validationObj[name].touched = true;
-
-    this.checkoutFormStore.checkoutForm = newObj;
-    this.checkoutFormStore.checkoutFormValidations = validationObj;
-  };
-
-  onCheckoutInputSubmit = (event) => {
-    const { checkoutForm, checkoutFormValidations } = this.checkoutFormStore;
-    event.preventDefault();
-    carCheckoutErrors(checkoutForm, checkoutFormValidations);
-    if (
-      !checkoutFormValidations.contractEndDate.touched ||
-      !checkoutFormValidations.contractEndDate.valid
-    ) {
-      return;
-    }
-    this.individualCarStore.loading = true;
-    fetchRequest(
-      `${baseURL}/${contracts}/car/${this.individualCarStore.car.id}`,
-      "POST",
-      checkoutForm
-    ).then((response) =>
-      this.props.history.push(
-        { pathname: "/dashboard" },
-        (this.individualCarStore.loading = false),
-        toastSuccess("Car successfully borrowed")
-      )
-    );
-  };
-
-  onCancel = (event) => this.props.history.push({ pathname: "/" });
 
   componentDidMount() {
     this.individualCarStore.loading = true;
@@ -85,12 +42,15 @@ export default class CheckoutPage extends React.Component {
     });
   }
 
+  onCancel = (event) => this.props.history.push({ pathname: "/" });
+  onPageChangeToDashboard = (event) => this.props.history.push({ pathname: "/dashboard" });
+
   render() {
-    const {
-      foundCustomer,
-      phone,
-      registrationFormValidations,
-    } = this.customerStore;
+    // const {
+    //   foundCustomer,
+    //   phone,
+    //   registrationFormValidations,
+    // } = this.customerStore;
     const { car, loading } = this.individualCarStore;
     let checkoutFormCards = (
       <div className="formItems">
@@ -99,15 +59,16 @@ export default class CheckoutPage extends React.Component {
           // car={car}
           // newCustomerHandler={this.newCustomerHandler}
           // phoneChanged={this.handlePhoneChanged}
-          // onCancel={this.onCancel}
-          carCheckoutHandler={this.carCheckoutHandler}
+          onCancel={this.onCancel}
+          onPageChangeToDashboard={this.onPageChangeToDashboard}
+          // carCheckoutHandler={this.carCheckoutHandler}
           // onRegistrationSubmit={this.onRegistrationSubmit}
-          checkoutFormValidations={
-            this.checkoutFormStore.checkoutFormValidations
-          }
+          // checkoutFormValidations={
+          //   this.checkoutFormStore.checkoutFormValidations
+          // }
           // registrationFormValidations={registrationFormValidations}
           // foundCustomer={foundCustomer}
-          onCheckoutInputSubmit={this.onCheckoutInputSubmit}
+          // onCheckoutInputSubmit={this.onCheckoutInputSubmit}
           // phone={phone}
         />
         <PriceEstimationCard />
