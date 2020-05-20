@@ -31,85 +31,6 @@ export default class CheckoutPage extends React.Component {
     this.checkoutFormStore = this.props.checkoutFormStore;
   }
 
-  handlePhoneChanged = (value) => {
-    let phoneNumber = "";
-    const { phone } = this.customerStore;
-    if (value !== undefined) {
-      phoneNumber = parsePhoneNumber(value);
-    }
-
-    const newObj = {};
-    newObj.touched = true;
-    newObj.value = value;
-
-    if (phoneNumber) {
-      if (phoneNumber.country === "BG") {
-        if (newObj.value.length === 13) {
-          newObj.isValid = true;
-        }
-      }
-    }
-
-    this.customerStore.phone = newObj;
-
-    if (newObj.isValid) {
-      fetchRequestCustomer(`${baseURL}/${customers}`, "PUT", {
-        phone: value,
-      }).then((response) => {
-        if (response) {
-          this.customerStore.foundCustomer = response;
-        }
-      });
-    } else {
-      this.customerStore.foundCustomer = {
-        phone: "",
-        firstName: "",
-        lastName: "",
-        birthdate: "",
-        age: "",
-        loyaltyDiscount: "",
-        geoDiscount: "",
-      };
-    }
-  };
-
-  newCustomerHandler = (event) => {
-    const name = event.target.dataset.name;
-    const value = event.target.value;
-    const newObj = this.customerStore.newCustomer;
-    const { registrationFormValidations } = this.customerStore;
-    const validationObj = registrationFormValidations;
-    newObj[name] = value;
-    newObj.phone = this.customerStore.phone.value;
-    validationObj[name].valid = checkInputValidity(
-      newObj[name],
-      registrationFormValidations[name].rules
-    );
-    validationObj[name].touched = true;
-
-    this.customerStore.newCustomer = Object.assign(this.customerStore.newCustomer, newObj);
-    this.customerStore.registrationFormValidations = Object.assign(this.customerStore.registrationFormValidations, validationObj);
-  };
-
-  onRegistrationSubmit = (event) => {
-    const { newCustomer, registrationFormValidations } = this.customerStore;
-    const age = differenceInYears(newCustomer.birthdate);
-    bookingFormErrors(newCustomer, registrationFormValidations);
-    if (
-      !registrationFormValidations.firstName.valid ||
-      !registrationFormValidations.lastName.valid ||
-      !(age >= 18) ||
-      !registrationFormValidations.birthdate.touched ||
-      !registrationFormValidations.birthdate.valid
-    ) {
-      return;
-    }
-    fetchRequest(`${baseURL}/${customers}`, "POST", newCustomer).then(
-      (response) => {
-        this.customerStore.foundCustomer = response;
-      }
-    );
-  };
 
   carCheckoutHandler = (event) => {
     const name = event.target.dataset.name;
@@ -175,19 +96,19 @@ export default class CheckoutPage extends React.Component {
       <div className="formItems">
         <CheckoutCarCard car={car} />
         <BookingForm
-          car={car}
-          newCustomerHandler={this.newCustomerHandler}
-          phoneChanged={this.handlePhoneChanged}
+          // car={car}
+          // newCustomerHandler={this.newCustomerHandler}
+          // phoneChanged={this.handlePhoneChanged}
           onCancel={this.onCancel}
           carCheckoutHandler={this.carCheckoutHandler}
-          onRegistrationSubmit={this.onRegistrationSubmit}
+          // onRegistrationSubmit={this.onRegistrationSubmit}
           checkoutFormValidations={
             this.checkoutFormStore.checkoutFormValidations
           }
-          registrationFormValidations={registrationFormValidations}
-          foundCustomer={foundCustomer}
+          // registrationFormValidations={registrationFormValidations}
+          // foundCustomer={foundCustomer}
           onCheckoutInputSubmit={this.onCheckoutInputSubmit}
-          phone={phone}
+          // phone={phone}
         />
         <PriceEstimationCard />
       </div>
