@@ -15,15 +15,11 @@ export class ActiveContractDTO {
 
   lastName: string;
 
-  birthDate: string;
+  birthdate: string;
 
   age: number;
 
   price: number;
-
-  picture: string;
-
-  className: string;
 
   previousContracts: number;
 }

@@ -28,7 +28,6 @@ export class ContractsService {
   public async getAllContracts(
     transformatorToDTO: (
       contract: Contract,
-      car: Car,
       customer: Customer,
     ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
   ): Promise<ActiveContractDTO[]> {
@@ -42,15 +41,11 @@ export class ContractsService {
     let allContractsDataFormated: ActiveContractDTO[] = [];
 
     const allActiveContracts = allContractsData.map(async (contract: Contract) => {
-      const foundCar = await this.carsService.getBorrowedCarById(
-        contract.car.id,
-      );
       const foundCustomer: Customer = await this.customersService.findCustomerByPhone(
         contract.customer.phone.toString(),
       );
       const individualContractFormated: ActiveContractDTO = await transformatorToDTO(
         contract,
-        foundCar,
         foundCustomer
       );
 
@@ -101,7 +96,6 @@ export class ContractsService {
     contractId: string,
     transformatorToDTO: (
       contract: Contract,
-      car: Car,
       customer: Customer,
     ) => Promise<ActiveContractDTO> = transformToActiveContractDTO,
   ): Promise<IndividualContractDTO> {
@@ -125,7 +119,6 @@ export class ContractsService {
     );
     const returnedCar = await transformatorToDTO(
       foundContract,
-      foundCar,
       foundCustomer,
     );
     const pricePaid = currentTotalPrice(returnedCar);
