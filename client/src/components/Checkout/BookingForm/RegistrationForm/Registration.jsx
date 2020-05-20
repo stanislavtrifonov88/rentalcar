@@ -76,10 +76,11 @@ export default class Registration extends React.Component {
     );
   };
 
-  onCancel = (event) => this.props.history.push({ pathname: "/" });
+  // onCancel = (event) => this.props.history.push({ pathname: "/" });
 
   render() {
   const { foundCustomer, phone, newCustomer, registrationFormValidations } = this.customerStore;
+  const { car, loading } = this.individualCarStore;
 
   const validationErrorFirstName = isValidField(registrationFormValidations.firstName);
   const validationErrorLastName = isValidField(registrationFormValidations.lastName);
@@ -144,7 +145,7 @@ export default class Registration extends React.Component {
         <button type="submit" className="bookCarBtn" onClick={this.onRegistrationSubmit} data-element="bookingFormCheckoutBtn">
           Register
         </button>
-        <button type="submit" className="bookCarBtn" onClick={this.onCancel}>Cancel</button>
+        <button type="submit" className="bookCarBtn" onClick={this.props.onCancel}>Cancel</button>
       </div>
     </>
   );
