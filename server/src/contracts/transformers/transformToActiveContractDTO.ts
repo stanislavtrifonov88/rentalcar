@@ -12,7 +12,6 @@ export const transformToActiveContractDTO = async (
 ): Promise<ActiveContractDTO> => {
   const contractDTO = await transformToStandardContractDTO(contract);
   const customerDTO = await transformToStandardCustomerDTO(customer);
-  console.log(contractDTO)
   const { previousContracts } = customerDTO;
   const mergedObj: ActiveContractDTO = { ...contractDTO, ...customerDTO, previousContracts};
 

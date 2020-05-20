@@ -22,7 +22,7 @@ export class ContractsController {
   @HttpCode(HttpStatus.OK)
   public async getAllAvailableCars(): Promise<ActiveContractDTO[]> {
     const allContracts: ActiveContractDTO[] = await this.contractsService.getAllContracts();
-    console.log(allContracts)
+
     return allContracts;
   }
 

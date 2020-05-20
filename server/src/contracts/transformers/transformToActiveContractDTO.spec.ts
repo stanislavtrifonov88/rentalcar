@@ -1,7 +1,7 @@
 import { transformToActiveContractDTO } from './transformToActiveContractDTO';
 
-describe('transformToReturnedCarDTO', () => {
-  it('should get *Contract*, *Car* and *Customer* entities and transform them to *ReturnedCarDTO*', async () => {
+describe('transformToActiveContractDTO', () => {
+  it('should get *Contract* and *Customer* entities and transform them to *ActiveContractDTO*', async () => {
     // Arrange
     const mockContract: any = {
       test: 'test',
