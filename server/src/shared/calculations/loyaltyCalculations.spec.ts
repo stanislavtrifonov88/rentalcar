@@ -77,3 +77,26 @@ describe('LoyaltyCalcution service', () => {
     expect(result).toEqual(loyaltyDiscounts.previousContractsAbove20);
   });
 });
+
+describe("geoDiscount", () => {
+  const getCustomerData = (phone) => ({ phone })
+
+  const tests = [
+    { name: "given 359 phone should return geoDiscount", phone: 359885885885, expectedDiscount: loyaltyDiscounts.geoDiscount},
+    { name: "given 40 phone should return geoDiscount", phone: 40885885885, expectedDiscount: loyaltyDiscounts.geoDiscount},
+    { name: "given 351 phone should return no discount", phone: 351351356, expectedDiscount: 0},
+  ]
+
+
+  tests.forEach((test)=> {
+    it(test.name, () => {
+      //setup
+      const customerData =  getCustomerData(test.phone);
+      //act
+      const result = loyaltyCalculations.geoDiscount(customerData);
+      //assert
+      expect(result).toEqual(test.expectedDiscount)
+    })
+  })
+
+})

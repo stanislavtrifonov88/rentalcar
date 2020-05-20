@@ -6,7 +6,7 @@ export const estimatedDaysRented = (
   contractData,
   differenceInDaysFn = differenceInDays,
 ) => {
-  if (contractData.startDate === '' && contractData.contractEndDate === '') {
+  if (!contractData.startDate && !contractData.contractEndDate) {
     return 0;
   }
 
