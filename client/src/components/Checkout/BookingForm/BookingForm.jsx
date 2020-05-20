@@ -124,6 +124,7 @@ export default class BookingForm extends React.Component {
   render() {
   let names = <div>hi</div>;
   const { foundCustomer, phone, newCustomer, registrationFormValidations } = this.customerStore;
+  const { car, loading } = this.individualCarStore;
 
   if (foundCustomer.firstName === '') {
     names = (
@@ -131,16 +132,18 @@ export default class BookingForm extends React.Component {
         // newCustomerHandler={this.newCustomerHandler}
         // registrationFormValidations={registrationFormValidations}
         // onRegistrationSubmit={this.onRegistrationSubmit}
+        onCancel={this.props.onCancel}
       />
     );
   } else {
     names = (
       <Customer
-        foundCustomer={foundCustomer}
-        onCheckoutInputSubmit={onCheckoutInputSubmit}
-        onCancel={onCancel}
-        checkoutFormValidations={checkoutFormValidations}
-        carCheckoutHandler={carCheckoutHandler}
+        // foundCustomer={foundCustomer}
+        // onCheckoutInputSubmit={onCheckoutInputSubmit}
+        onCancel={this.props.onCancel}
+        onPageChangeToDashboard={this.props.onPageChangeToDashboard}
+        // checkoutFormValidations={checkoutFormValidations}
+        // carCheckoutHandler={carCheckoutHandler}
       />
     );
   }
@@ -175,7 +178,7 @@ export default class BookingForm extends React.Component {
               placeholder="Enter phone number"
               data-name="phone"
               required
-              onChange={this.phoneChanged}
+              onChange={this.handlePhoneChanged}
             />
             {found}
           </div>
