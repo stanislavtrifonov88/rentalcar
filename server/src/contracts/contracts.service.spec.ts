@@ -109,38 +109,4 @@ describe('ContractsService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  it('getAllContracts should call *find* method with the correct filtering object', async () => {
-    // Arrange
-
-    // Act
-
-    await service.getAllContracts();
-
-    // Assert
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expectedObject);
-
-    spy.mockClear();
-  });
-
-  it('getAllContracts should call *transformToContractDTO* function with the correct filtering object', async () => {
-    // Arrange
-    const mockedCallValue = 'test';
-
-    const mockTransformer = jest.fn();
-    mockTransformer.mockReturnValue(mockedCallValue);
-
-    // Act
-
-    await service.getAllContracts(mockTransformer);
-
-    // Assert
-
-    expect(mockTransformer).toHaveBeenCalledTimes(1);
-    expect(mockTransformer).toHaveBeenCalledWith('test');
-
-    spy.mockClear();
-  });
 });
