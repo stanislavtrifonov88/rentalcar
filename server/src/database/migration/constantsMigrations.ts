@@ -16,7 +16,6 @@ export const astra5_uuid = '58cb5cc1-145e-4630-942e-0a6d6cd814de';
 export const corsa6_uuid = 'b2d5d9ff-ef66-400c-8e22-e2e85f070b5c';
 
 // Mock customer phone numbers
-
 export const customer1 = '359888111222';
 export const customer2 = '359888111333';
 export const customer3 = '359888111444';
