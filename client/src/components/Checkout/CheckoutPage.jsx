@@ -99,7 +99,7 @@ export default class CheckoutPage extends React.Component {
           // car={car}
           // newCustomerHandler={this.newCustomerHandler}
           // phoneChanged={this.handlePhoneChanged}
-          onCancel={this.onCancel}
+          // onCancel={this.onCancel}
           carCheckoutHandler={this.carCheckoutHandler}
           // onRegistrationSubmit={this.onRegistrationSubmit}
           checkoutFormValidations={
