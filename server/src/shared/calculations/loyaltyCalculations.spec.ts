@@ -1,102 +1,32 @@
-import * as loyaltyCalculations from './loyaltyCalculations';
-import * as loyaltyDiscounts from '../discounts/loyaltyDiscounts';
+import { loyaltyDiscount } from './loyaltyDiscount';
+import * as discounts from '../discounts/discounts';
 
-describe('LoyaltyCalcution service', () => {
-  let returnedCarData;
-
-  beforeEach(async () => {
-    returnedCarData = {
-      startDate: '2020-05-18T11:55:00.000Z',
-      contractEndDate: '2020-05-20T22:01:00.000Z',
-      phone: '359888111444',
-      age: 52,
-      price: 70,
-      previousContracts: 54,
-    };
-  });
-
-  it('loyaltyDiscount case 1: customer has no previous contracts', () => {
-    // Arramge
-    returnedCarData.previousContracts = 0;
-
-    // Act
-
-    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(loyaltyDiscounts.previousContracts0);
-  });
-
-  it('loyaltyDiscount case 2: customer has 1-4 previous contracts', () => {
-    // Arramge
-    returnedCarData.previousContracts = 4;
-
-    // Act
-
-    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(loyaltyDiscounts.previousContracts1To4);
-  });
-
-  it('loyaltyDiscount case 3: customer has 5-9 previous contracts', () => {
-    // Arramge
-    returnedCarData.previousContracts = 9;
-
-    // Act
-
-    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(loyaltyDiscounts.previousContracts5To9);
-  });
-
-  it('loyaltyDiscount case 5: customer has 10-19 previous contracts', () => {
-    // Arramge
-    returnedCarData.previousContracts = 19;
-
-    // Act
-
-    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(loyaltyDiscounts.previousContracts10To19);
-  });
-
-  it('loyaltyDiscount case 6: customer has 20 or more previous contracts', () => {
-    // Act
-
-    const result = loyaltyCalculations.loyaltyDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(loyaltyDiscounts.previousContractsAbove20);
-  });
-});
-
-describe("geoDiscount", () => {
-  const getCustomerData = (phone) => ({ phone })
+describe('loyaltyDiscount', () => {
+  const getCustomerData = (previousContracts) => ({ previousContracts })
 
   const tests = [
-    { name: "given 359 phone should return geoDiscount", phone: 359885885885, expectedDiscount: loyaltyDiscounts.geoDiscount},
-    { name: "given 40 phone should return geoDiscount", phone: 40885885885, expectedDiscount: loyaltyDiscounts.geoDiscount},
-    { name: "given 351 phone should return no discount", phone: 351351356, expectedDiscount: 0},
+    { name: "case 1: given no previous contracts, should return previousContracts0", previousContracts: 0, expectedDiscount: discounts.previousContracts0},
+    { name: "case 2.1: given 1-4 previous contracts, should return previousContracts1To4", previousContracts: 1, expectedDiscount: discounts.previousContracts1To4},
+    { name: "case 2.2: given 1-4 previous contracts, should return previousContracts1To4", previousContracts: 3, expectedDiscount: discounts.previousContracts1To4},
+    { name: "case 2.3: given 1-4 previous contracts, should return previousContracts1To4", previousContracts: 4, expectedDiscount: discounts.previousContracts1To4},
+    { name: "case 3.1: given 5-9 previous contracts, should return previousContracts5To9", previousContracts: 5, expectedDiscount: discounts.previousContracts5To9},
+    { name: "case 3.2: given 5-9 previous contracts, should return previousContracts5To9", previousContracts: 7, expectedDiscount: discounts.previousContracts5To9},
+    { name: "case 3.3: given 5-9 previous contracts, should return previousContracts5To9", previousContracts: 9, expectedDiscount: discounts.previousContracts5To9},
+    { name: "case 4.1: given 10-19 previous contracts, should return previousContracts1To4", previousContracts: 10, expectedDiscount: discounts.previousContracts10To19},
+    { name: "case 4.2: given 10-19 previous contracts, should return previousContracts1To4", previousContracts: 15, expectedDiscount: discounts.previousContracts10To19},
+    { name: "case 4.3: given 10-19 previous contracts, should return previousContracts1To4", previousContracts: 19, expectedDiscount: discounts.previousContracts10To19},
+    { name: "case 5: given 20+ previous contracts, should return previousContracts1To4", previousContracts: 20, expectedDiscount: discounts.previousContractsAbove20},
   ]
-
 
   tests.forEach((test)=> {
     it(test.name, () => {
-      //setup
-      const customerData =  getCustomerData(test.phone);
+      //arrange
+      const customerData =  getCustomerData(test.previousContracts);
       //act
-      const result = loyaltyCalculations.geoDiscount(customerData);
+      const result = loyaltyDiscount(customerData);
       //assert
       expect(result).toEqual(test.expectedDiscount)
     })
   })
-
 })
+
