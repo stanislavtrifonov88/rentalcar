@@ -15,14 +15,12 @@ import {
 import { toastSuccess } from "../../../../services/toastify/toastify";
 import { differenceInYears } from "../../../../shared/dateModifiers";
 
-@inject("customerStore", "individualCarStore", "checkoutFormStore")
+@inject("customerStore")
 @observer
 export default class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.customerStore = this.props.customerStore;
-    this.individualCarStore = this.props.individualCarStore;
-    this.checkoutFormStore = this.props.checkoutFormStore;
   }
 
   newCustomerHandler = (event) => {

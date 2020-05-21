@@ -13,14 +13,12 @@ import {
   customers,
 } from "../../../services/restAPIs/restAPIs";
 
-@inject("customerStore", "individualCarStore", "checkoutFormStore")
+@inject("customerStore")
 @observer
 export default class BookingForm extends React.Component {
   constructor(props) {
     super(props);
     this.customerStore = this.props.customerStore;
-    this.individualCarStore = this.props.individualCarStore;
-    this.checkoutFormStore = this.props.checkoutFormStore;
   }
 
   handlePhoneChanged = (value) => {
@@ -67,8 +65,7 @@ export default class BookingForm extends React.Component {
 
   render() {
   let names = <div>hi</div>;
-  const { foundCustomer, phone, newCustomer, registrationFormValidations } = this.customerStore;
-  const { car, loading } = this.individualCarStore;
+  const { foundCustomer, phone } = this.customerStore;
 
   if (foundCustomer.firstName === '') {
     names = (
