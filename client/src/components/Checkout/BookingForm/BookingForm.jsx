@@ -23,7 +23,6 @@ export default class BookingForm extends React.Component {
     this.checkoutFormStore = this.props.checkoutFormStore;
   }
 
-
   handlePhoneChanged = (value) => {
     let phoneNumber = "";
     const { phone } = this.customerStore;
