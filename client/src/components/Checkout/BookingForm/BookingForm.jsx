@@ -5,30 +5,79 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import Customer from './Customer/Customer';
 import Registration from './RegistrationForm/Registration';
+import { observer, inject } from "mobx-react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { fetchRequestCustomer } from "../../../services/Rest";
+import {
+  baseURL,
+  customers,
+} from "../../../services/restAPIs/restAPIs";
 
+@inject("customerStore")
+@observer
+export default class BookingForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.customerStore = this.props.customerStore;
+  }
 
-const BookingForm = ({
-  changed, checkoutFormValidations, onCancel, phoneChanged,
-  foundCustomer, newCustomerHandler, onRegistrationSubmit, onCheckoutInputSubmit, registrationFormValidations, carCheckoutHandler, phone,
-}) => {
+  handlePhoneChanged = (value) => {
+    let phoneNumber = "";
+    const { phone } = this.customerStore;
+    if (value !== undefined) {
+      phoneNumber = parsePhoneNumber(value);
+    }
+
+    const newObj = {};
+    newObj.touched = true;
+    newObj.value = value;
+
+    if (phoneNumber) {
+      if (phoneNumber.country === "BG") {
+        if (newObj.value.length === 13) {
+          newObj.isValid = true;
+        }
+      }
+    }
+
+    this.customerStore.phone = newObj;
+
+    if (newObj.isValid) {
+      fetchRequestCustomer(`${baseURL}/${customers}`, "PUT", {
+        phone: value,
+      }).then((response) => {
+        if (response) {
+          this.customerStore.foundCustomer = response;
+        }
+      });
+    } else {
+      this.customerStore.foundCustomer = {
+        phone: "",
+        firstName: "",
+        lastName: "",
+        birthdate: "",
+        age: "",
+        loyaltyDiscount: "",
+        geoDiscount: "",
+      };
+    }
+  };
+
+  render() {
   let names = <div>hi</div>;
+  const { foundCustomer, phone } = this.customerStore;
 
   if (foundCustomer.firstName === '') {
     names = (
       <Registration
-        newCustomerHandler={newCustomerHandler}
-        registrationFormValidations={registrationFormValidations}
-        onRegistrationSubmit={onRegistrationSubmit}
+        onCancel={this.props.onCancel}
       />
     );
   } else {
     names = (
       <Customer
-        foundCustomer={foundCustomer}
-        onCheckoutInputSubmit={onCheckoutInputSubmit}
-        onCancel={onCancel}
-        checkoutFormValidations={checkoutFormValidations}
-        carCheckoutHandler={carCheckoutHandler}
+        onCancel={this.props.onCancel}
+        onPageChangeToDashboard={this.props.onPageChangeToDashboard}
       />
     );
   }
@@ -44,10 +93,7 @@ const BookingForm = ({
           !
         </p>
       );
-
-
   }
-
 
   return (
     <div className="checkoutFormContainer" data-element="bookingForm">
@@ -63,18 +109,16 @@ const BookingForm = ({
               placeholder="Enter phone number"
               data-name="phone"
               required
-              onChange={phoneChanged}
+              onChange={this.handlePhoneChanged}
             />
             {found}
           </div>
         </div>
         {names}
-
       </div>
-
     </div>
   );
-};
+}};
 
 BookingForm.propTypes = {
   changed: PropTypes.func,
@@ -106,4 +150,3 @@ BookingForm.defaultProps = {
 };
 
 
-export default BookingForm;

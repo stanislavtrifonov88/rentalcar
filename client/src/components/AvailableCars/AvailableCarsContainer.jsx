@@ -37,7 +37,7 @@ searchString = (value) => {
 
 filterBy = (data) => {
   let { filterStrings } = this.store;
-  filterStrings[data.dataAttribute] = data.option
+  filterStrings[data.dataAttribute] = data.option;
   if (data.option === 'None') {
     filterStrings[data.dataAttribute] = ''
   }
