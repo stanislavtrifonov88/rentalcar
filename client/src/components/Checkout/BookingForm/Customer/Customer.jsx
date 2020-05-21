@@ -61,8 +61,7 @@ import { timeStamp } from "../../../../shared/dateModifiers";
         "POST",
         checkoutForm
       ).then((response) => {
-        // (() => this.props.onPageChangeToDashboard)(),
-        this.props.history.push({ pathname: "/dashboard" }),
+        this.props.onPageChangeToDashboard(),
         this.individualCarStore.loading = false,
         toastSuccess("Car successfully borrowed")
       });
