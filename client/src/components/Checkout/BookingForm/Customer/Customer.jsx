@@ -1,28 +1,18 @@
 import React from 'react';
 import { isValidField } from '../../Validations/validationChecks';
 import { observer, inject } from "mobx-react";
-import PropTypes from 'prop-types';
-import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { parsePhoneNumber } from "react-phone-number-input";
 import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest, fetchRequestCustomer } from "../../../../services/Rest";
+import { fetchRequest } from "../../../../services/Rest";
 import {
   baseURL,
   contracts,
-  cars,
-  customers,
 } from "../../../../services/restAPIs/restAPIs";
 import {
-  bookingFormErrors,
   carCheckoutErrors,
 } from "../../../../services/toastify/toastifyHelpers";
 import { toastSuccess } from "../../../../services/toastify/toastify";
-import { timeStamp, differenceInYears } from "../../../../shared/dateModifiers";
-
-// const Customer = ({
-//   foundCustomer, onCheckoutInputSubmit, onCancel, checkoutFormValidations, carCheckoutHandler,
-// }) => {
+import { timeStamp } from "../../../../shared/dateModifiers";
 
   @inject("customerStore", "individualCarStore", "checkoutFormStore")
   @observer
@@ -60,26 +50,26 @@ import { timeStamp, differenceInYears } from "../../../../shared/dateModifiers";
         !checkoutFormValidations.contractEndDate.touched ||
         !checkoutFormValidations.contractEndDate.valid
       ) {
+
         return;
       }
+
       this.individualCarStore.loading = true;
+
       fetchRequest(
         `${baseURL}/${contracts}/car/${this.individualCarStore.car.id}`,
         "POST",
         checkoutForm
       ).then((response) => {
-        this.props.onPageChangeToDashboard,
+        // (() => this.props.onPageChangeToDashboard)(),
+        this.props.history.push({ pathname: "/dashboard" }),
         this.individualCarStore.loading = false,
         toastSuccess("Car successfully borrowed")
-        // this.props.history.push({ pathname: "/dashboard" }),
       });
     };
-  
-    // onCancel = (event) => this.props.history.push({ pathname: "/" });
 
   render() {
-    const { foundCustomer, phone, newCustomer, registrationFormValidations } = this.customerStore;
-    const { car, loading } = this.individualCarStore;
+    const { foundCustomer  } = this.customerStore;
     const { checkoutFormValidations } = this.checkoutFormStore;
 
     const validationErrorReturnDate = isValidField(checkoutFormValidations.contractEndDate);

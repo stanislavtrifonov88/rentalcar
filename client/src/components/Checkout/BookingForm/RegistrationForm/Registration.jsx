@@ -2,31 +2,18 @@ import React from 'react';
 import { isValidField } from '../../Validations/validationChecks';
 import { observer, inject } from "mobx-react";
 import PropTypes from 'prop-types';
-import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import { parsePhoneNumber } from "react-phone-number-input";
 import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest, fetchRequestCustomer } from "../../../../services/Rest";
+import { fetchRequest } from "../../../../services/Rest";
 import {
   baseURL,
-  contracts,
-  cars,
   customers,
 } from "../../../../services/restAPIs/restAPIs";
 import {
   bookingFormErrors,
-  carCheckoutErrors,
 } from "../../../../services/toastify/toastifyHelpers";
 import { toastSuccess } from "../../../../services/toastify/toastify";
-import { timeStamp, differenceInYears } from "../../../../shared/dateModifiers";
-
-// inject("colors")(observer(({ colors, label, onClick })
-// const Registration = inject("customerStore", "individualCarStore", "checkoutFormStore")(observer(({ 
-//   customerStore, individualCarStore, checkoutFormStore, newCustomerHandler, registrationFormValidations, onCancel, onRegistrationSubmit 
-// }) => {
-//   const validationErrorFirstName = isValidField(registrationFormValidations.firstName);
-//   const validationErrorLastName = isValidField(registrationFormValidations.lastName);
-//   const validationErrorBirthdate = isValidField(registrationFormValidations.birthdate);
+import { differenceInYears } from "../../../../shared/dateModifiers";
 
 @inject("customerStore", "individualCarStore", "checkoutFormStore")
 @observer
@@ -60,6 +47,7 @@ export default class Registration extends React.Component {
     const { newCustomer, registrationFormValidations } = this.customerStore;
     const age = differenceInYears(newCustomer.birthdate);
     bookingFormErrors(newCustomer, registrationFormValidations);
+
     if (
       !registrationFormValidations.firstName.valid ||
       !registrationFormValidations.lastName.valid ||
@@ -69,18 +57,17 @@ export default class Registration extends React.Component {
     ) {
       return;
     }
+
     fetchRequest(`${baseURL}/${customers}`, "POST", newCustomer).then(
       (response) => {
         this.customerStore.foundCustomer = response;
+        toastSuccess("Customer successfully registered")
       }
     );
   };
 
-  // onCancel = (event) => this.props.history.push({ pathname: "/" });
-
   render() {
-  const { foundCustomer, phone, newCustomer, registrationFormValidations } = this.customerStore;
-  const { car, loading } = this.individualCarStore;
+  const { registrationFormValidations } = this.customerStore;
 
   const validationErrorFirstName = isValidField(registrationFormValidations.firstName);
   const validationErrorLastName = isValidField(registrationFormValidations.lastName);
