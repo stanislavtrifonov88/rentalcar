@@ -1,11 +1,13 @@
 import * as priceDiscounts from '../discounts/discounts';
 import { differenceInDays, dateFormatter } from '../constants/dateModifiers';
-import * as loyaltyCalculations from './loyaltyCalculations';
+import { loyaltyDiscount } from './loyaltyDiscount';
+import { geoDiscount } from './geoDiscount';
 
 export const estimatedDaysRented = (
   contractData,
   differenceInDaysFn = differenceInDays,
 ) => {
+  
   if (!contractData.startDate && !contractData.contractEndDate) {
     return 0;
   }
@@ -15,7 +17,7 @@ export const estimatedDaysRented = (
     contractData.startDate,
   );
 
-  if (days < 1) {
+  if (days >= 0 && days < 1) {
     return 1;
   }
 
@@ -28,6 +30,11 @@ export const currentDaysRented = (
   dateFormatterFn = dateFormatter,
   today = new Date(),
 ) => {
+
+  if (!contractData.startDate) {
+    return 0;
+  }
+
   const endTime = dateFormatterFn(today);
   const days = differenceInDaysFn(endTime, contractData.startDate);
 
@@ -67,11 +74,11 @@ export const daysDiscount = (
 };
 
 export const ageDiscount = contractData => {
-  if (contractData.borrowerAge > 25) {
-    return priceDiscounts.ageDiscountAbove25;
+  if (contractData.age > 25) {
+    return priceDiscounts.ageDiscountAbove26;
   }
-  if (contractData.borrowerAge >= 18 && contractData.borrowerAge <= 25) {
-    return priceDiscounts.ageDiscountBelow25;
+  if (contractData.age >= 18 && contractData.age <= 25) {
+    return priceDiscounts.ageDiscount18To25;
   }
 
   return 0;
@@ -80,8 +87,8 @@ export const ageDiscount = contractData => {
 const defaultDiscountFns = [
   ageDiscount,
   daysDiscount,
-  loyaltyCalculations.loyaltyDiscount,
-  loyaltyCalculations.geoDiscount,
+  loyaltyDiscount,
+  geoDiscount,
 ];
 
 export const totalDiscount = (
@@ -110,13 +117,13 @@ export const overduePenalty = (contractData, overdueDaysFn = overdueDays) => {
   const overdueDaysNumber = overdueDaysFn(contractData);
 
   if (overdueDaysNumber < 1) {
-    return 1;
+    return priceDiscounts.overduePenaltyBelow1Day;
   }
-  if (overdueDaysNumber < 6) {
-    return 1.5;
+  if (overdueDaysNumber <= 6) {
+    return priceDiscounts.overduePenalty2To6Days;
   }
 
-  return 2;
+  return priceDiscounts.overduePentaltyAbove6Days;
 };
 
 export const estimatedTotalPrice = (
