@@ -13,46 +13,54 @@ const getReturnCarData = (input) => {
     return Object.assign(defaults, input);
   }
 
-describe('PriceCalcution estimatedDaysRented', () => {
-  let returnedCarData;
-
-  beforeEach(async () => {
-    returnedCarData = {
-      startDate: '2020-05-18T11:55:00.000Z',
-      contractEndDate: '2020-05-20T22:01:00.000Z',
-      phone: '359888111444',
-      age: 52,
-      price: 70,
-      previousContracts: 54,
-    };
-  });
-
-
-  const estimatedDaysRented = [
-    { name: "if dates are not defined or empty string return 0",
+describe('estimatedDaysRented and currentDaysRented', () => {
+  const daysRented = [
+    { name: "case 1.1: if dates are not defined or empty string return 0",
       input: { startDate: undefined, contractEndDate: ''  },
       daysRented: 1, 
       result: 0 },
 
-    {name: "if difference between dates is less than 1 it is considered as 1 day",
-      input: { startDate: 'who cares', contractEndDate: 'not applicable'  },
-      daysRented: 0.1, 
+    { name: "case 1.2: if dates are not defined or empty string return 0",
+      input: { startDate: '', contractEndDate: undefined  },
+      daysRented: 1, 
+      result: 0 },
+
+    { name: "case 1.3: if dates are not defined or empty string return 0",
+      input: { startDate: '', contractEndDate: ''  },
+      daysRented: 1, 
+      result: 0 },
+
+    {name: "case: 2.1: if difference between dates is between 0 and 1, it is considered as 1 day",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      daysRented: 0.01, 
       result: 1 },
 
-      { name: "if difference between dates is 1 day - no change",
-      input: { startDate: 'who cares', contractEndDate: 'not applicable'  },
+    {name: "case: 2.2: if difference between dates is between 0 and 1, it is considered as 1 day",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      daysRented: 0.5, 
+      result: 1 },
+
+    {name: "case: 2.3: if difference between dates is between 0 and 1, it is considered as 1 day",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      daysRented: 0.99, 
+      result: 1 },
+
+    { name: "case 3: if difference between dates is 1 day - no change",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
       daysRented: 1, 
       result: 1 },
 
-      { name: "if more than 1 it should round ceiling",
-      input: { startDate: 'who cares', contractEndDate: 'not applicable'  },
+    { name: "case 4: if more than 1 it should round ceiling",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
       daysRented: 1.1, 
       result: 2 },
-  ]
+  ];
 
-  estimatedDaysRented.forEach(test => {
+  // testing estimatedDaysRented
+
+  daysRented.forEach(test => {
     it(test.name, () => {
-      //setup
+      //arrange
       const daysRentedMock = jest.fn(() => test.daysRented);
       const returnedCarData = getReturnCarData(test.input);
       //act
@@ -65,329 +73,270 @@ describe('PriceCalcution estimatedDaysRented', () => {
     })
   })
 
-
-  it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 09:00 is considered 1 day)', () => {
-    // Arramge
-    const daysRented = jest.fn(() => 1);
-
-    // Act
-
-    const result = priceCalculations.estimatedDaysRented(
-      returnedCarData,
-      daysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(1);
-  });
-
-  it('estimatedDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Return time 2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
-    // Arramge
-    const daysRented = jest.fn(() => 1.1);
-
-    // Act
-
-    const result = priceCalculations.estimatedDaysRented(
-      returnedCarData,
-      daysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(2);
-  });
-
-  it('estimatedDaysRented case 3: (same day return is considered 1 day)', () => {
-    // Arramge
-    const daysRented = jest.fn(() => 0.1);
-
-    // Act
-
-    const result = priceCalculations.estimatedDaysRented(
-      returnedCarData,
-      daysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(1);
-  });
-
-  it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time: 2020.01.02 09:00 is considered 1 day)', () => {
-    // Arramge
-    const daysRented = jest.fn(() => 1);
-    const dateFormatter = jest.fn(() => '2020.01.01T10:00:00.000Z');
-
-    // Act
-
-    const result = priceCalculations.currentDaysRented(
-      returnedCarData,
-      daysRented,
-      dateFormatter,
-    );
-
-    // Assert
-
-    expect(result).toEqual(1);
-  });
-
-  it('currentDaysRented case 1: (Pick-up time: 2020.01.01 10:00. Current time:  2020.01.02 10:45 is considered 2 days, even though its 1 day and 45 minutes.)', () => {
-    // Arramge
-    const daysRented = jest.fn(() => 1.1);
-    const dateFormatter = jest.fn(() => '2020.01.01T10:00:00.000Z');
-
-    // Act
-
-    const result = priceCalculations.currentDaysRented(
-      returnedCarData,
-      daysRented,
-      dateFormatter,
-    );
-
-    // Assert
-
-    expect(result).toEqual(2);
-  });
-
-  it('daysOverUnderContract should call return the number of days when the car is not returned on time', () => {
-    // Arramge
-
-    const mockCurrentDaysRented = jest.fn(() => 6);
-    const mockDaysRented = jest.fn(() => 5);
-
-    // Act
-
-    const result = priceCalculations.overdueDays(
-      returnedCarData,
-      mockCurrentDaysRented,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(1);
-  });
-
-  it('daysOverUnderContract should call return the number of days when the car is in advance', () => {
-    // Arramge
-
-    const mockCurrentDaysRented = jest.fn(x => 5);
-    const mockDaysRented = jest.fn(x => 6);
-
-    // Act
-
-    const result = priceCalculations.overdueDays(
-      returnedCarData,
-      mockCurrentDaysRented,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(-1);
-  });
-
-  it('daysDiscount should return 0 if the car is rented for 1 day', () => {
-    // Arramge
-
-    const mockDaysRented = jest.fn(() => 1);
-    // Act
-
-    const result = priceCalculations.daysDiscount(
-      returnedCarData,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.daysDiscount1day);
-  });
-
-  it('daysDiscount should return -0.15% if the car is rented for 2-6 day', () => {
-    // Arramge
-
-    const mockDaysRented = jest.fn(() => 4);
-    // Act
-
-    const result = priceCalculations.daysDiscount(
-      returnedCarData,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.daysDiscount2to6days);
-  });
-
-  it('daysDiscount should return -0.25% if the car is rented for 7+ day', () => {
-    // Arramge
-
-    const mockDaysRented = jest.fn(() => 9);
-    // Act
-
-    const result = priceCalculations.daysDiscount(
-      returnedCarData,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.daysDiscount7PlusDays);
-  });
-
-  it('daysDiscount return a msg if rented days below below 1 day', () => {
-    // Arramge
-
-    const mockDaysRented = jest.fn(() => -1);
-    // Act
-
-    const result = priceCalculations.daysDiscount(
-      returnedCarData,
-      mockDaysRented,
-    );
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.daysDiscountNegativeDays);
-  });
-
-  it('ageDiscount should not add any penalty if the borrower is 26+ years old', () => {
-    // Arramge
-    returnedCarData.borrowerAge = 33;
-
-    // Act
-
-    const result = priceCalculations.ageDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.ageDiscountAbove25);
-  });
-
-  it('ageDiscount should return +20% if the borrower is between 18 - 25 years old', () => {
-    // Arramge
-    returnedCarData.borrowerAge = 20;
-
-    // Act
-
-    const result = priceCalculations.ageDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.ageDiscountBelow25);
-  });
-
-  it('ageDiscount should return a msg the borrower age is below 18', () => {
-    // Arramge
-    returnedCarData.borrowerAge = 12;
-
-    // Act
-
-    const result = priceCalculations.ageDiscount(returnedCarData);
-
-    // Assert
-
-    expect(result).toEqual(priceDiscounts.ageDiscountBelow18);
-  });
+  // testing currentDaysRented
+
+  daysRented.forEach(test => {
+    it(test.name, () => {
+      //arrange
+      const daysRentedMock = jest.fn(() => test.daysRented);
+      const returnedCarData = getReturnCarData(test.input);
+      //act
+      const result = priceCalculations.currentDaysRented(
+        returnedCarData,
+        daysRentedMock,
+      );
+      //assert
+      expect(result).toEqual(test.result);
+    })
+  })
+});
+
+  describe('daysOverdue', () => {
+    const daysOverdue = [
+      { name: "case 1: should return a positive number when the car is returned with a delay",
+        input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+        currentDaysRented: 6, 
+        estimatedDaysRented: 5,
+        result: 1 },
+      { name: "case 2: should return 0 if the car is return on the expected day",
+        input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+        currentDaysRented: 5, 
+        estimatedDaysRented: 5,
+        result: 0 },
+      { name: "case 3: should return negative number when the car is returned in advance",
+        input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+        currentDaysRented: 5, 
+        estimatedDaysRented: 6,
+        result: -1 },
+    ];
+
+    daysOverdue.forEach(test => {
+      it(test.name, () => {
+        //arrange
+        const mockCurrentDaysRented = jest.fn(() => test.currentDaysRented);
+        const mockEstimatedDaysRented = jest.fn(() => test.estimatedDaysRented);
+        const returnedCarData = getReturnCarData(test.input);
+        //act
+        const result = priceCalculations.overdueDays(
+          returnedCarData,
+          mockCurrentDaysRented,
+          mockEstimatedDaysRented,
+        );
+        //assert
+        expect(result).toEqual(test.result);
+      })
+    })
+});
+
+
+describe('daysDiscount', () => {
+  const daysOverdue = [
+    { name: "case 1:  should return priceDiscounts.daysDiscount1day if the car is rented for 1 day",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: 1, 
+      result: priceDiscounts.daysDiscount1day },
+    { name: "case 2.1:  should return priceDiscounts.daysDiscount2to6days if the car is rented for 2-6 days",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: 2, 
+      result: priceDiscounts.daysDiscount2to6days },
+    { name: "case 2.2:  should return priceDiscounts.daysDiscount2to6days if the car is rented for 2-6 days",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: 4, 
+      result: priceDiscounts.daysDiscount2to6days },
+    { name: "case 2.3:  should return priceDiscounts.daysDiscount2to6days if the car is rented for 2-6 days",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: 4, 
+      result: priceDiscounts.daysDiscount2to6days },
+    { name: "case 3:  should return priceDiscounts.daysDiscount7PlusDays if the car is rented for 6+ days",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: 7, 
+      result: priceDiscounts.daysDiscount7PlusDays },
+    { name: "case 4:  should return priceDiscounts.daysDiscountNegativeDays if the car is rented for < 0 days",
+      input: { startDate: 'not needed', contractEndDate: 'not applicable'  },
+      mockDaysRented: -1, 
+      result: priceDiscounts.daysDiscountNegativeDays },
+  ];
+
+  daysOverdue.forEach(test => {
+    it(test.name, () => {
+      //arrange
+      const mockDaysRented = jest.fn(() => test.mockDaysRented);
+      const returnedCarData = getReturnCarData(test.input);
+      //act
+      const result = priceCalculations.daysDiscount(
+        returnedCarData,
+        mockDaysRented,
+      );
+      //assert
+      expect(result).toEqual(test.result);
+    })
+  })
+});
+
+
+describe('ageDiscount', () => {
+  const daysOverdue = [
+    { name: "case 1.1: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: -1 },
+      result: priceDiscounts.ageDiscountBelow18 },
+    { name: "case 1.2: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: 0 },
+      result: priceDiscounts.ageDiscountBelow18 },
+    { name: "case 1.3: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: 17 },
+      result: priceDiscounts.ageDiscountBelow18 },
+    { name: "case 2.1: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: 18 },
+      result: priceDiscounts.ageDiscount18To25 },
+    { name: "case 2.2: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: 23 },
+      result: priceDiscounts.ageDiscount18To25 },
+    { name: "case 2.3: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      input: { age: 25 },
+      result: priceDiscounts.ageDiscount18To25 },
+    { name: "case 3.1: should not add any penalty if the borrower is 26+ years old",
+      input: { age: 26 },
+      result: priceDiscounts.ageDiscountAbove26 },
+    { name: "case 3.2: should not add any penalty if the borrower is 26+ years old",
+      input: { age: 85 },
+      result: priceDiscounts.ageDiscountAbove26 },
+  ];
+
+  daysOverdue.forEach(test => {
+    it(test.name, () => {
+      //arrange
+      const returnedCarData = getReturnCarData(test.input);
+      //act
+      const result = priceCalculations.ageDiscount(
+        returnedCarData,
+      );
+      //assert
+      expect(result).toEqual(test.result);
+    })
+  })
+});
+
+
+describe('ageDiscount', () => {
+  const returnedCarData = getReturnCarData({ phone:'359888111444' });
+  const daysDiscountFunctionMock = jest.fn(() => -1);
+  const ageDiscountFunctionMock = jest.fn(() => 2);
+  const loyaltyDiscountFunctionMock = jest.fn(() => 2);
+  const geoDiscountFunctionMock = jest.fn(() => 2);
 
   it('totalDiscount should return the sum of all the functions provided to it', () => {
     // Arramge
-
-    const daysDiscountFunctionMock = jest.fn(() => -1);
-    const ageDiscountFunctionMock = jest.fn(() => 2);
     const defaultDiscountFnsMock: any = [
       daysDiscountFunctionMock,
       ageDiscountFunctionMock,
     ];
 
     // Act
+    const result = priceCalculations.totalDiscount(
+      returnedCarData,
+      defaultDiscountFnsMock,
+    );
+    // Assert
 
+    expect(result).toEqual(1);
+  });
+
+  it('totalDiscount should return the sum of all the functions provided to it', () => {
+    // Arramge
+    const defaultDiscountFnsMock: any = [
+      daysDiscountFunctionMock,
+      ageDiscountFunctionMock,
+      loyaltyDiscountFunctionMock,
+      geoDiscountFunctionMock,
+    ];
+
+    // Act
     const result = priceCalculations.totalDiscount(
       returnedCarData,
       defaultDiscountFnsMock,
     );
 
     // Assert
-
-    expect(result).toEqual(1);
+    expect(result).toEqual(5);
   });
+});
 
-  it('estimatedPricePerDay should return the base price after discouns', () => {
+describe('estimatedPricePerDay', () => {
+  it('should return the base price after discouns', () => {
     // Arramge
-
+    const returnedCarData = getReturnCarData({ phone:'359888111444' });
     const totalDiscountMock = jest.fn(x => -0.1);
 
     // Act
-
     const result = priceCalculations.estimatedPricePerDay(
       returnedCarData,
       totalDiscountMock,
     );
 
     // Assert
-
     expect(result).toEqual(63);
   });
+});
 
-  it('overduePenalty should return 1 if overdue days < 1', () => {
-    // Arramge
 
-    const overdueDaysFn = jest.fn(() => 0);
+describe('overduePenalty', () => {
+  const daysOverdue = [
+    { name: "case 1.1: should return priceDiscounts.overduePenaltyBelow1Day if overdue days < 1",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 0,
+      result: priceDiscounts.overduePenaltyBelow1Day },
+    { name: "case 1.2: should return 1 if overdue days < 1",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 0.99,
+      result: priceDiscounts.overduePenaltyBelow1Day },
+    { name: "case 2.1: should return priceDiscounts.overduePenaltyBelow1Day if overdue days between 2-6",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 2,
+      result: priceDiscounts.overduePenalty2To6Days },
+    { name: "case 2.2: should return priceDiscounts.overduePenaltyBelow1Day if overdue days between 2-6",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 4,
+      result: priceDiscounts.overduePenalty2To6Days },
+    { name: "case 2.3: should return priceDiscounts.overduePenaltyBelow1Day if overdue days between 2-6",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 6,
+      result: priceDiscounts.overduePenalty2To6Days },
+    { name: "case 3.1: should return priceDiscounts.overduePentaltyAbove6Days if overdue days are 7+",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 7,
+      result: priceDiscounts.overduePentaltyAbove6Days },
+    { name: "case 3.2: should return priceDiscounts.overduePentaltyAbove6Days if overdue days are 7+",
+      input: { contractEndDate: 'not applicable' },
+      overdueDays: 27,
+      result: priceDiscounts.overduePentaltyAbove6Days },
 
-    // Act
+  ];
 
-    const result = priceCalculations.overduePenalty(
-      returnedCarData,
-      overdueDaysFn,
-    );
+  daysOverdue.forEach(test => {
+    it(test.name, () => {
+      //arrange
+      const overdueDaysFn = jest.fn(() => test.overdueDays);
+      const returnedCarData = getReturnCarData(test.input);
+      //act
+      const result = priceCalculations.overduePenalty(
+        returnedCarData,
+        overdueDaysFn
+      );
+      //assert
+      expect(result).toEqual(test.result);
+    })
+  })
+});
 
-    // Assert
+describe('estimatedTotalPrice', () => {
+  const returnedCarData = getReturnCarData({ phone:'not applicable' });
 
-    expect(result).toEqual(1);
-  });
-
-  it('overduePenalty should return 1.5 if overdue days < 6', () => {
-    // Arramge
-
-    const overdueDaysFn = jest.fn(() => 5);
-
-    // Act
-
-    const result = priceCalculations.overduePenalty(
-      returnedCarData,
-      overdueDaysFn,
-    );
-
-    // Assert
-
-    expect(result).toEqual(1.5);
-  });
-
-  it('overduePenalty should return 2 if overdue days >= 6', () => {
-    // Arramge
-
-    const overdueDaysFn = jest.fn(() => 7);
-
-    // Act
-
-    const result = priceCalculations.overduePenalty(
-      returnedCarData,
-      overdueDaysFn,
-    );
-
-    // Assert
-
-    expect(result).toEqual(2);
-  });
-
-  it('estimatedTotalPrice should return the product of estiamtedPricePerDay and estimatedDaysRented', () => {
+  it('should return the product of estiamtedPricePerDay and estimatedDaysRented', () => {
     // Arramge
     const estimatedDaysRentedMock = jest.fn(() => 2);
     const estiamtedPricePerDayMock = jest.fn(() => 2);
 
     // Act
-
     const result = priceCalculations.estimatedTotalPrice(
       returnedCarData,
       estimatedDaysRentedMock,
@@ -395,19 +344,20 @@ describe('PriceCalcution estimatedDaysRented', () => {
     );
 
     // Assert
-
     expect(result).toEqual(4);
+
   });
+});
 
-  it('currentPricePerDay should return the product of its inputs', () => {
+describe('currentPricePerDay ', () => {
+  const returnedCarData = getReturnCarData({ phone:'not applicable' });
+  it('should return the product of its inputs', () => {
     // Arramge
-
-    const overduePenaltyMock = jest.fn(() => 2);
-    const estimatedPricePerDayMock = jest.fn(() => 2);
+    const estimatedPricePerDayMock = jest.fn(() => 2);  
+    const overduePenaltyMock: any = jest.fn(() => 2);
 
     // Act
-
-    const result = priceCalculations.estimatedTotalPrice(
+    const result = priceCalculations.currentPricePerDay(
       returnedCarData,
       estimatedPricePerDayMock,
       overduePenaltyMock,
@@ -416,51 +366,50 @@ describe('PriceCalcution estimatedDaysRented', () => {
 
     expect(result).toEqual(4);
   });
+});
 
-  it('currentTotalPrice should return the correct amount when car is returned on time or before schedule', () => {
-    // Arramge
+describe('CurrentTotalPrice ', () => {
+  const currentTotalPrice = [
+    { name: "case 1: should return the total price without interest when car returned on time",
+      input: { contractEndDate: 'not applicable' },
+      currentPricePerDay: 10, daysOverdue: 0, estimatedPricePerDay: 11, currentDaysRented: 10,
+      result: 110 },
+    { name: "case 2: should return the total price without interest when car returned in advance",
+      input: { contractEndDate: 'not applicable' },
+      currentPricePerDay: 10, daysOverdue: -1, estimatedPricePerDay: 11, currentDaysRented: 10,
+      result: 110 },
+    { name: "case 3: should return the total price with interest when there is a late car return",
+      input: { contractEndDate: 'not applicable' },
+      currentPricePerDay: 11, daysOverdue: 1, estimatedPricePerDay: 10, currentDaysRented: 11,
+      result: 111 },
+  ];
 
-    const currentPricePerDayMock = jest.fn(() => 10);
-    const daysOverdueMock = jest.fn(() => 0);
-    const estimatedPricePerDayMock = jest.fn(() => 11);
-    const currentDaysRentedMock = jest.fn(() => 10);
+  currentTotalPrice.forEach(test => {
+    it(test.name, () => {
+      //arrange
+    const currentPricePerDayMock = jest.fn(() => test.currentPricePerDay);
+    const daysOverdueMock = jest.fn(() => test.daysOverdue);
+    const estimatedPricePerDayMock = jest.fn(() => test.estimatedPricePerDay);
+    const currentDaysRentedMock = jest.fn(() => test.currentDaysRented);
+    const returnedCarData = getReturnCarData(test.input);
 
-    // Act
-
-    const result = priceCalculations.currentTotalPrice(
+      //act
+      const result = priceCalculations.currentTotalPrice(
       returnedCarData,
       currentPricePerDayMock,
       daysOverdueMock,
       estimatedPricePerDayMock,
       currentDaysRentedMock,
-    );
-    // Assert
+      );
 
-    expect(result).toEqual(110);
-  });
+      //assert
+      expect(result).toEqual(test.result);
+
+    })
+  })
+});
 
   
-  const callCurrentTotalPrice = (returnedCarData, { currentPricePerDay, daysOverdue, estimatedPricePerDay, currentDaysRented }) => {
-    const currentPricePerDayMock = jest.fn(() => currentPricePerDay);
-    const daysOverdueMock = jest.fn(() => daysOverdue);
-    const estimatedPricePerDayMock = jest.fn(() => estimatedPricePerDay);
-    const currentDaysRentedMock = jest.fn(() => currentDaysRented);
 
-    return priceCalculations.currentTotalPrice(returnedCarData,
-      currentPricePerDayMock,
-      daysOverdueMock,
-      estimatedPricePerDayMock,
-      currentDaysRentedMock,)
-  }
 
-  it('currentTotalPrice should return the correct total price including interest for the overdue days', () => {
-    // Arramge
-    const input = { currentPricePerDay: 10, daysOverdue: 2, estimatedPricePerDay: 11, currentDaysRented: 10 }
-    const returnedCarData = getReturnCarData({});
-    // Act
-    const result = callCurrentTotalPrice(returnedCarData, input)
 
-    // Assert
-    expect(result).toEqual(108);
-  });
-});
