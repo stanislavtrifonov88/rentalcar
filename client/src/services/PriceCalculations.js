@@ -1,21 +1,24 @@
 import * as priceDiscounts from "./discounts/priceDiscounts";
 import { differenceInDays, dateFormatter } from "../shared/dateModifiers";
-import * as loyaltyCalculations from "./loyaltyCalculations";
+import { loyaltyDiscount } from "./loyaltyDiscount";
+import { geoDiscount } from "./geoDiscount";
+
 
 export const estimatedDaysRented = (
   contractData,
-  differenceInDaysFn = differenceInDays
+  differenceInDaysFn = differenceInDays,
 ) => {
-  if (contractData.startDate === "" && contractData.contractEndDate === "") {
+  
+  if (!contractData.startDate && !contractData.contractEndDate) {
     return 0;
   }
 
   const days = differenceInDaysFn(
     contractData.contractEndDate,
-    contractData.startDate
+    contractData.startDate,
   );
 
-  if (days < 1) {
+  if (days >= 0 && days < 1) {
     return 1;
   }
 
@@ -26,8 +29,13 @@ export const currentDaysRented = (
   contractData,
   differenceInDaysFn = differenceInDays,
   dateFormatterFn = dateFormatter,
-  today = new Date()
+  today = new Date(),
 ) => {
+
+  if (!contractData.startDate) {
+    return 0;
+  }
+
   const endTime = dateFormatterFn(today);
   const days = differenceInDaysFn(endTime, contractData.startDate);
 
@@ -37,7 +45,7 @@ export const currentDaysRented = (
 export const overdueDays = (
   contractData,
   currentDaysRentedFunction = currentDaysRented,
-  estimatedDaysRentedFunction = estimatedDaysRented
+  estimatedDaysRentedFunction = estimatedDaysRented,
 ) => {
   const currentDaysNumber = currentDaysRentedFunction(contractData);
   const estimatedDaysNumber = estimatedDaysRentedFunction(contractData);
@@ -47,7 +55,7 @@ export const overdueDays = (
 
 export const daysDiscount = (
   contractData,
-  daysRentedFunc = estimatedDaysRented
+  daysRentedFunc = estimatedDaysRented,
 ) => {
   const daysRented = daysRentedFunc(contractData);
 
@@ -66,12 +74,12 @@ export const daysDiscount = (
   return priceDiscounts.daysDiscountNegativeDays;
 };
 
-export const ageDiscount = (contractData) => {
-  if (contractData.borrowerAge > 25) {
-    return priceDiscounts.ageDiscountAbove25;
+export const ageDiscount = contractData => {
+  if (contractData.age > 25) {
+    return priceDiscounts.ageDiscountAbove26;
   }
-  if (contractData.borrowerAge >= 18 && contractData.borrowerAge <= 25) {
-    return priceDiscounts.ageDiscountBelow25;
+  if (contractData.age >= 18 && contractData.age <= 25) {
+    return priceDiscounts.ageDiscount18To25;
   }
 
   return 0;
@@ -80,17 +88,17 @@ export const ageDiscount = (contractData) => {
 const defaultDiscountFns = [
   ageDiscount,
   daysDiscount,
-  loyaltyCalculations.loyaltyDiscount,
-  loyaltyCalculations.geoDiscount,
+  loyaltyDiscount,
+  geoDiscount,
 ];
 
 export const totalDiscount = (
   contractData,
-  discountFns = defaultDiscountFns
+  discountFns = defaultDiscountFns,
 ) => {
   let discount = 0;
 
-  discountFns.forEach((discountFn) => {
+  discountFns.forEach(discountFn => {
     discount += discountFn(contractData);
   });
 
@@ -99,7 +107,7 @@ export const totalDiscount = (
 
 export const estimatedPricePerDay = (
   contractData,
-  estimatedTotalDiscountFn = totalDiscount
+  estimatedTotalDiscountFn = totalDiscount,
 ) => {
   const totalDiscountPercent = estimatedTotalDiscountFn(contractData);
 
@@ -110,19 +118,19 @@ export const overduePenalty = (contractData, overdueDaysFn = overdueDays) => {
   const overdueDaysNumber = overdueDaysFn(contractData);
 
   if (overdueDaysNumber < 1) {
-    return 1;
+    return priceDiscounts.overduePenaltyBelow1Day;
   }
-  if (overdueDaysNumber < 6) {
-    return 1.5;
+  if (overdueDaysNumber <= 6) {
+    return priceDiscounts.overduePenalty2To6Days;
   }
 
-  return 2;
+  return priceDiscounts.overduePentaltyAbove6Days;
 };
 
 export const estimatedTotalPrice = (
   contractData,
   estimatedPricePerDayFn = estimatedPricePerDay,
-  estimatedDaysRentedFn = estimatedDaysRented
+  estimatedDaysRentedFn = estimatedDaysRented,
 ) => {
   const estiamtedPricePerDayValue = estimatedPricePerDayFn(contractData);
   const estimatedDaysRentedNumber = estimatedDaysRentedFn(contractData);
@@ -133,7 +141,7 @@ export const estimatedTotalPrice = (
 export const currentPricePerDay = (
   contractData,
   estimatedPricePerDayFn = estimatedPricePerDay,
-  overduePenaltyFn = overduePenalty
+  overduePenaltyFn = overduePenalty,
 ) => {
   const estimatedPricePerDayValue = estimatedPricePerDayFn(contractData);
   const overduePenaltyValue = overduePenaltyFn(contractData);
@@ -146,7 +154,7 @@ export const currentTotalPrice = (
   currentPricePerDayFn = currentPricePerDay,
   daysOverdueFn = overdueDays,
   estimatedPricePerDayFn = estimatedPricePerDay,
-  currentDaysRentedFn = currentDaysRented
+  currentDaysRentedFn = currentDaysRented,
 ) => {
   const currentPricePerDayValue = currentPricePerDayFn(contractData);
   const daysOverdueNumber = daysOverdueFn(contractData);
