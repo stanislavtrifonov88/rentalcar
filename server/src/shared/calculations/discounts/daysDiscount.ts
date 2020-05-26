@@ -1,5 +1,5 @@
 import * as discounts from '../../discounts/discounts';
-import { estimatedDaysRented } from '../days_formulas/estimatedDaysRented';
+import { estimatedDaysRented } from '../days/estimatedDaysRented';
 
 export const daysDiscount = (
     contractData,

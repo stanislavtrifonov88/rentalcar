@@ -1,4 +1,4 @@
-import { estimatedDaysRented } from '../days_formulas/estimatedDaysRented';
+import { estimatedDaysRented } from './estimatedDaysRented';
 import { getReturnCarData } from '../getReturnedData.spec';
 
 describe('estimatedDaysRented', () => {
