@@ -1,9 +1,9 @@
 import React from 'react';
 import './PriceEstimationCard.css';
 import PropTypes from 'prop-types';
-import * as priceCalculations from '../../../services/PriceCalculations';
-import { loyaltyDiscount } from '../../../services/loyaltyDiscount';
-import { geoDiscount } from '../../../services/geoDiscount';
+import { estimatedDaysRented } from '../../../services/calculations/days/index';
+import { ageDiscount, geoDiscount, daysDiscount, loyaltyDiscount, totalDiscount } from '../../../services/calculations/discounts/index';
+import { estimatedPricePerDay, estimatedTotalPrice } from '../../../services/calculations/prices/index';
 import { observer, inject } from "mobx-react";
 
 const PriceEstimationCard = inject("customerStore", "individualCarStore", "checkoutFormStore")(observer(({ customerStore, individualCarStore, checkoutFormStore }) => {
@@ -17,15 +17,15 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   const showHideFinalOffer = (((showHideAge === 'show') && (showHideDays === 'show'))) ? 'show' : 'hide';
   let estimatedNumberOfDays = 0;
   if (checkoutFormStore.checkoutFormValidations.contractEndDate.valid) {
-    estimatedNumberOfDays = priceCalculations.estimatedDaysRented(checkoutForm);
+    estimatedNumberOfDays = estimatedDaysRented(checkoutForm);
   }
-  const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
-  const agePenalty = priceCalculations.ageDiscount(foundCustomer);
+  const daysDiscountPercent = daysDiscount(checkoutForm);
+  const agePenaltyPercent = ageDiscount(foundCustomer);
   const geoDiscountPercent = geoDiscount(foundCustomer)
   const loyaltyDiscountPercent = loyaltyDiscount(foundCustomer)
-  const estimatedTotalDiscount = priceCalculations.totalDiscount(totalInfo)
-  const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
-  const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
+  const estimatedTotalDiscount = totalDiscount(totalInfo)
+  const currentPricePerDay = estimatedPricePerDay(totalInfo)
+  const currentTotalPrice = estimatedTotalPrice(totalInfo)
 
   return (
     <div className="priceEstimationCard" data-element="priceEstimationCard">
@@ -69,7 +69,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Age Penalty:
           </p>
           <p>
-            {(agePenalty * 100).toFixed()}
+            {(agePenaltyPercent * 100).toFixed()}
             %
           </p>
         </div>
@@ -79,7 +79,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Days Discount:
           </p>
           <p>
-            {(daysDiscount * 100).toFixed()}
+            {(daysDiscountPercent * 100).toFixed()}
             %
           </p>
         </div>

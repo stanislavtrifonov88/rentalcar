@@ -1,5 +1,5 @@
 import * as validationStatus from './validationStatus';
-import { differenceInYears } from '../../../shared/dateModifiers';
+import { differenceInYears } from '../../../services/dates/dateModifiers';
 
 export const isValidField = (field) => {
   if (!field.valid && field.touched) {

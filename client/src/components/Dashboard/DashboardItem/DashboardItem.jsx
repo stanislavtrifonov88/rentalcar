@@ -1,8 +1,8 @@
 import React from 'react';
-import * as priceCalculations from '../../../services/PriceCalculations';
 import './DashboardItem.css'
-import { datePresentationFormat, differenceInYears } from '../../../shared/dateModifiers';
-
+import { datePresentationFormat } from '../../../services/dates/dateModifiers';
+import { currentDaysRented, estimatedDaysRented, overdueDays } from '../../../services/calculations/days/index';
+import { currentPricePerDay, currentTotalPrice, estimatedPricePerDay, estimatedTotalPrice } from '../../../services/calculations/prices/index';
 class DashboardItem extends React.Component {
 
 
@@ -11,13 +11,13 @@ class DashboardItem extends React.Component {
   }
 
   render() {
-    const estimatedNumberOfDays = priceCalculations.estimatedDaysRented(this.props.contract);
-    const currentNumberOfDays = priceCalculations.currentDaysRented(this.props.contract);
-    const estimatedPricePerDay = priceCalculations.estimatedPricePerDay((this.props.contract));
-    const daysOverUnderContract = priceCalculations.overdueDays(this.props.contract);
-    const estimatedTotalPrice = priceCalculations.estimatedTotalPrice(this.props.contract)
-    const currentTotalPrice = priceCalculations.currentTotalPrice(this.props.contract);
-    const currentPricePerDay = priceCalculations.currentPricePerDay(this.props.contract);
+    const estimatedNumberOfDays = estimatedDaysRented(this.props.contract);
+    const currentNumberOfDays = currentDaysRented(this.props.contract);
+    const estimatedPricePerDayValue = estimatedPricePerDay((this.props.contract));
+    const daysOverUnderContract = overdueDays(this.props.contract);
+    const estimatedTotalPriceValue = estimatedTotalPrice(this.props.contract)
+    const currentTotalPriceValue = currentTotalPrice(this.props.contract);
+    const currentPricePerDayValue = currentPricePerDay(this.props.contract);
     const startDateFormatted = datePresentationFormat(this.props.contract.startDate);
     const returnDateFormatted = datePresentationFormat(this.props.contract.contractEndDate);
 
@@ -37,15 +37,15 @@ class DashboardItem extends React.Component {
         <td>{returnDateFormatted}</td>
         <td>{estimatedNumberOfDays}</td>
         <td>
-          {estimatedPricePerDay.toFixed(2)}
+          {estimatedPricePerDayValue.toFixed(2)}
         </td>
         <td>
-          {estimatedTotalPrice.toFixed(2)}
+          {estimatedTotalPriceValue.toFixed(2)}
         </td>
         <td>{currentNumberOfDays}</td>
         <td>{daysOverUnderContract}</td>
-        <td>{currentPricePerDay.toFixed(2)}</td>
-        <td>{currentTotalPrice.toFixed(2)}</td>
+        <td>{currentPricePerDayValue.toFixed(2)}</td>
+        <td>{currentTotalPriceValue.toFixed(2)}</td>
         <td><button className="returnCarBtn" onClick={this.handleClick}>Return</button ></td>
       </tr>
     );

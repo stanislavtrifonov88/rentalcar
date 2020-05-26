@@ -1,5 +1,5 @@
 import { geoDiscount } from './geoDiscount';
-import * as discounts from './discounts/priceDiscounts';
+import * as discounts from '../../discounts/discounts';
 
 describe("geoDiscount", () => {
     const getCustomerData = (phone) => ({ phone })

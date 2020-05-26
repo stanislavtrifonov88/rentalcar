@@ -1,6 +1,6 @@
 import { observable, action, autorun } from "mobx";
 import * as validationProperty from '../components/Checkout/Validations/validationProperty';
-import { fetchRequest, fetchRequestCustomer } from "../services/Rest";
+import { fetchRequest, fetchRequestCustomer } from "../services/restAPIs/restRequests";
 import { toastSuccess } from "../services/toastify/toastify";
 import {
   baseURL,

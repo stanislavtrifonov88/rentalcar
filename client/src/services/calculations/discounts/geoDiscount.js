@@ -1,4 +1,4 @@
-import * as discounts from '../services/discounts/priceDiscounts';
+import * as discounts from '../../discounts/discounts';
 
 export const geoDiscount = customerData => {
     customerData.phone.toString();

@@ -3,7 +3,7 @@ import CheckoutCarCard from "./CheckoutCarCard/CheckoutCarCard";
 import "./CheckoutPage.css";
 import BookingForm from "./BookingForm/BookingForm";
 import PriceEstimationCard from "./PriceEstimationCard/PriceEstimationCard"
-import { fetchRequest } from "../../services/Rest";
+import { fetchRequest } from "../../services/restAPIs/restRequests";
 import {
   baseURL,
   cars,

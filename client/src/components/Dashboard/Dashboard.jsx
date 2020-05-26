@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dashboard.css';
 import DashboardItem from './DashboardItem/DashboardItem';
-import { fetchRequest } from '../../services/Rest';
+import { fetchRequest } from '../../services/restAPIs/restRequests';
 import { baseURL, contracts }from '../../services/restAPIs/restAPIs'
 import Spinner from '../Spinner/Spinner';
 import { toastSuccess } from '../../services/toastify/toastify';

@@ -4,11 +4,11 @@ import { observer, inject } from "mobx-react";
 import PropTypes from "prop-types";
 import "react-phone-number-input/style.css";
 import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest } from "../../../../services/Rest";
+import { fetchRequest } from "../../../../services/restAPIs/restRequests";
 import { baseURL, customers } from "../../../../services/restAPIs/restAPIs";
 import { bookingFormErrors } from "../../../../services/toastify/toastifyHelpers";
 import { toastSuccess } from "../../../../services/toastify/toastify";
-import { differenceInYears } from "../../../../shared/dateModifiers";
+import { differenceInYears } from "../../../../services/dates/dateModifiers";
 
 @inject("customerStore")
 @observer

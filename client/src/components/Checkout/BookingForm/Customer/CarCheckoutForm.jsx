@@ -3,11 +3,11 @@ import { isValidField } from "../../Validations/validationChecks";
 import { observer, inject } from "mobx-react";
 import "react-phone-number-input/style.css";
 import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest } from "../../../../services/Rest";
+import { fetchRequest } from "../../../../services/restAPIs/restRequests";
 import { baseURL, contracts } from "../../../../services/restAPIs/restAPIs";
 import { carCheckoutErrors } from "../../../../services/toastify/toastifyHelpers";
 import { toastSuccess } from "../../../../services/toastify/toastify";
-import { timeStamp } from "../../../../shared/dateModifiers";
+import { timeStamp } from "../../../../services/dates/dateModifiers";
 
 @inject("customerStore", "individualCarStore", "checkoutFormStore")
 @observer

@@ -1,4 +1,4 @@
-import { dateFormatter, differenceInYears, timeStamp } from '../../shared/dateModifiers';
+import { dateFormatter, differenceInYears, timeStamp } from '../dates/dateModifiers';
 import { toastError } from './toastify';
 
 export const bookingFormErrors = (checkoutForm, checkoutFormValidations) => {
