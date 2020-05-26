@@ -1,6 +1,6 @@
 
 import { currentDaysRented } from './currentDaysRented';
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 
 describe('currentDaysRented', () => {
     const daysRented = [

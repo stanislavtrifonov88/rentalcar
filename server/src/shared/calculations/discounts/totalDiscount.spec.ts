@@ -1,5 +1,5 @@
 import { totalDiscount } from './totalDiscount';
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 
 describe('totalDiscount', () => {
     const returnedCarData = getReturnCarData({ phone:'359888111444' });

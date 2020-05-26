@@ -1,6 +1,6 @@
 
 import * as discounts from '../../discounts/discounts';
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 import { overduePenalty } from './overduePenalty';
 
 describe('overduePenalty', () => {

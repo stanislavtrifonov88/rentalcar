@@ -1,4 +1,4 @@
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 import { overdueDays } from './overdueDays';
 
 describe('daysOverdue', () => {

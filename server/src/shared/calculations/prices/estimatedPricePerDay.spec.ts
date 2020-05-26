@@ -1,5 +1,5 @@
 import { estimatedPricePerDay } from './estimatedPricePerDay';
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 
 describe('estimatedPricePerDay', () => {
     it('should return the base price after discouns', () => {

@@ -1,6 +1,6 @@
 import * as discounts from '../../discounts/discounts';
 import { ageDiscount } from './ageDiscount';
-import { getReturnCarData } from '../getReturnedData.spec';
+import { getReturnCarData } from '../getReturnedData';
 
 describe('ageDiscount', () => {
     const daysOverdue = [
