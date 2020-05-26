@@ -57,8 +57,7 @@ export default class BookingForm extends React.Component {
         lastName: "",
         birthdate: "",
         age: "",
-        loyaltyDiscount: "",
-        geoDiscount: "",
+        previousContracts: "",
       };
     }
   };

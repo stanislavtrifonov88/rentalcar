@@ -2,8 +2,8 @@ import React from 'react';
 import './PriceEstimationCard.css';
 import PropTypes from 'prop-types';
 import * as priceCalculations from '../../../services/PriceCalculations';
-import * as loyaltyCalculations from '../../../services/loyaltyCalculations';
-import { differenceInYears } from '../../../shared/dateModifiers';
+import { loyaltyDiscount } from '../../../services/loyaltyDiscount';
+import { geoDiscount } from '../../../services/geoDiscount';
 import { observer, inject } from "mobx-react";
 
 const PriceEstimationCard = inject("customerStore", "individualCarStore", "checkoutFormStore")(observer(({ customerStore, individualCarStore, checkoutFormStore }) => {
@@ -21,8 +21,8 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
   }
   const daysDiscount = priceCalculations.daysDiscount(checkoutForm);
   const agePenalty = priceCalculations.ageDiscount(foundCustomer);
-  const geoDiscount = loyaltyCalculations.geoDiscount(foundCustomer)
-  const loyaltyDiscount = loyaltyCalculations.loyaltyDiscount(foundCustomer)
+  const geoDiscountPercent = geoDiscount(foundCustomer)
+  const loyaltyDiscountPercent = loyaltyDiscount(foundCustomer)
   const estimatedTotalDiscount = priceCalculations.totalDiscount(totalInfo)
   const currentPricePerDay = priceCalculations.estimatedPricePerDay(totalInfo)
   const currentTotalPrice = priceCalculations.estimatedTotalPrice(totalInfo)
@@ -50,7 +50,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Loyalty Bonus:
           </p>
           <p>
-            {(loyaltyDiscount * 100).toFixed()}
+            {(loyaltyDiscountPercent * 100).toFixed()}
             %
           </p>
         </div>
@@ -59,7 +59,7 @@ const PriceEstimationCard = inject("customerStore", "individualCarStore", "check
             Geo Discount:
           </p>
           <p>
-            {(geoDiscount * 100).toFixed()}
+            {(geoDiscountPercent * 100).toFixed()}
             %
           </p>
         </div>

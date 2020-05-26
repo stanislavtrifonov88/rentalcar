@@ -34,6 +34,7 @@ describe('transformToContractDTO', () => {
       contractEndDate: '2020-04-29T06:18:00.000Z',
       brand: 'Volkswagen',
       model: 'Golf',
+      phone: '359888111555',
       firstName: 'Georgi',
       lastName: 'Asenov',
       birthdate: '1978-12-29',
