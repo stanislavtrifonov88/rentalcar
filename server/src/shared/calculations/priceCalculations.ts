@@ -4,6 +4,7 @@ import { totalDiscount } from './discount_formulas/totalDiscount';
 import { estimatedDaysRented } from './days_formulas/estimatedDaysRented';
 import { currentDaysRented } from './days_formulas/currentDaysRented';
 import { overdueDays } from './days_formulas/overdueDays';
+import { overduePenalty } from './days_formulas/overduePenalty';
 
 export const estimatedPricePerDay = (
   contractData,
@@ -12,19 +13,6 @@ export const estimatedPricePerDay = (
   const totalDiscountPercent = estimatedTotalDiscountFn(contractData);
 
   return (1 + totalDiscountPercent) * contractData.price;
-};
-
-export const overduePenalty = (contractData, overdueDaysFn = overdueDays) => {
-  const overdueDaysNumber = overdueDaysFn(contractData);
-
-  if (overdueDaysNumber < 1) {
-    return discounts.overduePenaltyBelow1Day;
-  }
-  if (overdueDaysNumber <= 6) {
-    return discounts.overduePenalty2To6Days;
-  }
-
-  return discounts.overduePentaltyAbove6Days;
 };
 
 export const estimatedTotalPrice = (
