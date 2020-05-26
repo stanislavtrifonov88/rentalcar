@@ -1,17 +1,14 @@
-import React from 'react';
-import './BookingForm.css';
-import PropTypes from 'prop-types';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
-import Customer from './Customer/Customer';
-import Registration from './RegistrationForm/Registration';
+import React from "react";
+import "./BookingForm.css";
+import PropTypes from "prop-types";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import CarCheckoutForm from "./Customer/CarCheckoutForm";
+import Registration from "./RegistrationForm/Registration";
 import { observer, inject } from "mobx-react";
 import { parsePhoneNumber } from "react-phone-number-input";
-import { fetchRequestCustomer } from "../../../services/Rest";
-import {
-  baseURL,
-  customers,
-} from "../../../services/restAPIs/restAPIs";
+import phoneValidationLibrary from "../../../services/validations/phoneValidationLibrary";
+import phoneValidation from "../../../services/validations/phoneValidation";
 
 @inject("customerStore")
 @observer
@@ -22,102 +19,70 @@ export default class BookingForm extends React.Component {
   }
 
   handlePhoneChanged = (value) => {
-    let phoneNumber = "";
-    const { phone } = this.customerStore;
-    if (value !== undefined) {
-      phoneNumber = parsePhoneNumber(value);
-    }
+    // let phoneNumber = "";
+    // if (value !== undefined) {
+    //   phoneNumber = parsePhoneNumber(value);
+    // }
 
     const newObj = {};
     newObj.touched = true;
     newObj.value = value;
-
-    if (phoneNumber) {
-      if (phoneNumber.country === "BG") {
-        if (newObj.value.length === 13) {
-          newObj.isValid = true;
-        }
-      }
-    }
-
+    // newObj.isValid = phoneValidationLibrary(phoneNumber);
+    newObj.isValid = phoneValidation(value)
     this.customerStore.phone = newObj;
 
     if (newObj.isValid) {
-      fetchRequestCustomer(`${baseURL}/${customers}`, "PUT", {
-        phone: value,
-      }).then((response) => {
-        if (response) {
-          this.customerStore.foundCustomer = response;
-        }
-      });
+      this.customerStore.fetchFoundCustomer(value);
     } else {
-      this.customerStore.foundCustomer = {
-        phone: "",
-        firstName: "",
-        lastName: "",
-        birthdate: "",
-        age: "",
-        previousContracts: "",
-      };
+      this.customerStore.resetFoundCustomer();
     }
   };
 
   render() {
-  let names = <div>hi</div>;
-  const { foundCustomer, phone } = this.customerStore;
+    const { foundCustomer, phone } = this.customerStore;
+    let names;
 
-  if (foundCustomer.firstName === '') {
-    names = (
-      <Registration
-        onCancel={this.props.onCancel}
-      />
-    );
-  } else {
-    names = (
-      <Customer
-        onCancel={this.props.onCancel}
-        onPageChangeToDashboard={this.props.onPageChangeToDashboard}
-      />
-    );
-  }
-
-  let found = <p className="notFound">Client not found!</p>;
-  if (!phone.touched) {
-    found = <p className="invisible">Client not found!</p>;
-  } else if (foundCustomer.firstName !== '') {
-      found = (
-        <p className="found">
-          Welcome back,
-          {foundCustomer.firstName}
-          !
-        </p>
+    if (foundCustomer.firstName === "") {
+      names = <Registration onCancel={this.props.onCancel} />;
+    } else {
+      names = (
+        <CarCheckoutForm
+          onCancel={this.props.onCancel}
+          onPageChangeToDashboard={this.props.onPageChangeToDashboard}
+        />
       );
-  }
+    }
 
-  return (
-    <div className="checkoutFormContainer" data-element="bookingForm">
-      <h1>Booking Form</h1>
-      <div className="bookingFormInputFields">
-        <div className="inputRows">
-          <div className="inputFormContainer">
-            <label>
-              Phone number
-            </label>
-            <PhoneInput
-              className="phoneField"
-              placeholder="Enter phone number"
-              data-name="phone"
-              required
-              onChange={this.handlePhoneChanged}
-            />
-            {found}
+    let found = <p className="notFound">Client not found!</p>;
+    if (!phone.touched) {
+      found = <p className="invisible">Client not found!</p>;
+    } else if (foundCustomer.firstName !== "") {
+      found = <p className="found">Welcome back, {foundCustomer.firstName}!</p>;
+    }
+
+    return (
+      <div className="checkoutFormContainer" data-element="bookingForm">
+        <h1>Booking Form</h1>
+        <div className="bookingFormInputFields">
+          <div className="inputRows">
+            <div className="inputFormContainer">
+              <label>Phone number</label>
+              <PhoneInput
+                className="phoneField"
+                placeholder="Enter phone number"
+                data-name="phone"
+                required
+                onChange={this.handlePhoneChanged}
+              />
+              {found}
+            </div>
           </div>
+          {names}
         </div>
-        {names}
       </div>
-    </div>
-  );
-}};
+    );
+  }
+}
 
 BookingForm.propTypes = {
   changed: PropTypes.func,
@@ -135,10 +100,10 @@ BookingForm.propTypes = {
 };
 
 BookingForm.defaultProps = {
-  changed: () => '',
-  onInputSubmit: () => '',
-  onCancel: () => '',
-  phoneChanged: () => '',
+  changed: () => "",
+  onInputSubmit: () => "",
+  onCancel: () => "",
+  phoneChanged: () => "",
   validations: PropTypes.exact({
     firstName: {},
     lastName: {},
@@ -147,5 +112,3 @@ BookingForm.defaultProps = {
     contractEndTime: {},
   }),
 };
-
-
