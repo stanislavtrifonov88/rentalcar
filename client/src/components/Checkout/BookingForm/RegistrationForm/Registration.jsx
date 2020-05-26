@@ -1,17 +1,12 @@
-import React from 'react';
-import { isValidField } from '../../Validations/validationChecks';
+import React from "react";
+import { isValidField } from "../../Validations/validationChecks";
 import { observer, inject } from "mobx-react";
-import PropTypes from 'prop-types';
-import 'react-phone-number-input/style.css';
+import PropTypes from "prop-types";
+import "react-phone-number-input/style.css";
 import { checkInputValidity } from "../../Validations/validationChecks";
 import { fetchRequest } from "../../../../services/Rest";
-import {
-  baseURL,
-  customers,
-} from "../../../../services/restAPIs/restAPIs";
-import {
-  bookingFormErrors,
-} from "../../../../services/toastify/toastifyHelpers";
+import { baseURL, customers } from "../../../../services/restAPIs/restAPIs";
+import { bookingFormErrors } from "../../../../services/toastify/toastifyHelpers";
 import { toastSuccess } from "../../../../services/toastify/toastify";
 import { differenceInYears } from "../../../../shared/dateModifiers";
 
@@ -37,8 +32,14 @@ export default class Registration extends React.Component {
     );
     validationObj[name].touched = true;
 
-    this.customerStore.newCustomer = Object.assign(this.customerStore.newCustomer, newObj);
-    this.customerStore.registrationFormValidations = Object.assign(this.customerStore.registrationFormValidations, validationObj);
+    this.customerStore.newCustomer = Object.assign(
+      this.customerStore.newCustomer,
+      newObj
+    );
+    this.customerStore.registrationFormValidations = Object.assign(
+      this.customerStore.registrationFormValidations,
+      validationObj
+    );
   };
 
   onRegistrationSubmit = (event) => {
@@ -59,80 +60,93 @@ export default class Registration extends React.Component {
     fetchRequest(`${baseURL}/${customers}`, "POST", newCustomer).then(
       (response) => {
         this.customerStore.foundCustomer = response;
-        toastSuccess("Customer successfully registered")
+        toastSuccess("Customer successfully registered");
       }
     );
   };
 
   render() {
-  const { registrationFormValidations } = this.customerStore;
+    const { registrationFormValidations } = this.customerStore;
 
-  const validationErrorFirstName = isValidField(registrationFormValidations.firstName);
-  const validationErrorLastName = isValidField(registrationFormValidations.lastName);
-  const validationErrorBirthdate = isValidField(registrationFormValidations.birthdate);
+    const validationErrorFirstName = isValidField(
+      registrationFormValidations.firstName
+    );
+    const validationErrorLastName = isValidField(
+      registrationFormValidations.lastName
+    );
+    const validationErrorBirthdate = isValidField(
+      registrationFormValidations.birthdate
+    );
 
-  return (
-    <>
-    <h3 className="secondaryHeader">Registration</h3>
-      <div className="inputRows">
-        <div className="inputFormContainer">
-          <label htmlFor="FirstName">
-            First name
-          </label>
-          <input
-            id="FirstName"
-            className="firstNameField"
-            required
-            type="text"
-            placeholder="First name"
-            data-name="firstName"
-            onChange={this.newCustomerHandler}
-          />
+    return (
+      <>
+        <h3 className="secondaryHeader">Registration</h3>
+        <div className="inputRows">
+          <div className="inputFormContainer">
+            <label htmlFor="FirstName">First name</label>
+            <input
+              id="FirstName"
+              className="firstNameField"
+              required
+              type="text"
+              placeholder="First name"
+              data-name="firstName"
+              onChange={this.newCustomerHandler}
+            />
 
-          <p className={validationErrorFirstName}>First name is invalid.</p>
+            <p className={validationErrorFirstName}>First name is invalid.</p>
+          </div>
+          <div className="inputFormContainer">
+            <label htmlFor="LastName">Last className:</label>
+            <input
+              id="LastName"
+              className="lastNameField"
+              required
+              type="text"
+              placeholder="Last name"
+              data-name="lastName"
+              onChange={this.newCustomerHandler}
+            />
+
+            <p className={validationErrorLastName}>Last name is invalid.</p>
+          </div>
         </div>
-        <div className="inputFormContainer">
-          <label htmlFor="LastName">
-            Last className:
-          </label>
-          <input
-            id="LastName"
-            className="lastNameField"
-            required
-            type="text"
-            placeholder="Last name"
-            data-name="lastName"
-            onChange={this.newCustomerHandler}
-          />
+        <div className="inputRows">
+          <div className="inputFormContainer">
+            <label htmlFor="birthdate">Birthdate</label>
+            <input
+              id="birthdate"
+              className="birthdateField"
+              type="date"
+              placeholder="Birthdate"
+              required
+              data-name="birthdate"
+              onChange={this.newCustomerHandler}
+            />
 
-          <p className={validationErrorLastName}>Last name is invalid.</p>
+            <p className={validationErrorBirthdate}>
+              Please enter a valid birthdate.
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="inputRows">
-        <div className="inputFormContainer">
-          <label htmlFor="birthdate">
-            Birthdate
-          </label>
-          <input
-            id="birthdate"
-            className="birthdateField"
-            type="date"
-            placeholder="Birthdate"
-            required
-            data-name="birthdate"
-            onChange={this.newCustomerHandler}
-          />
-
-          <p className={validationErrorBirthdate}>Please enter a valid birthdate.</p>
+        <div className="checkoutBtnsContainer">
+          <button
+            type="submit"
+            className="bookCarBtn"
+            onClick={this.onRegistrationSubmit}
+            data-element="bookingFormCheckoutBtn"
+          >
+            Register
+          </button>
+          <button
+            type="submit"
+            className="bookCarBtn"
+            onClick={this.props.onCancel}
+          >
+            Cancel
+          </button>
         </div>
-      </div>
-      <div className="checkoutBtnsContainer">
-        <button type="submit" className="bookCarBtn" onClick={this.onRegistrationSubmit} data-element="bookingFormCheckoutBtn">
-          Register
-        </button>
-        <button type="submit" className="bookCarBtn" onClick={this.props.onCancel}>Cancel</button>
-      </div>
-    </>
-  );
-}};
-
+      </>
+    );
+  }
+}
