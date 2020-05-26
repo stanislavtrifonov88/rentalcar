@@ -57,12 +57,7 @@ export default class Registration extends React.Component {
       return;
     }
 
-    fetchRequest(`${baseURL}/${customers}`, "POST", newCustomer).then(
-      (response) => {
-        this.customerStore.foundCustomer = response;
-        toastSuccess("Customer successfully registered");
-      }
-    );
+    this.customerStore.createNewCustomer(newCustomer)
   };
 
   render() {
