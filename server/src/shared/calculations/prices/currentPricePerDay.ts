@@ -1,5 +1,5 @@
-import { estimatedPricePerDay } from './estimatedPricePerDay';
-import { overduePenalty } from '../days/overduePenalty';
+import { estimatedPricePerDay } from './index';
+import { overduePenalty } from '../days/index';
 
 export const currentPricePerDay = (
     contractData,

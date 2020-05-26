@@ -1,5 +1,5 @@
-import { estimatedPricePerDay } from './estimatedPricePerDay';
-import { estimatedDaysRented } from '../days/estimatedDaysRented';
+import { estimatedPricePerDay } from './index';
+import { estimatedDaysRented } from '../days/index';
 
 export const estimatedTotalPrice = (
     contractData,

@@ -1,8 +1,6 @@
 
-import { currentPricePerDay } from './currentPricePerDay';
-import { overdueDays } from '../days/overdueDays';
-import { estimatedPricePerDay } from './estimatedPricePerDay';
-import { currentDaysRented } from '../days/currentDaysRented';
+import { currentPricePerDay, estimatedPricePerDay } from './index';
+import { currentDaysRented, overdueDays } from '../days/index';
 
 export const currentTotalPrice = (
     contractData,
