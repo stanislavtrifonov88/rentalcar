@@ -1,16 +1,15 @@
-import React from "react";
-import "./BookingForm.css";
-import PropTypes from "prop-types";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
-import CarCheckoutForm from "./Customer/CarCheckoutForm";
-import Registration from "./RegistrationForm/Registration";
-import { observer, inject } from "mobx-react";
-import { parsePhoneNumber } from "react-phone-number-input";
-import phoneValidationLibrary from "../../../services/validations/phoneValidationLibrary";
-import phoneValidation from "../../../services/validations/phoneValidation";
+import React from 'react';
+import './BookingForm.css';
+import PropTypes from 'prop-types';
+import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { observer, inject } from 'mobx-react';
+import CarCheckoutForm from './Customer/CarCheckoutForm';
+import Registration from './RegistrationForm/Registration';
+import phoneValidationLibrary from '../../../services/validations/phoneValidationLibrary';
+import phoneValidation from '../../../services/validations/phoneValidation';
 
-@inject("customerStore")
+@inject('customerStore')
 @observer
 export default class BookingForm extends React.Component {
   constructor(props) {
@@ -28,7 +27,7 @@ export default class BookingForm extends React.Component {
     newObj.touched = true;
     newObj.value = value;
     // newObj.isValid = phoneValidationLibrary(phoneNumber);
-    newObj.isValid = phoneValidation(value)
+    newObj.isValid = phoneValidation(value);
     this.customerStore.phone = newObj;
 
     if (newObj.isValid) {
@@ -40,15 +39,16 @@ export default class BookingForm extends React.Component {
 
   render() {
     const { foundCustomer, phone } = this.customerStore;
+    const { onCancel, onPageChangeToDashboard } = this.props;
     let names;
 
-    if (foundCustomer.firstName === "") {
-      names = <Registration onCancel={this.props.onCancel} />;
+    if (foundCustomer.firstName === '') {
+      names = <Registration onCancel={onCancel} />;
     } else {
       names = (
         <CarCheckoutForm
-          onCancel={this.props.onCancel}
-          onPageChangeToDashboard={this.props.onPageChangeToDashboard}
+          onCancel={onCancel}
+          onPageChangeToDashboard={onPageChangeToDashboard}
         />
       );
     }
@@ -56,8 +56,14 @@ export default class BookingForm extends React.Component {
     let found = <p className="notFound">Client not found!</p>;
     if (!phone.touched) {
       found = <p className="invisible">Client not found!</p>;
-    } else if (foundCustomer.firstName !== "") {
-      found = <p className="found">Welcome back, {foundCustomer.firstName}!</p>;
+    } else if (foundCustomer.firstName !== '') {
+      found = (
+        <p className="found">
+          Welcome back,
+          {foundCustomer.firstName}
+          !
+        </p>
+      );
     }
 
     return (
@@ -66,8 +72,9 @@ export default class BookingForm extends React.Component {
         <div className="bookingFormInputFields">
           <div className="inputRows">
             <div className="inputFormContainer">
-              <label>Phone number</label>
+              <label htmlFor="phoneNumber">Phone number</label>
               <PhoneInput
+                id="phoneNumber"
                 className="phoneField"
                 placeholder="Enter phone number"
                 data-name="phone"
@@ -85,30 +92,11 @@ export default class BookingForm extends React.Component {
 }
 
 BookingForm.propTypes = {
-  changed: PropTypes.func,
-  onInputSubmit: PropTypes.func,
   onCancel: PropTypes.func,
-  phoneChanged: PropTypes.func,
-
-  validations: PropTypes.exact({
-    firstName: PropTypes.object,
-    lastName: PropTypes.object,
-    birthdate: PropTypes.object,
-    contractEndDate: PropTypes.object,
-    contractEndTime: PropTypes.object,
-  }),
+  onPageChangeToDashboard: PropTypes.func,
 };
 
 BookingForm.defaultProps = {
-  changed: () => "",
-  onInputSubmit: () => "",
-  onCancel: () => "",
-  phoneChanged: () => "",
-  validations: PropTypes.exact({
-    firstName: {},
-    lastName: {},
-    birthdate: {},
-    contractEndDate: {},
-    contractEndTime: {},
-  }),
+  onCancel: () => '',
+  onPageChangeToDashboard: () => '',
 };

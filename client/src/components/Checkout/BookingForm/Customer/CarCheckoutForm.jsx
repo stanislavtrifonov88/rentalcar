@@ -1,15 +1,16 @@
-import React from "react";
-import { isValidField } from "../../Validations/validationChecks";
-import { observer, inject } from "mobx-react";
-import "react-phone-number-input/style.css";
-import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest } from "../../../../services/restAPIs/restRequests";
-import { baseURL, contracts } from "../../../../services/restAPIs/restAPIs";
-import { carCheckoutErrors } from "../../../../services/toastify/toastifyHelpers";
-import { toastSuccess } from "../../../../services/toastify/toastify";
-import { timeStamp } from "../../../../services/dates/dateModifiers";
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import PropTypes from 'prop-types';
+import { isValidField, checkInputValidity } from '../../Validations/validationChecks';
+import 'react-phone-number-input/style.css';
 
-@inject("customerStore", "individualCarStore", "checkoutFormStore")
+import { fetchRequest } from '../../../../services/restAPIs/restRequests';
+import { baseURL, contracts } from '../../../../services/restAPIs/restAPIs';
+import { carCheckoutErrors } from '../../../../services/toastify/toastifyHelpers';
+import { toastSuccess } from '../../../../services/toastify/toastify';
+import { timeStamp } from '../../../../services/dates/dateModifiers';
+
+@inject('customerStore', 'individualCarStore', 'checkoutFormStore')
 @observer
 export default class CarCheckoutForm extends React.Component {
   constructor(props) {
@@ -20,8 +21,8 @@ export default class CarCheckoutForm extends React.Component {
   }
 
   carCheckoutHandler = (event) => {
-    const name = event.target.dataset.name;
-    const value = event.target.value;
+    const { name } = event.target.dataset;
+    const { value } = event.target;
     const newObj = {};
     const validationObj = this.checkoutFormStore.checkoutFormValidations;
     newObj[name] = value;
@@ -29,7 +30,7 @@ export default class CarCheckoutForm extends React.Component {
     newObj.startDate = timeStamp();
     validationObj[name].valid = checkInputValidity(
       newObj[name],
-      this.checkoutFormStore.checkoutFormValidations[name].rules
+      this.checkoutFormStore.checkoutFormValidations[name].rules,
     );
     validationObj[name].touched = true;
 
@@ -39,11 +40,12 @@ export default class CarCheckoutForm extends React.Component {
 
   onCheckoutInputSubmit = (event) => {
     const { checkoutForm, checkoutFormValidations } = this.checkoutFormStore;
+    const { onPageChangeToDashboard } = this.props;
     event.preventDefault();
     carCheckoutErrors(checkoutForm, checkoutFormValidations);
     if (
-      !checkoutFormValidations.contractEndDate.touched ||
-      !checkoutFormValidations.contractEndDate.valid
+      !checkoutFormValidations.contractEndDate.touched
+      || !checkoutFormValidations.contractEndDate.valid
     ) {
       return;
     }
@@ -52,21 +54,22 @@ export default class CarCheckoutForm extends React.Component {
 
     fetchRequest(
       `${baseURL}/${contracts}/car/${this.individualCarStore.car.id}`,
-      "POST",
-      checkoutForm
-    ).then((response) => {
-      this.props.onPageChangeToDashboard(),
-        (this.individualCarStore.loading = false),
-        toastSuccess("Car successfully borrowed");
+      'POST',
+      checkoutForm,
+    ).then(() => {
+      onPageChangeToDashboard();
+      this.individualCarStore.loading = false;
+      toastSuccess('Car successfully borrowed');
     });
   };
 
   render() {
     const { foundCustomer } = this.customerStore;
     const { checkoutFormValidations } = this.checkoutFormStore;
+    const { onCancel } = this.props;
 
     const validationErrorReturnDate = isValidField(
-      checkoutFormValidations.contractEndDate
+      checkoutFormValidations.contractEndDate,
     );
 
     return (
@@ -138,7 +141,7 @@ export default class CarCheckoutForm extends React.Component {
           <button
             type="submit"
             className="bookCarBtn"
-            onClick={this.props.onCancel}
+            onClick={onCancel}
           >
             Cancel
           </button>
@@ -147,3 +150,13 @@ export default class CarCheckoutForm extends React.Component {
     );
   }
 }
+
+CarCheckoutForm.propTypes = {
+  onCancel: PropTypes.func,
+  onPageChangeToDashboard: PropTypes.func,
+};
+
+CarCheckoutForm.defaultProps = {
+  onCancel: () => '',
+  onPageChangeToDashboard: () => '',
+};

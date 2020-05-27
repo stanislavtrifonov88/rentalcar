@@ -1,16 +1,12 @@
-import React from "react";
-import { isValidField } from "../../Validations/validationChecks";
-import { observer, inject } from "mobx-react";
-import PropTypes from "prop-types";
-import "react-phone-number-input/style.css";
-import { checkInputValidity } from "../../Validations/validationChecks";
-import { fetchRequest } from "../../../../services/restAPIs/restRequests";
-import { baseURL, customers } from "../../../../services/restAPIs/restAPIs";
-import { bookingFormErrors } from "../../../../services/toastify/toastifyHelpers";
-import { toastSuccess } from "../../../../services/toastify/toastify";
-import { differenceInYears } from "../../../../services/dates/dateModifiers";
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import PropTypes from 'prop-types';
+import { isValidField, checkInputValidity } from '../../Validations/validationChecks';
+import 'react-phone-number-input/style.css';
+import { bookingFormErrors } from '../../../../services/toastify/toastifyHelpers';
+import { differenceInYears } from '../../../../services/dates/dateModifiers';
 
-@inject("customerStore")
+@inject('customerStore')
 @observer
 export default class Registration extends React.Component {
   constructor(props) {
@@ -19,8 +15,8 @@ export default class Registration extends React.Component {
   }
 
   newCustomerHandler = (event) => {
-    const name = event.target.dataset.name;
-    const value = event.target.value;
+    const { name } = event.target.dataset;
+    const { value } = event.target;
     const newObj = this.customerStore.newCustomer;
     const { registrationFormValidations } = this.customerStore;
     const validationObj = registrationFormValidations;
@@ -28,49 +24,50 @@ export default class Registration extends React.Component {
     newObj.phone = this.customerStore.phone.value;
     validationObj[name].valid = checkInputValidity(
       newObj[name],
-      registrationFormValidations[name].rules
+      registrationFormValidations[name].rules,
     );
     validationObj[name].touched = true;
 
     this.customerStore.newCustomer = Object.assign(
       this.customerStore.newCustomer,
-      newObj
+      newObj,
     );
     this.customerStore.registrationFormValidations = Object.assign(
       this.customerStore.registrationFormValidations,
-      validationObj
+      validationObj,
     );
   };
 
-  onRegistrationSubmit = (event) => {
+  onRegistrationSubmit = () => {
     const { newCustomer, registrationFormValidations } = this.customerStore;
     const age = differenceInYears(newCustomer.birthdate);
     bookingFormErrors(newCustomer, registrationFormValidations);
 
     if (
-      !registrationFormValidations.firstName.valid ||
-      !registrationFormValidations.lastName.valid ||
-      !(age >= 18) ||
-      !registrationFormValidations.birthdate.touched ||
-      !registrationFormValidations.birthdate.valid
+      !registrationFormValidations.firstName.valid
+      || !registrationFormValidations.lastName.valid
+      || !(age >= 18)
+      || !registrationFormValidations.birthdate.touched
+      || !registrationFormValidations.birthdate.valid
     ) {
       return;
     }
 
-    this.customerStore.createNewCustomer(newCustomer)
+    this.customerStore.createNewCustomer(newCustomer);
   };
 
   render() {
     const { registrationFormValidations } = this.customerStore;
+    const { onCancel } = this.props;
 
     const validationErrorFirstName = isValidField(
-      registrationFormValidations.firstName
+      registrationFormValidations.firstName,
     );
     const validationErrorLastName = isValidField(
-      registrationFormValidations.lastName
+      registrationFormValidations.lastName,
     );
     const validationErrorBirthdate = isValidField(
-      registrationFormValidations.birthdate
+      registrationFormValidations.birthdate,
     );
 
     return (
@@ -136,7 +133,7 @@ export default class Registration extends React.Component {
           <button
             type="submit"
             className="bookCarBtn"
-            onClick={this.props.onCancel}
+            onClick={onCancel}
           >
             Cancel
           </button>
@@ -145,3 +142,12 @@ export default class Registration extends React.Component {
     );
   }
 }
+
+Registration.propTypes = {
+  onCancel: PropTypes.func,
+
+};
+
+Registration.defaultProps = {
+  onCancel: () => '',
+};
