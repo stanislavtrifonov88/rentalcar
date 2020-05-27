@@ -76,7 +76,7 @@ describe('currentDaysRented', () => {
       it(test.name, () => {
         //arrange
         const daysRentedMock = jest.fn(() => test.daysRented);
-        const dateFormatterMock: any = jest.fn(() => test.dateFormatter);
+        const dateFormatterMock= jest.fn(() => test.dateFormatter);
         const returnedCarData = getReturnCarData(test.input);
         //act
         const result = currentDaysRented(

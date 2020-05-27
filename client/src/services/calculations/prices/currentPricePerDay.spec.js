@@ -6,7 +6,7 @@ describe('currentPricePerDay ', () => {
     it('should return the product of its inputs', () => {
       // Arramge
       const estimatedPricePerDayMock = jest.fn(() => 2);
-      const overduePenaltyMock: any = jest.fn(() => 2);
+      const overduePenaltyMock = jest.fn(() => 2);
   
       // Act
       const result = currentPricePerDay(

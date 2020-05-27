@@ -1,6 +1,6 @@
-import * as discounts from '../../discounts/discounts';
+import * as discounts from "../../discounts/discounts";
 
-export const loyaltyDiscount = customerData => {
+export const loyaltyDiscount = (customerData) => {
   const previousContracts = customerData.previousContracts;
   let discount = 0;
 
@@ -18,5 +18,3 @@ export const loyaltyDiscount = customerData => {
 
   return discount;
 };
-
-
