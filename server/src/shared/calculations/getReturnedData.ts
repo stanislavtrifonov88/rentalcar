@@ -9,5 +9,6 @@ export const getReturnCarData = (input) => {
       price: 70,
       previousContracts: 54,
     }
+    
     return Object.assign(defaults, input);
   }
