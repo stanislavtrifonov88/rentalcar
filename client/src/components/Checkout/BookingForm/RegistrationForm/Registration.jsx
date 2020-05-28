@@ -89,7 +89,7 @@ export default class Registration extends React.Component {
             <p className={validationErrorFirstName}>First name is invalid.</p>
           </div>
           <div className="inputFormContainer">
-            <label htmlFor="LastName">Last className:</label>
+            <label htmlFor="LastName">Last Name:</label>
             <input
               id="LastName"
               className="lastNameField"

@@ -14,7 +14,8 @@ import phoneValidation from '../../../services/validations/phoneValidation';
 export default class BookingForm extends React.Component {
   constructor(props) {
     super(props);
-    this.customerStore = this.props.customerStore;
+    const { customerStore } = this.props;
+    this.customerStore = customerStore;
   }
 
   handlePhoneChanged = (value) => {
@@ -22,7 +23,8 @@ export default class BookingForm extends React.Component {
     // if (value !== undefined) {
     //   phoneNumber = parsePhoneNumber(value);
     // }
-
+    // validate value
+    // possible mapper
     const newObj = {};
     newObj.touched = true;
     newObj.value = value;
