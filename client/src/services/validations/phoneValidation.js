@@ -1,28 +1,22 @@
-import { isValidPhoneNumber } from "react-phone-number-input";
-import { getCountryCode } from './getCountryCode'
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 const phoneValidation = (
-    phoneNumber,
-    isValidPhoneNumberFn = isValidPhoneNumber,
-    ) => {
-  if (phoneNumber) {
-    // if (phoneNumber.substring(0, 4) === '+359') {
-      if (phoneNumber.slice(0, 4) === '+359') {
-      if (phoneNumber.length === 13) {
+  phoneInfo,
+  isValidPhoneNumberFn = isValidPhoneNumber,
+) => {
+  if (phoneInfo) {
+    if (phoneInfo.country === 'BG') {
+      if (phoneInfo.number.length === 13) {
         return true;
-      } else {
-        return false;
       }
-    // } else if (phoneNumber.substring(0, 3) === '+40') {
-    } else if (phoneNumber.slice(0, 2) === '+40') {
-      if (phoneNumber.length === 12) {
+      return false;
+    } if (phoneInfo.country === 'RO') {
+      if (phoneInfo.number.length === 12) {
         return true;
-      } else {
-        return false;
       }
-    } else {
-      return isValidPhoneNumberFn(phoneNumber);
+      return false;
     }
+    return isValidPhoneNumberFn(phoneInfo.number);
   }
 };
 
