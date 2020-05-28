@@ -3,14 +3,15 @@ import { ageDiscount } from './ageDiscount';
 import { getReturnCarData } from '../getReturnedData';
 
 describe('ageDiscount', () => {
+  
     const daysOverdue = [
-      { name: "case 1.1: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      { name: "case 1.1: should return priceDiscounts.ageDiscountBelow18 if the borrower is between 18 - 25 years old",
         input: { age: -1 },
         result: discounts.ageDiscountBelow18 },
-      { name: "case 1.2: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      { name: "case 1.2: should return priceDiscounts.ageDiscountBelow18 if the borrower is between 18 - 25 years old",
         input: { age: 0 },
         result: discounts.ageDiscountBelow18 },
-      { name: "case 1.3: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
+      { name: "case 1.3: should return priceDiscounts.ageDiscountBelow18 if the borrower is between 18 - 25 years old",
         input: { age: 17 },
         result: discounts.ageDiscountBelow18 },
       { name: "case 2.1: should return priceDiscounts.ageDiscount18To25 if the borrower is between 18 - 25 years old",
