@@ -7,8 +7,9 @@ import { baseURL, contracts } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
 import { toastSuccess } from '../../services/toastify/toastify';
 import SearchInput from '../SearchBar/SearchInput';
-import { createList, applySearch } from '../Filters/filterFunctions';
 import applyFilters from '../../services/filters/applyFilters';
+import applySearch from '../../services/filters/applySearch';
+import createList from '../../services/filters/createList';
 import Select from '../Filters/Select';
 
 @inject('dashboardStore')

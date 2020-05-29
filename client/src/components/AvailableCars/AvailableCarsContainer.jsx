@@ -8,8 +8,9 @@ import { baseURL } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
 import SearchInput from '../SearchBar/SearchInput';
 import Select from '../Filters/Select';
-import { createList, applySearch } from '../Filters/filterFunctions';
 import applyFilters from '../../services/filters/applyFilters';
+import applySearch from '../../services/filters/applySearch';
+import createList from '../../services/filters/createList';
 
 @inject('availableCarStore')
 @observer

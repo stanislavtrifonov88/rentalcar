@@ -61,100 +61,100 @@ describe('filterFunctions', () => {
     ];
   });
 
-  it('applyFilter should return the input array if no criteria are provided', () => {
-    // Arramge & Act
+  // it('applyFilter should return the input array if no criteria are provided', () => {
+  //   // Arramge & Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(carsArray);
-  });
+  //   expect(result).toEqual(carsArray);
+  // });
 
-  it('applyFilter should filter by brand if only brand is provided', () => {
-    // Arramge
-    criteria.brand = 'Opel';
-    mockResult = [
-      {
-        id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
-        brand: 'Opel',
-        model: 'Corsa',
-        picture: 'http://localhost:3001/img/opelCorsa.jpeg',
-        className: 'A',
-        price: 50,
-      },
-      {
-        id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
-        brand: 'Opel',
-        model: 'Astra',
-        picture: 'http://localhost:3001/img/opelCorsa.jpeg',
-        className: 'B',
-        price: 50,
-      },
-    ];
-    // Act
+  // it('applyFilter should filter by brand if only brand is provided', () => {
+  //   // Arramge
+  //   criteria.brand = 'Opel';
+  //   mockResult = [
+  //     {
+  //       id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
+  //       brand: 'Opel',
+  //       model: 'Corsa',
+  //       picture: 'http://localhost:3001/img/opelCorsa.jpeg',
+  //       className: 'A',
+  //       price: 50,
+  //     },
+  //     {
+  //       id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
+  //       brand: 'Opel',
+  //       model: 'Astra',
+  //       picture: 'http://localhost:3001/img/opelCorsa.jpeg',
+  //       className: 'B',
+  //       price: 50,
+  //     },
+  //   ];
+  //   // Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(mockResult);
-  });
+  //   expect(result).toEqual(mockResult);
+  // });
 
-  it('applyFilter should filter by model if only model is provided', () => {
-    // Arramge
-    criteria.model = 'Corsa';
+  // it('applyFilter should filter by model if only model is provided', () => {
+  //   // Arramge
+  //   criteria.model = 'Corsa';
 
-    // Act
+  //   // Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(mockResult);
-  });
+  //   expect(result).toEqual(mockResult);
+  // });
 
-  it('applyFilter should filter by className if only className is provided', () => {
-    // Arramge
-    criteria.className = 'A';
+  // it('applyFilter should filter by className if only className is provided', () => {
+  //   // Arramge
+  //   criteria.className = 'A';
 
-    // Act
+  //   // Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(mockResult);
-  });
+  //   expect(result).toEqual(mockResult);
+  // });
 
-  it('applyFilter should filter by multiple criteria', () => {
-    // Arramge
-    criteria.brand = 'Opel';
-    criteria.model = 'Corsa';
+  // it('applyFilter should filter by multiple criteria', () => {
+  //   // Arramge
+  //   criteria.brand = 'Opel';
+  //   criteria.model = 'Corsa';
 
-    // Act
+  //   // Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(mockResult);
-  });
+  //   expect(result).toEqual(mockResult);
+  // });
 
-  it('applyFilter should return empty array if there is no match to multiple criteria', () => {
-    // Arramge
-    criteria.brand = 'Opel';
-    criteria.model = 'Corsa';
-    criteria.className = 'E';
-    mockResult = [];
-    // Act
+  // it('applyFilter should return empty array if there is no match to multiple criteria', () => {
+  //   // Arramge
+  //   criteria.brand = 'Opel';
+  //   criteria.model = 'Corsa';
+  //   criteria.className = 'E';
+  //   mockResult = [];
+  //   // Act
 
-    const result = applyFilters(carsArray, criteria);
+  //   const result = applyFilters(carsArray, criteria);
 
-    // Assert
+  //   // Assert
 
-    expect(result).toEqual(mockResult);
-  });
+  //   expect(result).toEqual(mockResult);
+  // });
 
   it('createLIst should return unique values based on the input criteria', () => {
     // Arramge

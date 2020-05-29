@@ -7,7 +7,7 @@ import { observer, inject } from 'mobx-react';
 import CarCheckoutForm from './Customer/CarCheckoutForm';
 import Registration from './RegistrationForm/Registration';
 import phoneValidation from '../../../services/validations/phoneValidation';
-import mappedPhoneInfo from '../../../services/mappers/phoneLibrary';
+import mapperPhoneInfo from '../../../services/mappers/mapperPhoneInfo';
 
 @inject('customerStore')
 @observer
@@ -23,7 +23,7 @@ export default class BookingForm extends React.Component {
     const phoneLibraryInput = parsePhoneNumber(value);
 
     if (phoneLibraryInput !== undefined) {
-      phoneDetails = mappedPhoneInfo(phoneLibraryInput)
+      phoneDetails = mapperPhoneInfo(phoneLibraryInput)
     }
 
     const newObj = {};

@@ -1,0 +1,1 @@
+import mapperPhoneInfo from './mapperPhoneInfo';
