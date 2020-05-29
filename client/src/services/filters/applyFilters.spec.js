@@ -1,3 +1,5 @@
+import applyFilters from './applyFilters';
+
 describe('filterFunctions', () => {
   let carsArray;
   let criteria;
