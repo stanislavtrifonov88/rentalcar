@@ -76,7 +76,7 @@ describe('currentDaysRented', () => {
       // arrange
       const returnedPhoneData = getPhoneData(test.input);
       // act
-      const result = phoneValidationLibrary(returnedPhoneData);
+      const result = phoneValidation(returnedPhoneData);
       // assert
       expect(result).toEqual(test.result);
     });
