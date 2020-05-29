@@ -6,8 +6,8 @@ import 'react-phone-number-input/style.css';
 import { observer, inject } from 'mobx-react';
 import CarCheckoutForm from './Customer/CarCheckoutForm';
 import Registration from './RegistrationForm/Registration';
-import phoneValidationLibrary from '../../../services/validations/phoneValidationLibrary';
 import phoneValidation from '../../../services/validations/phoneValidation';
+import mappedPhoneInfo from '../../../services/mappers/phoneLibrary';
 
 @inject('customerStore')
 @observer
@@ -19,17 +19,18 @@ export default class BookingForm extends React.Component {
   }
 
   handlePhoneChanged = (value) => {
-    // let phoneNumber = "";
-    // if (value !== undefined) {
-    //   phoneNumber = parsePhoneNumber(value);
-    // }
-    // validate value
-    // possible mapper
+    let phoneDetails = "";
+    const phoneLibraryInput = parsePhoneNumber(value);
+
+    if (phoneLibraryInput !== undefined) {
+      phoneDetails = mappedPhoneInfo(phoneLibraryInput)
+    }
+
     const newObj = {};
     newObj.touched = true;
     newObj.value = value;
-    // newObj.isValid = phoneValidationLibrary(phoneNumber);
-    newObj.isValid = phoneValidation(value);
+    newObj.isValid = phoneValidation(phoneDetails);
+
     this.customerStore.phone = newObj;
 
     if (newObj.isValid) {
