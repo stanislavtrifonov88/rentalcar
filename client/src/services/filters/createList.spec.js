@@ -1,3 +1,7 @@
+import createList from './createList';
+import { carsArrayFn, criteriaFn } from './filterTestingBase';
+describe('filterFunctions', () => {
+  const carsArray = carsArrayFn()
 it('createLIst should return unique values based on the input criteria', () => {
     // Arramge
     const listResultMock = ['None', 'A', 'B', 'C'];
@@ -21,3 +25,4 @@ it('createLIst should return unique values based on the input criteria', () => {
 
     expect(result).toEqual(listResultMock);
   });
+});
