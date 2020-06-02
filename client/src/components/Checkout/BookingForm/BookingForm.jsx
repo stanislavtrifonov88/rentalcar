@@ -40,21 +40,26 @@ export default class BookingForm extends React.Component {
     }
   };
 
-  render() {
+  showComponent = (props) => {
     const { foundCustomer, phone } = this.customerStore;
     const { onCancel, onPageChangeToDashboard } = this.props;
-    let names;
 
     if (foundCustomer.firstName === '') {
-      names = <Registration onCancel={onCancel} />;
+
+      return <Registration onCancel={onCancel} />;
     } else {
-      names = (
+
+      return (
         <CarCheckoutForm
           onCancel={onCancel}
           onPageChangeToDashboard={onPageChangeToDashboard}
         />
       );
     }
+  }
+
+  phoneMsgs = () => {
+    const { foundCustomer, phone } = this.customerStore;
 
     let found = <p className="notFound">Client not found!</p>;
     if (!phone.touched) {
@@ -68,6 +73,11 @@ export default class BookingForm extends React.Component {
         </p>
       );
     }
+
+    return found;
+  }
+
+  render() {
 
     return (
       <div className="checkoutFormContainer" data-element="bookingForm">
@@ -84,10 +94,10 @@ export default class BookingForm extends React.Component {
                 required
                 onChange={this.handlePhoneChanged}
               />
-              {found}
+              {this.phoneMsgs()}
             </div>
           </div>
-          {names}
+          {this.showComponent()}
         </div>
       </div>
     );
