@@ -19,7 +19,7 @@ export const carsArrayFn = () => {
         {
           id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
           brand: 'BMW',
-          model: 'Opel',
+          model: 'M3',
           picture: 'http://localhost:3001/img/opelCorsa.jpeg',
           className: 'B',
           price: 50,
@@ -47,14 +47,17 @@ export const criteriaFn = (input) => {
    return Object.assign(criteria, input)
 }
 
+export const opelCorsaMock = () => {
+  const corsa = [
+    {
+      id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
+      brand: 'Opel',
+      model: 'Corsa',
+      picture: 'http://localhost:3001/img/opelCorsa.jpeg',
+      className: 'A',
+      price: 50,
+    },
+  ]
 
-  // // filterProperties = ['brand', 'model'];
-  // mockResult = [
-  //   {
-  //     id: 'a580044f-5bda-4397-a5fd-64767a7ef14f',
-  //     brand: 'Opel',
-  //     model: 'Corsa',
-  //     picture: 'http://localhost:3001/img/opelCorsa.jpeg',
-  //     className: 'A',
-  //     price: 50,
-  //   }
+  return corsa;
+}
