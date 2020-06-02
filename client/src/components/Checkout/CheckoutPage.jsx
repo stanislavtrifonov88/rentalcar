@@ -32,7 +32,7 @@ export default class CheckoutPage extends React.Component {
 
   onPageChangeToDashboard = (event) => this.props.history.push({ pathname: "/dashboard" });
 
-  render() {
+  checkoutFormComponents = () => {
     const { car, loading } = this.individualCarStore;
     let checkoutFormCards = (
       <div className="formItems">
@@ -47,11 +47,15 @@ export default class CheckoutPage extends React.Component {
     if (loading) {
       checkoutFormCards = <Spinner />;
     }
+    return checkoutFormCards;
+  }
+
+  render() {
 
     return (
       <div className="checkoutMainContainer">
         <h1 className="checkoutMainTitle">Would you like a car?</h1>
-        {checkoutFormCards}
+        {this.checkoutFormComponents()}
       </div>
     );
   }
