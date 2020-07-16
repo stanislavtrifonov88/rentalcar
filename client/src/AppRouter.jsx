@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import AvailableCarsContainer from './components/AvailableCars/AvailableCarsContainer';
+import AvailableCarsContainer from './components/AvailableCars/AvailableCarsContainer.tsx';
 import Dashboard from './components/Dashboard/Dashboard';
 import CheckoutPage from './components/Checkout/CheckoutPage';
 import './AppRouter.css';

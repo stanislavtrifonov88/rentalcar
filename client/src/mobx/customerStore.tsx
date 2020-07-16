@@ -6,15 +6,38 @@ import {
   baseURL,
   customers,
 } from '../services/restAPIs/restAPIs';
+import { CheckOutFormInterface } from './interfaces';
+
+interface PhoneInterface {
+    value: string,
+    isValid: boolean,
+    touched: boolean,
+}
+
+interface FoundCustomerInterface {
+  phone: string,
+  firstName: string,
+  lastName: string,
+  birthdate: string,
+  age: string,
+  previousContracts: string,
+}
+
+interface NewCustomerInterface {
+  phone: string,
+  firstName: string,
+  lastName: string,
+  birthdate: string,
+}
 
 class CustomerStore {
-  @observable phone = {
+  @observable phone: PhoneInterface = {
     value: '',
     isValid: false,
     touched: false,
-  };
+  }
 
-  @observable foundCustomer = {
+  @observable foundCustomer: FoundCustomerInterface = {
     phone: '',
     firstName: '',
     lastName: '',
@@ -23,14 +46,14 @@ class CustomerStore {
     previousContracts: '',
   };
 
-  @observable newCustomer = {
+  @observable newCustomer: NewCustomerInterface = {
     phone: '',
     firstName: '',
     lastName: '',
     birthdate: '',
   };
 
-  @observable checkoutForm = {
+  @observable checkoutForm: CheckOutFormInterface = {
     phone: '',
     startDate: null,
     contractEndDate: null,

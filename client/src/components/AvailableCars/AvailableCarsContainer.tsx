@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
-import AvailableCarCard from './AvailableCarCard/AvailableCarCard';
+import AvailableCarCard from './AvailableCarCard/AvailableCarCard.tsx';
 import './AvailableCarsContainer.css';
 import { fetchRequest } from '../../services/restAPIs/restRequests';
 import { baseURL } from '../../services/restAPIs/restAPIs';
@@ -80,16 +80,16 @@ render() {
 }
 }
 
-AvailableCarsContainer.propTypes = {
-  word: PropTypes.exact({
-    searchWord: PropTypes.string,
-  }),
-};
+// AvailableCarsContainer.propTypes = {
+//   word: PropTypes.exact({
+//     searchWord: PropTypes.string,
+//   }),
+// };
 
-AvailableCarsContainer.defaultProps = {
-  word: PropTypes.exact({
-    searchWord: '',
-  }),
-};
+// AvailableCarsContainer.defaultProps = {
+//   word: PropTypes.exact({
+//     searchWord: '',
+//   }),
+// };
 
 export default AvailableCarsContainer;

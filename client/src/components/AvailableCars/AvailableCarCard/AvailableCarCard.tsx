@@ -1,8 +1,14 @@
 import React from 'react';
 import './AvailableCarCard.css';
 import PropTypes from 'prop-types';
+import { CarInterface } from '../../../mobx/interfaces';
 
-const AvailableCarCard = ({ car, onCheckout }) => (
+interface Props {
+  car: CarInterface,
+  onCheckout: (id: string) => string,
+}
+
+const AvailableCarCard: React.FC<Props> = ({ car, onCheckout }) => (
   <div className="col-lg-4 col-md-6">
     <div className="cardAvailableCar" data-element="availableCarCard">
       <img className="AvailableCarCardPic" src={car.picture} alt="NO PIC" />
