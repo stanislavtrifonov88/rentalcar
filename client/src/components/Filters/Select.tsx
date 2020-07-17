@@ -1,12 +1,24 @@
 import React from 'react';
-import Option from './Options';
+import Option from './Options.tsx';
 import './Select.css';
 import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default class Select extends React.Component {
+interface SelectState {
+  selected: string | null,
+  opened: boolean,
+}
 
-  constructor(props) {
+interface SelectProps {
+  onChildClick: any,
+  contract: any,
+  options: string[],
+  type: any,
+  dataFilter: any
+}
+export default class Select extends React.Component<SelectProps, SelectState> {
+
+  constructor(props: SelectProps) {
     super(props);
     this.state = {
       selected: null,
@@ -43,7 +55,7 @@ export default class Select extends React.Component {
     const selected = this.state.selected
       ? this.state.selected : this.props.type;
     const showHideClass = this.state.opened ? 'show' : 'hide';
-
+    console.log(this.props.type)
     return (
       <div className="select" onClick={this.onOpen}>
         <span className="filterItem">

@@ -5,7 +5,10 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb-typescript",
+        "airbnb/hooks",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -21,7 +24,7 @@
     "plugins": [
         "react"
     ],
-    "parser": "babel-eslint",
+    "parser": "./tsconfig.json",
     "rules": {
       "strict": 0
     }

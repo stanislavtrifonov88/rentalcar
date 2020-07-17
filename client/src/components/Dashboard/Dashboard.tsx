@@ -1,26 +1,31 @@
 import React from 'react';
 import './Dashboard.css';
 import { observer, inject } from 'mobx-react';
-import DashboardItem from './DashboardItem/DashboardItem';
+import DashboardItem from './DashboardItem/DashboardItem.tsx';
 import { fetchRequest } from '../../services/restAPIs/restRequests';
 import { baseURL, contracts } from '../../services/restAPIs/restAPIs';
 import Spinner from '../Spinner/Spinner';
 import { toastSuccess } from '../../services/toastify/toastify';
-import SearchInput from '../SearchBar/SearchInput';
+import SearchInput from '../SearchBar/SearchInput.tsx';
 import applyFilters from '../../services/filters/applyFilters';
 import applySearch from '../../services/filters/applySearch';
 import createList from '../../services/filters/createList';
-import Select from '../Filters/Select';
+import Select from '../Filters/Select.tsx';
+import DashboardStore from '../../mobx/dashboardStore'
+
+interface DashboardProps {
+  dashboardStore: string
+}
 
 @inject('dashboardStore')
 @observer
-class Dashboard extends React.Component {
-  constructor(props) {
+class Dashboard extends React.Component<DashboardProps> {
+  constructor(props: DashboardProps) {
     super(props);
     this.store = this.props.dashboardStore;
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.store.loading = true;
     fetchRequest(`${baseURL}/${contracts}`)
       .then((result) => {
@@ -40,7 +45,7 @@ class Dashboard extends React.Component {
         }));
   }
 
-searchString = (value) => {
+searchString = (value: string): void => {
   this.store.searchString = value;
 }
 

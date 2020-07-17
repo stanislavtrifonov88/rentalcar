@@ -3,9 +3,14 @@ import './SearchInput.css'
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default class SearchInput extends React.Component {
+interface ISearchInput {
+  update: (value: string) => string,
+  value: string,
+}
 
-  onValueChange = (event) => {
+export default class SearchInput extends React.Component <ISearchInput> {
+
+  onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     this.props.update(event.target.value);
   }

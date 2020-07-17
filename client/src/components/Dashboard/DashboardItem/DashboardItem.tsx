@@ -3,10 +3,16 @@ import './DashboardItem.css'
 import { datePresentationFormat } from '../../../services/dates/dateModifiers';
 import { currentDaysRented, estimatedDaysRented, overdueDays } from '../../../services/calculations/days/index';
 import { currentPricePerDay, currentTotalPrice, estimatedPricePerDay, estimatedTotalPrice } from '../../../services/calculations/prices/index';
-class DashboardItem extends React.Component {
+import { ContractInterface } from '../../../mobx/interfaces';
 
+interface DashboardItemProps {
+  contract: ContractInterface,
+  onChildClick: (id: string) => string
+}
 
-  handleClick = (event) => {
+class DashboardItem extends React.Component<DashboardItemProps> {
+
+  handleClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     this.props.onChildClick(this.props.contract.id)
   }
 
